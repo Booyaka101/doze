@@ -44,6 +44,30 @@ def models():
             and 'cloud' not in m['name'].lower()]
 
 
+def generate(system, specification, schema, model):
+    """Shared, bounded local inference boundary for the two constrained compilers."""
+    if model not in models():
+        raise SafetyError('Select an installed local model. Doze never downloads one automatically.')
+    started = time.perf_counter()
+    result = request_json('/api/chat', {
+        'model': model, 'stream': False, 'think': False,
+        'keep_alive': '2m', 'format': {'anyOf': [schema, {
+            'type': 'object', 'required': ['error'], 'additionalProperties': False,
+            'properties': {'error': {'type': 'string'}}}]},
+        'options': {'temperature': 0, 'num_predict': 1800, 'num_ctx': 8192},
+        'messages': [{'role': 'system', 'content': system}, {'role': 'user', 'content': json.dumps(specification)}]
+    }, timeout=180)
+    try:
+        raw = json.loads(result['message']['content'])
+        if isinstance(raw, dict) and 'error' in raw:
+            raise SafetyError('The local model could not express this task: ' + str(raw['error'])[:500])
+    except (KeyError, json.JSONDecodeError, TypeError) as error:
+        raise SafetyError('Model returned invalid JSON. Nothing was run.') from error
+    return raw, {'model': model, 'seconds': round(time.perf_counter() - started, 2),
+                 'input_tokens': result.get('prompt_eval_count'), 'output_tokens': result.get('eval_count'),
+                 'endpoint': OLLAMA, 'model_calls': 1}
+
+
 def compile_chore(prompt, model, examples=None, previous=None):
     if not isinstance(prompt, str) or not 10 <= len(prompt.strip()) <= 4000:
         raise SafetyError('Describe the chore in 10 to 4,000 characters.')
@@ -61,25 +85,5 @@ def compile_chore(prompt, model, examples=None, previous=None):
             specification['deterministic_feedback'] = evaluate(previous, examples)
     if len(json.dumps(specification)) > 18000:
         raise SafetyError('Teaching input is too large for this bounded local call. Use fewer or shorter examples.')
-    if model not in models():
-        raise SafetyError('Select an installed local model. Doze never downloads one automatically.')
-    started = time.perf_counter()
-    result = request_json('/api/chat', {
-        'model': model, 'stream': False, 'think': False,
-        'keep_alive': '2m', 'format': {'anyOf': [SCHEMA, {
-            'type': 'object', 'required': ['error'], 'additionalProperties': False,
-            'properties': {'error': {'type': 'string'}}}]},
-        'options': {'temperature': 0, 'num_predict': 1800, 'num_ctx': 8192},
-        'messages': [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': json.dumps(specification)}]
-    }, timeout=180)
-    try:
-        raw = json.loads(result['message']['content'])
-        if isinstance(raw, dict) and 'error' in raw:
-            raise SafetyError('The local model could not express that chore: ' + str(raw['error'])[:500])
-        recipe = validate_recipe(raw)
-    except (KeyError, json.JSONDecodeError, TypeError) as error:
-        raise SafetyError('Model returned an invalid recipe. Nothing was run.') from error
-    return {'recipe': recipe, 'provenance': {
-        'model': model, 'seconds': round(time.perf_counter() - started, 2),
-        'input_tokens': result.get('prompt_eval_count'), 'output_tokens': result.get('eval_count'),
-        'endpoint': OLLAMA, 'model_calls': 1}}
+    raw, provenance = generate(SYSTEM, specification, SCHEMA, model)
+    return {'recipe': validate_recipe(raw), 'provenance': provenance}

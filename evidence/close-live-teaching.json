@@ -1,0 +1,9 @@
+{
+  "model": "gemma4:12b-it-qat",
+  "model_calls": 1,
+  "synthetic": true,
+  "result": "safe_refusal",
+  "mapping_created": false,
+  "error": "The local model could not express this task: The provided headers do not contain a column that can be mapped to the required 'payments.batch' or 'bank.batch' roles as specified in the instructions (the 'Settlement reference' and 'Payout group' are present, but the schema requires a clear mapping to the shared payout/settlement group ID, and the instructions strictly forbid using bank entry IDs as batch IDs).",
+  "follow_up": "No retry. Browser verification uses the explicitly labelled hand-written mapping. Successful Friday Close AI teaching has not been demonstrated."
+}

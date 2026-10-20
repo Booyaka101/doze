@@ -11,10 +11,10 @@ const until = async expr => {
 };
 try {
   await c.send('Page.bringToFront');
-  await c.navigate(base, 500);
+  await c.navigate(base + '/files', 500);
   await until('typeof state!=="undefined" && !!state');
   await c.evaluate('(async()=>{await api("inference",{enabled:false})})()');
-  await c.navigate(base, 500);
+  await c.navigate(base + '/files', 500);
   await until('typeof state!=="undefined" && !!state && !state.inference_enabled');
   await c.evaluate('choose(state.recipes.find(r=>r.certificate?.certified))');
   await c.clickSelector('#rehearse');

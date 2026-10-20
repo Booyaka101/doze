@@ -16,7 +16,7 @@ const post = async (route, body) => c.evaluate(`(async()=>{const s=await(await f
 try {
   await c.send('Page.bringToFront');
   await c.send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1100, deviceScaleFactor: 1, mobile: false });
-  await c.navigate(base, 1000);
+  await c.navigate(base + '/files', 1000);
   await until('document.querySelector("#model").value.startsWith("gemma")');
   await c.clickSelector('#example');
   await c.evaluate('document.querySelector(".teaching-board").scrollIntoView({block:"center"})');

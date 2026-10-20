@@ -14,7 +14,7 @@ const screenshot = async name => writeFile('evidence/' + name + '.png', Buffer.f
 try {
   await c.send('Page.bringToFront');
   await c.send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1100, deviceScaleFactor: 1, mobile: false });
-  await c.navigate('http://127.0.0.1:8741', 1000);
+  await c.navigate('http://127.0.0.1:8741/files', 1000);
   await waitFor('document.querySelector("#model").value.startsWith("gemma")');
   const errors = [];
   c.on(event => { if (event.method === 'Runtime.exceptionThrown') errors.push(event.params.exceptionDetails.text); });

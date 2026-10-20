@@ -13,6 +13,7 @@ from . import compiler
 from .demo import PROMPT, RECIPE, CASES, seed
 from .engine import Engine, SafetyError, validate_cases
 from .replay import replay
+from . import close, close_demo, close_inference
 
 STATIC = Path(__file__).parent / 'static'
 
@@ -53,8 +54,8 @@ def make_server(engine, port=8741, demo=True):
                                             'runs': engine.runs(), 'sample_prompt': PROMPT, 'sample_cases': CASES})
                 if route == '/api/models':
                     return self.reply(200, {'models': compiler.models() if inference_enabled.is_set() else []})
-                if route in {'/', '/app.js', '/style.css', '/lab.css', '/teaching.css', '/mark.svg'}:
-                    name = 'index.html' if route == '/' else route[1:]
+                if route in {'/', '/files', '/app.js', '/style.css', '/lab.css', '/teaching.css', '/mark.svg', '/close.js', '/close.css'}:
+                    name = 'close.html' if route == '/' else 'index.html' if route == '/files' else route[1:]
                     mime = {'html': 'text/html', 'js': 'text/javascript', 'css': 'text/css', 'svg': 'image/svg+xml'}[name.split('.')[-1]]
                     return self.reply(200, (STATIC / name).read_bytes(), mime + '; charset=utf-8')
                 return self.reply(404, {'error': 'Not found.'})
@@ -68,8 +69,9 @@ def make_server(engine, port=8741, demo=True):
             if origin and origin not in {f'http://127.0.0.1:{self.server.server_port}', f'http://localhost:{self.server.server_port}'}:
                 return self.reply(403, {'error': 'Cross-origin requests are not allowed.'})
             try:
+                route = urlsplit(self.path).path
                 length = int(self.headers.get('Content-Length', '0'))
-                if not 0 < length <= 64000:
+                if not 0 < length <= (1000000 if route.startswith('/api/close/') else 64000):
                     raise SafetyError('Invalid request size.')
                 if self.headers.get('Content-Type', '').split(';')[0] != 'application/json':
                     raise SafetyError('JSON required.')
@@ -77,6 +79,40 @@ def make_server(engine, port=8741, demo=True):
                 route = urlsplit(self.path).path
                 if not isinstance(body, dict):
                     raise SafetyError('Expected an object.')
+                if route == '/api/close/demo':
+                    return self.reply(200, close_demo.demo(body.get('scenario', 'messy'), body.get('week', 1)))
+                if route == '/api/close/inspect':
+                    result = {}
+                    for side in ('payments', 'bank'):
+                        headers, rows = close.table(body[side + '_csv'])
+                        result[side] = {'headers': headers, 'records': len(rows), 'rows': rows}
+                    return self.reply(200, result)
+                if route == '/api/close/sample-profile':
+                    return self.reply(200, {'profile': close.profile(close_demo.MAPPING, close_demo.PAYMENT_HEADERS, close_demo.BANK_HEADERS),
+                                            'provenance': {'source': 'hand-written sample, not AI output', 'model_calls': 0}})
+                if route == '/api/close/profile':
+                    return self.reply(200, close.validate_profile(body['profile']))
+                if route == '/api/close/teach':
+                    if body.get('headers_approved') is not True:
+                        raise SafetyError('Explicit approval to send these column names to local Ollama is required.')
+                    if not inference_lock.acquire(blocking=False):
+                        raise SafetyError('A compilation is already running. No duplicate job started.')
+                    try:
+                        if not inference_enabled.is_set():
+                            raise SafetyError('AI is asleep. Inference is blocked by the server. Existing profiles still work.')
+                        result = close_inference.compile_mapping(body.get('payment_headers'), body.get('bank_headers'),
+                            body.get('model'), body.get('decimal_mark', '.'), body.get('hint', ''))
+                    finally:
+                        inference_lock.release()
+                    return self.reply(200, result)
+                if route == '/api/close/reconcile':
+                    if body.get('mapping_approved') is not True:
+                        raise SafetyError('Review and approve the exact column mapping first.')
+                    return self.reply(200, close.reconcile(body['profile'], body['payments_csv'], body['bank_csv']))
+                if route == '/api/close/packet':
+                    if body.get('mapping_approved') is not True or body.get('report_approved') is not True:
+                        raise SafetyError('Explicit mapping and report review are required before a handoff.')
+                    return self.reply(200, close.packet(body['profile'], body['payments_csv'], body['bank_csv'], body['approved_sha256']), 'application/zip')
                 if route == '/api/compile':
                     # Reject missing/invalid teaching input before starting any inference.
                     examples = validate_cases(body.get('examples'))

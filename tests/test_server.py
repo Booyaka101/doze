@@ -11,6 +11,8 @@ from doze.compiler import compile_chore
 from doze.demo import RECIPE, CASES, seed
 from doze.engine import Engine, SafetyError
 from doze.server import make_server
+from doze.close_demo import demo, MAPPING, PAYMENT_HEADERS, BANK_HEADERS
+from doze.close import profile
 
 
 class ServerTests(unittest.TestCase):
@@ -74,6 +76,37 @@ class ServerTests(unittest.TestCase):
     def test_invalid_recipe_is_rejected(self):
         self.assertEqual(self.request('/api/recipe', {'recipe': {}}, self.token)[0], 400)
 
+    def test_close_approvals_and_hash_bound_packet(self):
+        body = {**demo('clean'), 'profile': profile(MAPPING, PAYMENT_HEADERS, BANK_HEADERS)}
+        self.assertEqual(self.request('/api/close/reconcile', body, self.token)[0], 400)
+        body['mapping_approved'] = True
+        code, raw, _ = self.request('/api/close/reconcile', body, self.token)
+        self.assertEqual(code, 200)
+        body['approved_sha256'] = json.loads(raw)['sha256']
+        self.assertEqual(self.request('/api/close/packet', body, self.token)[0], 400)
+        body['report_approved'] = True
+        code, raw, headers = self.request('/api/close/packet', body, self.token)
+        self.assertEqual(code, 200)
+        self.assertEqual(headers['Content-Type'], 'application/zip')
+        self.assertTrue(raw.startswith(b'PK'))
+        body.update(demo('clean', 2))
+        self.assertEqual(self.request('/api/close/packet', body, self.token)[0], 400)
+
+    def test_close_teaching_requires_consent_and_respects_sleep(self):
+        body = {'payment_headers': PAYMENT_HEADERS, 'bank_headers': BANK_HEADERS, 'model': 'local'}
+        with patch('doze.server.close_inference.compile_mapping', side_effect=AssertionError('No inference')):
+            self.assertEqual(self.request('/api/close/teach', body, self.token)[0], 400)
+            try:
+                self.request('/api/inference', {'enabled': False}, self.token)
+                body['headers_approved'] = True
+                code, raw, _ = self.request('/api/close/teach', body, self.token)
+                self.assertEqual(code, 400)
+                self.assertIn('asleep', json.loads(raw)['error'])
+                data = {**demo('clean'), 'profile': profile(MAPPING, PAYMENT_HEADERS, BANK_HEADERS), 'mapping_approved': True}
+                self.assertEqual(self.request('/api/close/reconcile', data, self.token)[0], 200)
+            finally:
+                self.request('/api/inference', {'enabled': True}, self.token)
+
     def test_execute_requires_explicit_approval(self):
         self.assertEqual(self.request('/api/execute', {'plan_id': 'anything'}, self.token)[0], 400)
 
@@ -133,6 +166,20 @@ class CompilerTests(unittest.TestCase):
             result = compile_chore('Please organize screenshots safely', 'gemma-test')
         self.assertEqual(result['recipe'], RECIPE)
         self.assertEqual(result['provenance']['model_calls'], 1)
+
+    def test_shared_inference_preserves_file_compiler_request(self):
+        from doze.compiler import SYSTEM
+        from doze.engine import SCHEMA
+        with patch('doze.compiler.models', return_value=['local']), patch('doze.compiler.request_json', return_value={
+                'message': {'content': json.dumps(RECIPE)}}) as call:
+            result = compile_chore('Please organize screenshots safely', 'local')
+        path, body = call.call_args.args
+        self.assertEqual(path, '/api/chat')
+        self.assertEqual(body['messages'], [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': json.dumps({
+            'instructions': 'Please organize screenshots safely'})}])
+        self.assertEqual(body['format']['anyOf'][0], SCHEMA)
+        self.assertEqual(body['options'], {'temperature': 0, 'num_predict': 1800, 'num_ctx': 8192})
+        self.assertEqual(result['recipe'], RECIPE)
 
     def test_non_installed_model_rejected(self):
         with patch('doze.compiler.models', return_value=[]), self.assertRaisesRegex(SafetyError, 'installed'):

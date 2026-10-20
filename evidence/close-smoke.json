@@ -1,0 +1,307 @@
+{
+  "synthetic": true,
+  "learned": {
+    "profile": {
+      "format": "doze-close-v1",
+      "mapping": {
+        "name": "Studio Friday close",
+        "decimal_mark": ".",
+        "payments": {
+          "id": "Sale reference",
+          "batch": "Payout group",
+          "gross": "Customer paid",
+          "fee": "Processor fee",
+          "currency": "ISO currency"
+        },
+        "bank": {
+          "id": "Bank entry",
+          "batch": "Settlement reference",
+          "amount": "Money received",
+          "currency": "ISO currency"
+        }
+      },
+      "schemas": {
+        "payments": [
+          "Sale reference",
+          "Payout group",
+          "Customer paid",
+          "Processor fee",
+          "ISO currency"
+        ],
+        "bank": [
+          "Bank entry",
+          "Settlement reference",
+          "Money received",
+          "ISO currency"
+        ]
+      },
+      "sha256": "a572c0305523fc6146e5fa0ce7083271355a6c1599462824c1a4fcffe14ba63d"
+    },
+    "description": "hand-written sample, not AI output",
+    "origin": "HAND-WRITTEN SAMPLE"
+  },
+  "messy": {
+    "format": "doze-close-report-v1",
+    "ready": false,
+    "model_calls": 0,
+    "profile_sha256": "a572c0305523fc6146e5fa0ce7083271355a6c1599462824c1a4fcffe14ba63d",
+    "totals": {
+      "USD": {
+        "gross": "1620.00",
+        "fees": "54.18",
+        "net": "1565.82"
+      }
+    },
+    "settlements": [
+      {
+        "batch": "PAY-W01-01",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "342.00",
+        "fees": "11.72",
+        "expected": "330.28",
+        "received": "330.28",
+        "difference": "0.00",
+        "payment_records": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "bank_records": [
+          1
+        ]
+      },
+      {
+        "batch": "PAY-W01-02",
+        "currency": "USD",
+        "status": "mismatch",
+        "reason": "Gross minus fees does not equal the bank amount, even to the cent.",
+        "gross": "384.00",
+        "fees": "12.93",
+        "expected": "371.07",
+        "received": "371.06",
+        "difference": "-0.01",
+        "payment_records": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "bank_records": [
+          2
+        ]
+      },
+      {
+        "batch": "PAY-W01-03",
+        "currency": "USD",
+        "status": "ambiguous",
+        "reason": "Multiple bank transfers share this reference. No best guess was made.",
+        "gross": "426.00",
+        "fees": "14.15",
+        "expected": "411.85",
+        "received": "823.70",
+        "difference": "411.85",
+        "payment_records": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "bank_records": [
+          3,
+          5
+        ]
+      },
+      {
+        "batch": "PAY-W01-04",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "468.00",
+        "fees": "15.38",
+        "expected": "452.62",
+        "received": "452.62",
+        "difference": "0.00",
+        "payment_records": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "bank_records": [
+          4
+        ]
+      },
+      {
+        "batch": "UNEXPLAINED-W01",
+        "currency": "USD",
+        "status": "orphan",
+        "reason": "Bank transfer has no corresponding payment records.",
+        "gross": "0.00",
+        "fees": "0.00",
+        "expected": "0.00",
+        "received": "75.00",
+        "difference": "75.00",
+        "payment_records": [],
+        "bank_records": [
+          6
+        ]
+      }
+    ],
+    "issues": [],
+    "source_records": {
+      "payments": 24,
+      "bank": 6
+    },
+    "source_sha256": {
+      "payments": "28bc9c070b3d9e28b8028ec8e8a0bc14ae25a976d92dde3bc86efa3a5b17fe06",
+      "bank": "1fdd2400970fb7517ab779e71605ed76246bb87e14f89b6f24ec9df40df03e62"
+    },
+    "matched": 2,
+    "exceptions": 3,
+    "limitations": "Exact shared settlement IDs only. Two-decimal currencies only. No date/amount fuzzy matching, tax advice, account access or payments. Human review required.",
+    "sha256": "215879e94318641be1ed5d65fb7be04c2a2d74c4db4a9c8bea1c243dec1e38b1"
+  },
+  "clean": {
+    "format": "doze-close-report-v1",
+    "ready": true,
+    "model_calls": 0,
+    "profile_sha256": "a572c0305523fc6146e5fa0ce7083271355a6c1599462824c1a4fcffe14ba63d",
+    "totals": {
+      "USD": {
+        "gross": "1692.00",
+        "fees": "56.27",
+        "net": "1635.73"
+      }
+    },
+    "settlements": [
+      {
+        "batch": "PAY-W02-01",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "360.00",
+        "fees": "12.24",
+        "expected": "347.76",
+        "received": "347.76",
+        "difference": "0.00",
+        "payment_records": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "bank_records": [
+          1
+        ]
+      },
+      {
+        "batch": "PAY-W02-02",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "402.00",
+        "fees": "13.46",
+        "expected": "388.54",
+        "received": "388.54",
+        "difference": "0.00",
+        "payment_records": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "bank_records": [
+          2
+        ]
+      },
+      {
+        "batch": "PAY-W02-03",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "444.00",
+        "fees": "14.68",
+        "expected": "429.32",
+        "received": "429.32",
+        "difference": "0.00",
+        "payment_records": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "bank_records": [
+          3
+        ]
+      },
+      {
+        "batch": "PAY-W02-04",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "486.00",
+        "fees": "15.89",
+        "expected": "470.11",
+        "received": "470.11",
+        "difference": "0.00",
+        "payment_records": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "bank_records": [
+          4
+        ]
+      }
+    ],
+    "issues": [],
+    "source_records": {
+      "payments": 24,
+      "bank": 4
+    },
+    "source_sha256": {
+      "payments": "b7987995544bc52c4fe3a4a142c8fcead211ebd8a700c91c1d3a2c2f0dbf6192",
+      "bank": "99ca7bd020d47cfbc7c310ccd3d1376e6c7bc5afc4bf42c11867b1738f59bcfe"
+    },
+    "matched": 4,
+    "exceptions": 0,
+    "limitations": "Exact shared settlement IDs only. Two-decimal currencies only. No date/amount fuzzy matching, tax advice, account access or payments. Human review required.",
+    "sha256": "7f76e2c7999a6a445ea05badf8145d31d029856bb18ae5d910e68fb9faabae94"
+  },
+  "packet": {
+    "size": 2211,
+    "type": "application/zip",
+    "signature": [
+      80,
+      75
+    ]
+  },
+  "inference_blocked": true,
+  "penny_blocked": true,
+  "schema_drift_blocked": true,
+  "mobile": {
+    "width": 390,
+    "scroll": 390
+  },
+  "recurring_model_calls": 0
+}

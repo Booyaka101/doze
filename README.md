@@ -1,6 +1,59 @@
 # Doze
 
-**Show it what you mean. Then let it sleep.**
+**Teach the meaning once. Let the rules do the recurring work.**
+
+## New primary workspace: The Friday Close
+
+Doze now pairs payment exports with bank exports. A local model may propose a
+column mapping from **headers only**. Humans review the mapping. Deterministic
+Python matches exact settlement references, checks gross minus fees using
+`Decimal`, and produces a hash-bound evidence ZIP only after explicit review.
+No model calculates money. No bank connection, account access or payments.
+
+![Friday Close exception investigation](evidence/12-close-exceptions.png)
+
+Open **http://127.0.0.1:8743** for the current synthetic demo. On a fresh launch,
+`python -m doze.server` serves Friday Close at `/` and the original file studio
+at `/files`. Previously started processes retain their earlier routing.
+
+### Try the close without inference
+
+1. Start with **A messy week**, then choose the explicitly labelled hand-written
+   mapping. This is a sample, not an AI result.
+2. Review the roles, approve the mapping and choose **Close this week**.
+3. Inspect the one-cent mismatch, duplicate transfer and orphan transfer.
+   Unresolved exceptions block a clean packet. Source-record buttons show the
+   original values behind each settlement.
+4. Put AI to sleep. Select **Next week**, review and reuse the mapping.
+5. Review the clean report and download the handoff: reconciliation CSV, audit
+   JSON, portable mapping, source hashes and a read-me. Original CSV contents
+   are not included or modified. Changing the inputs invalidates report approval.
+
+### What is verified, and what is not
+
+- Browser checks passed with the **hand-written mapping**: three messy-week
+  exceptions, a blocking one-cent discrepancy, four exact next-week settlements,
+  approved ZIP response, server-side inference rejection, schema drift rejection
+  and no horizontal overflow at 390px. See `evidence/close-smoke.json`.
+- The one live Gemma teaching attempt **refused to infer the shared reference
+  mapping**. No automatic retry was made. Successful AI teaching for Friday
+  Close has **not** been demonstrated. See `evidence/close-live-teaching.json`.
+  The separate file-studio Gemma teaching and repair remain verified below.
+- Automated tests exercise 52 synthetic weeks without network access. This is
+  repeatability evidence, not a real customer trial or measured time savings.
+- No fuzzy matching, date-window logic, split transfers, FX conversion,
+  multi-processor settlement composition or accounting integration. Unsupported
+  records require human investigation. Refund gross can be negative; negative
+  fees require review. Supported two-decimal currencies: USD, EUR, GBP, CAD,
+  AUD, NZD and CHF. UTF-8 comma-delimited CSV only, 350 KB and 2,000 rows per input.
+- Exact agreement cannot detect transactions omitted from **both** exports.
+  Review source completeness. Totals exclude quarantined rows and are marked
+  incomplete when those exist. This is a prototype, not accounting or tax advice.
+- Profiles bind exact header sets and role mappings. Header reordering is allowed;
+  missing or additional headers stop reconciliation. CSV formula-like IDs are
+  neutralized in exported spreadsheet cells. All source values render as text.
+
+## Original workspace: file chore studio
 
 Doze turns a plain-English file-sorting chore into a small, inspectable JSON recipe
 using an installed local open-weight model through Ollama. Ordinary Python runs

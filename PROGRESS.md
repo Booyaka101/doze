@@ -99,3 +99,50 @@ Scope: one implementation pass and two verification passes. Branch:
   claims. Still filename/extension/size rules, not semantic document understanding.
 - No public repository, deployed site, uploaded video, community post or entry.
 - Bounded pass finished. Do not rerun live model work merely to polish evidence.
+
+## Friday Close pass, October 20
+
+Branch: `feat/friday-close`. One implementation and two verification passes.
+The stronger use case is recurring payment-export / bank-export reconciliation.
+No real records, account access, purchases, posting or publication.
+
+### Implemented and checked
+- New primary workspace at `/`, original certified file studio at `/files`.
+- CSV inspection, header-only teaching consent, editable/importable mappings,
+  schema-bound profiles, exact decimal arithmetic and explicit exceptions.
+- Duplicate IDs quarantine all occurrences and block affected batches. Missing,
+  ambiguous, orphan, mixed-currency and one-cent mismatches cannot produce a
+  clean packet. Header drift stops the whole calculation.
+- Source-record drilldown, per-currency totals, incomplete-total warnings and
+  human-reviewed ZIP evidence bound to input/profile/report hashes. Sources are
+  not edited or included in the ZIP. Spreadsheet formula payloads are escaped.
+- Shared local inference boundary extracted; file-compiler request and output
+  regression test included. Existing certified execution/undo tests retained.
+- Final suite: 95 tests, 94 passed, one Windows symlink-permission skip. No
+  failures. JavaScript syntax and diff whitespace checks passed.
+- Browser verified twice with the explicitly labelled hand-written mapping:
+  messy week has three exceptions; one-cent case blocked; next week four exact
+  matches; approved ZIP response 2,211 bytes; server teaching rejected asleep;
+  drift stopped; 390px layout has no horizontal overflow. Zero recurring calls.
+- 52 synthetic weeks tested with network access forbidden. No real time-saving
+  claim or complete-bookkeeping claim. Agreement cannot reveal omissions from
+  both source exports. Supported inputs and limitations documented in README.
+- Screenshots 12-15 and `evidence/close-smoke.json` record this new workspace.
+
+### Important unresolved evidence gap
+- One live `gemma4:12b-it-qat` call safely refused the header mapping because it
+  did not infer that Payout group and Settlement reference are the shared ID.
+  No retry was made. `evidence/close-live-teaching.json` records the refusal.
+- Therefore Friday Close AI teaching is implemented but NOT live-demonstrated.
+  The browser proof uses a hand-written mapping, not a successful model output.
+  Original file-studio teaching/repair evidence remains valid and separate.
+- A new regression test initially expected the wrong request key (`chore`);
+  corrected to the pre-existing `instructions` key. This was a test expectation
+  error, not a compiler behavior change.
+
+### Runtime and next boundary
+- http://127.0.0.1:8743, PID 19248 recorded in `.doze/close-server.pid`, state
+  `.doze/close`. Inference gate left asleep. Original 8741/8742 preserved.
+- No more model calls or research in this bounded pass. Before calling this
+  contest-ready, demonstrate reliable AI teaching and conduct a real user trial.
+- No public code, submission, deployment or upload. Owner approval still needed.
