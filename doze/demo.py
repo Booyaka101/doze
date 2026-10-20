@@ -14,6 +14,17 @@ RECIPE = {
                                                   'name_contains': ['invoice', 'receipt']}, 'folder': 'Finance'},
         {'label': 'Archives away', 'when': {'extensions': ['.zip']}, 'folder': 'Archives'}]}
 
+CASES = [
+    {'name': 'screenshot-dashboard.png', 'expected': 'Screenshots'},
+    {'name': 'screenshot-plan.txt', 'expected': 'HOLD'},
+    {'name': 'holiday.jpg', 'expected': 'HOLD'},
+    {'name': 'invoice-october.pdf', 'expected': 'Finance'},
+    {'name': 'invoice-notes.txt', 'expected': 'HOLD'},
+    {'name': 'readme.pdf', 'expected': 'HOLD'},
+    {'name': 'assets.zip', 'expected': 'Archives'},
+    {'name': '.env', 'expected': 'HOLD'},
+    {'name': 'cleanup.ps1', 'expected': 'HOLD'}]
+
 
 def seed(engine, batch='first'):
     if batch not in {'first', 'next'}:

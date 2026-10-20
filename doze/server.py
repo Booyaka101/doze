@@ -10,8 +10,9 @@ import threading
 from urllib.parse import urlsplit
 
 from . import compiler
-from .demo import PROMPT, RECIPE, seed
-from .engine import Engine, SafetyError
+from .demo import PROMPT, RECIPE, CASES, seed
+from .engine import Engine, SafetyError, validate_cases
+from .replay import replay
 
 STATIC = Path(__file__).parent / 'static'
 
@@ -49,10 +50,10 @@ def make_server(engine, port=8741, demo=True):
                     return self.reply(200, {'token': token, 'workspace': str(engine.root), 'demo': demo,
                                             'inference_enabled': inference_enabled.is_set(),
                                             'files': engine.inventory(), 'recipes': engine.recipes(),
-                                            'runs': engine.runs(), 'sample_prompt': PROMPT})
+                                            'runs': engine.runs(), 'sample_prompt': PROMPT, 'sample_cases': CASES})
                 if route == '/api/models':
                     return self.reply(200, {'models': compiler.models() if inference_enabled.is_set() else []})
-                if route in {'/', '/app.js', '/style.css', '/lab.css', '/mark.svg'}:
+                if route in {'/', '/app.js', '/style.css', '/lab.css', '/teaching.css', '/mark.svg'}:
                     name = 'index.html' if route == '/' else route[1:]
                     mime = {'html': 'text/html', 'js': 'text/javascript', 'css': 'text/css', 'svg': 'image/svg+xml'}[name.split('.')[-1]]
                     return self.reply(200, (STATIC / name).read_bytes(), mime + '; charset=utf-8')
@@ -77,15 +78,18 @@ def make_server(engine, port=8741, demo=True):
                 if not isinstance(body, dict):
                     raise SafetyError('Expected an object.')
                 if route == '/api/compile':
+                    # Reject missing/invalid teaching input before starting any inference.
+                    examples = validate_cases(body.get('examples'))
                     if not inference_lock.acquire(blocking=False):
                         raise SafetyError('A local compilation is already running. No duplicate job was started.')
                     try:
                         if not inference_enabled.is_set():
                             raise SafetyError('AI is asleep. Inference is blocked by the server. Existing recipes still run.')
-                        result = compiler.compile_chore(body.get('prompt'), body.get('model'))
+                        previous = engine.recipe(body['previous_id']) if body.get('previous_id') else None
+                        result = compiler.compile_chore(body.get('prompt'), body.get('model'), examples, previous)
                     finally:
                         inference_lock.release()
-                    saved = engine.save_recipe(result['recipe'])
+                    saved = engine.save_recipe(result['recipe'], examples)
                     return self.reply(200, {**saved, 'provenance': result['provenance']})
                 if route == '/api/inference':
                     if type(body.get('enabled')) is not bool:
@@ -98,11 +102,15 @@ def make_server(engine, port=8741, demo=True):
                         inference_lock.release()
                     return self.reply(200, {'inference_enabled': inference_enabled.is_set()})
                 if route == '/api/recipe':
-                    return self.reply(200, engine.save_recipe(body['recipe']))
+                    return self.reply(200, engine.save_recipe(body['recipe'], body.get('examples')))
+                if route == '/api/certify':
+                    return self.reply(200, engine.save_recipe(engine.recipe(body['recipe_id']), body['cases']))
                 if route == '/api/preview':
                     return self.reply(200, engine.preview(body['recipe_id']))
                 if route == '/api/probe':
                     return self.reply(200, engine.probe(body['recipe_id'], body['cases']))
+                if route == '/api/replay':
+                    return self.reply(200, replay(engine.recipe(body['recipe_id']), engine.database.parent))
                 if route == '/api/execute':
                     if body.get('approved') is not True:
                         raise SafetyError('Explicit approval of the preview is required.')
@@ -114,7 +122,13 @@ def make_server(engine, port=8741, demo=True):
                         raise SafetyError('Sample creation is disabled for custom workspaces.')
                     return self.reply(200, {'added': seed(engine, body.get('batch', 'first'))})
                 if route == '/api/sample-recipe':
-                    return self.reply(200, engine.save_recipe(RECIPE))
+                    return self.reply(200, engine.save_recipe(RECIPE, CASES))
+                if route == '/api/mistake':
+                    # This is the actual structure from our first recorded Gemma response.
+                    mistake = json.loads(json.dumps(RECIPE))
+                    mistake['name'] = 'Recorded Gemma mistake: too broad'
+                    mistake['rules'][0]['when'] = {'name_starts_with': 'screenshot', 'max_bytes': 2147483648}
+                    return self.reply(200, engine.save_recipe(mistake, CASES))
                 return self.reply(404, {'error': 'Not found.'})
             except (SafetyError, KeyError, ValueError, TypeError) as error:
                 return self.reply(400, {'error': str(error)})

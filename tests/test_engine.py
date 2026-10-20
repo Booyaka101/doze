@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from doze.demo import RECIPE, seed
+from doze.demo import RECIPE, CASES, seed
 from doze.engine import Engine, SafetyError, digest, matches, validate_recipe
 
 
@@ -16,7 +16,7 @@ class EngineTests(unittest.TestCase):
         root = Path(self.temp.name)
         self.engine = Engine(root / 'workspace', root / 'state')
         seed(self.engine)
-        self.saved = self.engine.save_recipe(RECIPE)
+        self.saved = self.engine.save_recipe(RECIPE, CASES)
 
     def preview(self):
         return self.engine.preview(self.saved['id'])

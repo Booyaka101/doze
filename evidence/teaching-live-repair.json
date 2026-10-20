@@ -1,0 +1,146 @@
+{
+  "recipe": {
+    "name": "Organize files",
+    "description": "Move screenshots, financial documents, and archives to specific folders.",
+    "rules": [
+      {
+        "label": "Screenshots",
+        "folder": "Screenshots",
+        "when": {
+          "extensions": [
+            ".png",
+            ".jpg",
+            ".webp"
+          ],
+          "name_starts_with": "screenshot"
+        }
+      },
+      {
+        "label": "Finance",
+        "folder": "Finance",
+        "when": {
+          "extensions": [
+            ".pdf"
+          ],
+          "name_contains": [
+            "invoice",
+            "receipt"
+          ]
+        }
+      },
+      {
+        "label": "Archives",
+        "folder": "Archives",
+        "when": {
+          "extensions": [
+            ".zip"
+          ]
+        }
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "screenshot-dashboard.png",
+      "expected": "Screenshots"
+    },
+    {
+      "name": "screenshot-plan.txt",
+      "expected": "HOLD"
+    },
+    {
+      "name": "holiday.jpg",
+      "expected": "HOLD"
+    },
+    {
+      "name": "invoice-october.pdf",
+      "expected": "Finance"
+    },
+    {
+      "name": "invoice-notes.txt",
+      "expected": "HOLD"
+    },
+    {
+      "name": "readme.pdf",
+      "expected": "HOLD"
+    },
+    {
+      "name": "assets.zip",
+      "expected": "Archives"
+    },
+    {
+      "name": ".env",
+      "expected": "HOLD"
+    },
+    {
+      "name": "cleanup.ps1",
+      "expected": "HOLD"
+    }
+  ],
+  "certificate": {
+    "cases": [
+      {
+        "name": "screenshot-dashboard.png",
+        "expected": "Screenshots",
+        "actual": "Screenshots",
+        "passed": true
+      },
+      {
+        "name": "screenshot-plan.txt",
+        "expected": "HOLD",
+        "actual": "HOLD",
+        "passed": true
+      },
+      {
+        "name": "holiday.jpg",
+        "expected": "HOLD",
+        "actual": "HOLD",
+        "passed": true
+      },
+      {
+        "name": "invoice-october.pdf",
+        "expected": "Finance",
+        "actual": "Finance",
+        "passed": true
+      },
+      {
+        "name": "invoice-notes.txt",
+        "expected": "HOLD",
+        "actual": "HOLD",
+        "passed": true
+      },
+      {
+        "name": "readme.pdf",
+        "expected": "HOLD",
+        "actual": "HOLD",
+        "passed": true
+      },
+      {
+        "name": "assets.zip",
+        "expected": "Archives",
+        "actual": "Archives",
+        "passed": true
+      },
+      {
+        "name": ".env",
+        "expected": "HOLD",
+        "actual": "HOLD",
+        "passed": true
+      },
+      {
+        "name": "cleanup.ps1",
+        "expected": "HOLD",
+        "actual": "HOLD",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "model_calls": 0,
+    "missing_destinations": [],
+    "has_hold": true,
+    "certified": true,
+    "recipe_sha256": "eb6fb44185e6c0aa330968106ad4178a02029834acbce641f46d104539d8cf8e",
+    "examples_sha256": "857c45714c59fd7f89a15d823823c65eb2b816d2545b4fba6dfbe8f4c465147d"
+  },
+  "provenance": "Learned locally with gemma4:12b-it-qat in 7.42s. 101 output tokens. The model’s job is done. Review the rules below."
+}

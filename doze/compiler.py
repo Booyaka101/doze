@@ -4,7 +4,7 @@ import time
 import urllib.error
 import urllib.request
 
-from .engine import SCHEMA, SafetyError, validate_recipe
+from .engine import SCHEMA, SafetyError, validate_recipe, validate_cases, evaluate
 
 OLLAMA = 'http://127.0.0.1:11434'
 SYSTEM = '''You compile plain-English file chores into a tiny safe JSON recipe.
@@ -44,9 +44,23 @@ def models():
             and 'cloud' not in m['name'].lower()]
 
 
-def compile_chore(prompt, model):
+def compile_chore(prompt, model, examples=None, previous=None):
     if not isinstance(prompt, str) or not 10 <= len(prompt.strip()) <= 4000:
         raise SafetyError('Describe the chore in 10 to 4,000 characters.')
+    if examples is not None:
+        examples = validate_cases(examples)
+    if previous is not None:
+        previous = validate_recipe(previous)
+    specification = {'instructions': prompt}
+    if examples:
+        specification['user_labelled_examples'] = examples
+        specification['task'] = 'Infer general rules satisfying the instructions AND these examples. Do not enumerate filenames. If inexpressible, return error.'
+    if previous:
+        specification['previous_recipe'] = previous
+        if examples:
+            specification['deterministic_feedback'] = evaluate(previous, examples)
+    if len(json.dumps(specification)) > 18000:
+        raise SafetyError('Teaching input is too large for this bounded local call. Use fewer or shorter examples.')
     if model not in models():
         raise SafetyError('Select an installed local model. Doze never downloads one automatically.')
     started = time.perf_counter()
@@ -56,7 +70,7 @@ def compile_chore(prompt, model):
             'type': 'object', 'required': ['error'], 'additionalProperties': False,
             'properties': {'error': {'type': 'string'}}}]},
         'options': {'temperature': 0, 'num_predict': 1800, 'num_ctx': 8192},
-        'messages': [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt}]
+        'messages': [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': json.dumps(specification)}]
     }, timeout=180)
     try:
         raw = json.loads(result['message']['content'])

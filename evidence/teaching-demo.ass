@@ -1,0 +1,17 @@
+[Script Info]
+Title: Doze - Teach a contract, not a prompt
+ScriptType: v4.00+
+PlayResX: 1280
+PlayResY: 1080
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,25,&H002D3A30,&H002D3A30,&H00EFF5F6,&H00EFF5F6,0,0,0,0,100,100,0,0,3,10,0,2,30,30,18,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:08.00,Default,,0,0,0,,DOZE: show it what you mean. Your examples become executable tests.\NEdited captures from the verified browser flow, not a live screen recording.
+Dialogue: 0,0:00:08.00,0:00:16.00,Default,,0,0,0,,A recorded Gemma mistake passes 8/9 tests. Valid JSON, wrong behavior.\NThe engine rejects execution, even with approval through a direct API request.
+Dialogue: 0,0:00:16.00,0:00:24.00,Default,,0,0,0,,One live local repair gets the examples and failure feedback: 9/9 pass.\NRules and tests travel together. Passing examples are not a universal proof.
+Dialogue: 0,0:00:24.00,0:00:32.00,Default,,0,0,0,,AI switched off. 30 synthetic days, 360 files, 150 moves, 210 held.\NHashes and final undo checked. No inference. Not measured human time saved.

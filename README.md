@@ -1,13 +1,37 @@
 # Doze
 
-**Teach a chore once. Let the model sleep.**
+**Show it what you mean. Then let it sleep.**
 
 Doze turns a plain-English file-sorting chore into a small, inspectable JSON recipe
 using an installed local open-weight model through Ollama. Ordinary Python runs
-the recipe after that. No inference loop, generated shell commands, cloud API,
+the recipe after that. **Your labelled examples become an executable teaching
+contract. If it fails them, the engine refuses to run, even through a direct API
+request.** No inference loop, generated shell commands, cloud API,
 account, telemetry, background watcher or scheduler.
 
-![Doze chore studio](evidence/01-studio.png)
+![Doze teaching contract after a real local repair](evidence/09-repaired-contract.png)
+
+## The next-level demo: catch it, teach it, switch it off
+
+1. Open **Replay that real mistake**. This reconstructs the screenshot rule from
+   our recorded first Gemma response. It is labelled, not passed off as new AI.
+2. The recipe passes 8/9 examples. `screenshot-plan.txt` fails. The **server refuses
+   execution**, even if a caller submits `approved: true` directly.
+3. Click **Repair from my corrections**. One bounded local call gets your explicit
+   examples, the previous recipe and deterministic failure feedback. No automatic
+   retries. In our live check, Gemma restored the extension condition and passed 9/9.
+4. **Put AI to sleep.** Doze blocks subsequent inference requests on the server.
+5. **Run 30 mornings without AI.** Doze actually journals 150 moves across 360
+   synthetic files, leaves 210 intentionally in place, verifies every expected
+   file's bytes and checks the last batch's undo. Isolated temporary workspace,
+   no effect on the visible sample workspace. This is not real user evidence.
+6. Export **recipe + tests**. On import, Doze recomputes the contract locally.
+   An imported "passed" badge is never trusted.
+
+![Thirty synthetic mornings without inference](evidence/10-thirty-mornings.png)
+
+The revised local demo is running at **http://127.0.0.1:8742** in this development
+session. The normal launch command below still defaults to port 8741.
 
 Built from scratch on October 20, 2026 for the
 [DEV Hacktoberfest Week 3: Slow and Steady challenge](https://dev.to/challenges/hacktoberfest-week3-2026-10-19).
@@ -36,8 +60,9 @@ explore the engine. That fallback is not presented as AI output.
 ### The 90-second demo
 
 1. Click **Try the Friday reset**, then **Teach Doze**.
-2. Read the rules. The model proposes; it does not get filesystem access.
-3. Click **Test the near-misses**. `screenshot-plan.txt` must stay put even though
+2. Read the rules and the labelled examples sent with your instructions. The
+   model proposes; it does not get filesystem access.
+3. Click **Test & save contract**. `screenshot-plan.txt` must stay put even though
    its name starts with `screenshot`. Edit the examples for other chores.
 4. Click **Put AI to sleep**. This closes Doze's server-side inference gate. It
    does not stop or unload shared Ollama models or alter other applications.
@@ -89,6 +114,30 @@ next compilation retained all requested conditions. Regression tests include
 the original overbroad-rule failure. A passing probe is evidence about those
 examples, not proof that every future filename will be classified correctly.
 
+### Teaching contracts, not self-reported confidence
+
+- Examples are entered **before** compilation, in `filename → Folder` notation.
+  Optional sizes use `filename | 2048 → Folder`. The model must infer general rules,
+  not just answer each example separately.
+- Local evaluation is deterministic. Passing every example, including a positive
+  for each destination and at least one HOLD, is required to execute a recipe.
+- "Certified" in internal JSON means only **passed these finite examples with
+  this runtime**, not formal verification or an independent safety certification.
+- Bare/legacy recipes still import and rehearse, but cannot execute without a
+  passing teaching contract. Older receipts remain available for checked undo.
+- Saving rules or expectations creates a new immutable recipe ID. A new rehearsal
+  is required. Receipts include exact contract results and SHA-256 fingerprints of
+  both the recipe and its examples. Unsaved UI edits invalidate pending approval.
+- Repair is user-triggered, one call at a time. Failed repairs remain visibly
+  blocked. You may fix the rules yourself without waking the model.
+- Exported bundles contain rules and examples. They need no model to import,
+  recheck, rehearse, run or undo.
+
+**Why AI?** It is an optional rule-authoring interface for someone who can show
+examples but does not want to write Boolean conditions or Python. If you can
+already write these rules quickly, a hand-written recipe is a perfectly good
+choice. Doze does not pretend that filename sorting requires an LLM.
+
 ## Recipe semantics
 
 The supported operation is **move a top-level regular file into a relative
@@ -120,6 +169,7 @@ renaming, recursive organization, external tools, notifications or schedules.
 - Folders and links are not recursively scanned. Windows reparse points are
   rejected, including junctions on Python 3.11.
 - At most 1,000 top-level entries and 128 MiB per candidate file.
+- `HOLD` is reserved as an example outcome and cannot be a destination folder.
 
 ## Safety and recovery
 
@@ -172,7 +222,7 @@ python tools/prove.py --compiled evidence/local-gemma-compile.json
 The last command is optional: use `python tools/prove.py` for the hand-written
 example, or supply a saved compiler result / recipe JSON to prove a compiled one.
 
-Latest full suite: **44 tests run, 43 passed, 1 skipped**. The skipped symlink
+Latest full suite: **63 tests run, 62 passed, 1 skipped**. The skipped symlink
 test needs OS permission to create symlinks on Windows. Path and reparse-point
 checks are implemented, but a skipped test is not a verified symlink scenario.
 CI is configured for Windows and Linux with Python 3.11 and 3.12; remote CI has
@@ -184,6 +234,19 @@ and Chrome with CDP port 9222, then run `node tools/browser-smoke.mjs`. It opera
 only on this local app, never authenticated account pages. It intentionally
 creates demo recipes and receipts, so use a fresh sample state.
 
+For the revised teaching-contract flow, start a separate synthetic server:
+
+```sh
+python -m doze.server --port 8742 --state .doze/next
+node tools/teaching-smoke.mjs
+```
+
+The same `DOZE_CDP_DRIVER` setting is required. This script makes **one real local
+repair call**, verifies failed-contract rejection through a direct API call, closes
+the inference gate, runs the 30-day replay, executes a certified sample run and
+checks undo. The fixed replay is an executable synthetic scenario, not a human
+study, an independent benchmark or a test of semantic content understanding.
+
 ## Measured, not marketed
 
 The verified warm local Gemma compile took **6 seconds** in the browser flow.
@@ -194,6 +257,17 @@ batches ran while the server rejected inference requests. The second was undone.
 
 We have not measured human time saved, power consumption, or superiority over
 other organizers. "Take the afternoon off" is the product theme, not a benchmark.
+
+The revised browser check is recorded in `evidence/teaching-smoke.json`. The live
+repair output and its nine explicit examples are in
+`evidence/teaching-live-repair.json`. The 30-batch result is in
+`evidence/thirty-mornings.json`. These files separate measured outcomes from
+claims: **150 synthetic moves, zero inference during replay**, not "30 days saved."
+
+`evidence/doze-teaching-walkthrough.mp4` is the revised 32-second captioned demo,
+assembled from those verified captures and explicitly labelled as edited stills.
+The earlier `doze-walkthrough.mp4` records the first prototype's presentation.
+Neither has been uploaded.
 
 ## Open innovation
 

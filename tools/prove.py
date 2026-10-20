@@ -8,7 +8,7 @@ import time
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from doze.demo import RECIPE, seed
+from doze.demo import RECIPE, CASES, seed
 from doze.engine import Engine, digest
 
 
@@ -24,7 +24,7 @@ def main():
         root = Path(temporary)
         engine = Engine(root / 'workspace', root / 'state')
         seed(engine)
-        saved = engine.save_recipe(recipe)
+        saved = engine.save_recipe(recipe, CASES)
         results = []
         receipts = []
         with patch('urllib.request.OpenerDirector.open', side_effect=AssertionError('Network forbidden during repeat runs')):

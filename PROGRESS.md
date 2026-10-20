@@ -53,3 +53,49 @@ No publishing, real inbox access, schedules, external writes or paid services.
 Owner approval needed for exact outward-facing article, public repository and
 video upload/deployment. Challenge deadline October 25 at 11:59 PM PDT.
 No guarantee of winning; this is a verified prototype, not a complete entry.
+
+## Next-level pass, October 20
+
+User requested a stronger contender after an honest critique of the first prototype.
+Scope: one implementation pass and two verification passes. Branch:
+`feat/teaching-contracts`. No other agents, real user files or publication involved.
+
+### Implemented
+- Labelled examples are part of compilation, not optional after-the-fact decoration.
+- Durable immutable teaching contracts. Every destination needs a positive example,
+  at least one HOLD is required and all examples must pass before engine execution.
+- Direct API approval cannot bypass a failed contract. Bare old recipes need examples
+  before running; existing receipt undo remains available.
+- Explicit one-call model repair with previous rules and deterministic feedback.
+- Portable recipe-and-example bundles. Import recomputes results instead of trusting
+  an exported certificate. SHA-256 recipe and example identities travel in receipts.
+- Unsaved examples or JSON changes invalidate approval and block rehearsal.
+- Fixed 30-day synthetic replay uses actual journalling and byte checks in an isolated
+  temporary workspace. Last batch undo is verified. No visible workspace changes.
+- Recorded first-model mistake is reconstructed and visibly labelled for replay.
+- Updated teaching interface, explanatory story, README and captioned demo.
+
+### Verification complete
+- 63 tests: 62 passed, 1 Windows symlink-permission skip. No failed tests.
+- Live browser: recorded mistake 8/9, direct execution 400, one actual Gemma repair
+  9/9, inference gate closed, 30 synthetic days / 360 files / 150 moves / 210 held.
+- Replay all file hashes checked; last undo verified. Runtime observed 7.231s.
+- Certified visible sample run and undo passed, mobile 390px had no overflow.
+- Final browser regression on restarted current server: zero model calls; unsaved
+  edit invalidates approval; unsaved rehearsal blocked; contract save creates new
+  version; valid compile request rejected while asleep; approved run and undo pass.
+- Network-forbidden proof passed on live repaired recipe: two five-file batches
+  plus checked undo. Observed preview + run 117.69ms / 119.06ms, not human savings.
+- Evidence: teaching-smoke.json, teaching-live-repair.json, thirty-mornings.json,
+  teaching-regression.json, screenshots 07-11, doze-teaching-walkthrough.mp4.
+- MP4 is explicitly labelled edited still captures, not live screen recording.
+
+### Runtime and handover
+- Revised app: http://127.0.0.1:8742, state `.doze/next`, PID file
+  `.doze/next-server.pid`. Original 8741 process left untouched.
+- Revised inference gate left asleep. Wake through UI only if another model call
+  is wanted. Shared Ollama not stopped. All source changes are on the feature branch.
+- Remaining honest gap: real user trial and measured human effort, not more synthetic
+  claims. Still filename/extension/size rules, not semantic document understanding.
+- No public repository, deployed site, uploaded video, community post or entry.
+- Bounded pass finished. Do not rerun live model work merely to polish evidence.

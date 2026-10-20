@@ -6,14 +6,14 @@
       "batch": "first",
       "moves": 5,
       "model_calls": 0,
-      "preview_and_run_ms": 114.02,
+      "preview_and_run_ms": 117.69,
       "undo_restored_all_hashes": true
     },
     {
       "batch": "next",
       "moves": 5,
       "model_calls": 0,
-      "preview_and_run_ms": 110.35,
+      "preview_and_run_ms": 119.06,
       "undo_restored_all_hashes": true
     }
   ],

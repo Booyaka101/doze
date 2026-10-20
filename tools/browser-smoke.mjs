@@ -33,7 +33,7 @@ try {
   await c.clickSelector('#sleep-ai');
   await waitFor('document.querySelector("#model-status").innerText.includes("Inference blocked") && document.querySelector("#busy").hidden');
   check(await c.evaluate('document.querySelector("#compile").disabled'), 'Compile button must be disabled');
-  const gate = await c.evaluate(`(async()=>{const s=await(await fetch('/api/state')).json();const r=await fetch('/api/compile',{method:'POST',headers:{'Content-Type':'application/json','X-Doze-Token':s.token},body:JSON.stringify({prompt:'Sort screenshots into Shots',model:'gemma4:12b-it-qat'})});return {status:r.status,body:await r.json()}})()`);
+  const gate = await c.evaluate(`(async()=>{const s=await(await fetch('/api/state')).json();const r=await fetch('/api/compile',{method:'POST',headers:{'Content-Type':'application/json','X-Doze-Token':s.token},body:JSON.stringify({prompt:'Sort screenshots into Shots',model:'gemma4:12b-it-qat',examples:s.sample_cases})});return {status:r.status,body:await r.json()}})()`);
   check(gate.status === 400 && gate.body.error.includes('asleep'), 'Server inference gate did not reject compilation');
   await c.clickSelector('#rehearse');
   await waitFor('!document.querySelector("#preview").hidden && document.querySelector("#busy").hidden');

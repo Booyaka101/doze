@@ -8,7 +8,7 @@ import urllib.error
 import urllib.request
 
 from doze.compiler import compile_chore
-from doze.demo import RECIPE, seed
+from doze.demo import RECIPE, CASES, seed
 from doze.engine import Engine, SafetyError
 from doze.server import make_server
 
@@ -84,7 +84,7 @@ class ServerTests(unittest.TestCase):
         with patch('doze.server.compiler.compile_chore', side_effect=AssertionError('Inference must not run')):
             try:
                 self.assertEqual(self.request('/api/inference', {'enabled': False}, self.token)[0], 200)
-                code, data, _ = self.request('/api/compile', {'prompt': 'Sort my screenshots', 'model': 'local'}, self.token)
+                code, data, _ = self.request('/api/compile', {'prompt': 'Sort my screenshots', 'model': 'local', 'examples': CASES}, self.token)
                 self.assertEqual(code, 400)
                 self.assertIn('asleep', json.loads(data)['error'])
                 code, data, _ = self.request('/api/sample-recipe', {}, self.token)
@@ -93,6 +93,37 @@ class ServerTests(unittest.TestCase):
                 self.assertEqual(self.request('/api/preview', {'recipe_id': ident}, self.token)[0], 200)
             finally:
                 self.request('/api/inference', {'enabled': True}, self.token)
+
+    def test_missing_examples_never_start_inference(self):
+        with patch('doze.server.compiler.compile_chore', side_effect=AssertionError('No inference allowed')):
+            self.assertEqual(self.request('/api/compile', {'prompt': 'Sort these screenshots', 'model': 'local'}, self.token)[0], 400)
+
+    def test_recorded_mistake_is_blocked_even_with_explicit_api_approval(self):
+        _, data, _ = self.request('/api/mistake', {}, self.token)
+        saved = json.loads(data)
+        self.assertFalse(saved['certificate']['certified'])
+        _, data, _ = self.request('/api/preview', {'recipe_id': saved['id']}, self.token)
+        plan = json.loads(data)
+        code, data, _ = self.request('/api/execute', {'plan_id': plan['id'], 'approved': True}, self.token)
+        self.assertEqual(code, 400)
+        self.assertIn('Teaching contract blocked', json.loads(data)['error'])
+
+    def test_exported_false_certificate_is_not_trusted(self):
+        raw = json.loads(json.dumps(RECIPE))
+        raw['rules'][0]['when'] = {'name_starts_with': 'screenshot'}
+        code, data, _ = self.request('/api/recipe', {'recipe': raw, 'examples': CASES,
+                                                  'certificate': {'certified': True}}, self.token)
+        self.assertEqual(code, 200)
+        self.assertFalse(json.loads(data)['certificate']['certified'])
+
+    def test_contract_save_creates_new_version(self):
+        _, data, _ = self.request('/api/sample-recipe', {}, self.token)
+        saved = json.loads(data)
+        code, data, _ = self.request('/api/certify', {'recipe_id': saved['id'], 'cases': CASES}, self.token)
+        self.assertEqual(code, 200)
+        new = json.loads(data)
+        self.assertNotEqual(saved['id'], new['id'])
+        self.assertEqual(saved['certificate'], new['certificate'])
 
 
 class CompilerTests(unittest.TestCase):

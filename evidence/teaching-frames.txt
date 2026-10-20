@@ -1,0 +1,9 @@
+file '07-teach-with-examples.png'
+duration 8
+file '08-mistake-blocked.png'
+duration 8
+file '09-repaired-contract.png'
+duration 8
+file '10-thirty-mornings.png'
+duration 8
+file '10-thirty-mornings.png'

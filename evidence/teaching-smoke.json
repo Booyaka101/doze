@@ -1,0 +1,27 @@
+{
+  "recorded_mistake_passes": 8,
+  "contract_cases": 9,
+  "direct_execution_rejected": {
+    "status": 400,
+    "body": {
+      "error": "Teaching contract blocked execution. Save passing examples for every destination and at least one HOLD."
+    }
+  },
+  "local_repair_attempts": 1,
+  "local_repair_passed": true,
+  "inference_gate": {
+    "status": 400,
+    "body": {
+      "error": "AI is asleep. Inference is blocked by the server. Existing recipes still run."
+    }
+  },
+  "replay": {
+    "days": 30,
+    "files": 360,
+    "moves": 150,
+    "model_calls": 0,
+    "hashes_verified": true
+  },
+  "certified_run_and_undo_verified": true,
+  "mobile_overflow": false
+}

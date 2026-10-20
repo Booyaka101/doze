@@ -53,6 +53,8 @@ def validate_recipe(raw):
         if not isinstance(rule['label'], str) or not 1 <= len(rule['label']) <= 200:
             raise SafetyError('Invalid rule label.')
         folder = rule['folder']
+        if isinstance(folder, str) and folder.upper() == 'HOLD':
+            raise SafetyError('HOLD is reserved for leaving files untouched, not a destination folder.')
         if not isinstance(folder, str) or len(folder) > 150 or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9 _/-]*', folder):
             raise SafetyError('Folders must be plain relative names, without templates or commands.')
         parts = folder.split('/')
@@ -94,6 +96,51 @@ def digest(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
+def fingerprint(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def classify(recipe, name, size=1024):
+    if name.startswith('.') or Path(name).suffix.lower() in PROTECTED or size > 128 * 1024 * 1024:
+        return 'HOLD'
+    rule = next((r for r in recipe['rules'] if matches(r['when'], name, size)), None)
+    return rule['folder'] if rule else 'HOLD'
+
+
+def validate_cases(cases):
+    if not isinstance(cases, list) or not 1 <= len(cases) <= 100:
+        raise SafetyError('Provide 1 to 100 hypothetical files.')
+    seen = set()
+    for case in cases:
+        if not isinstance(case, dict) or not {'name', 'expected'} <= set(case) <= {'name', 'expected', 'bytes'}:
+            raise SafetyError('Each example needs name, expected and optional bytes.')
+        name, expected, size = case['name'], case['expected'], case.get('bytes', 1024)
+        if (not isinstance(name, str) or not 1 <= len(name) <= 255 or name in {'.', '..'}
+                or any(c in name for c in '/\\:\x00') or any(ord(c) < 32 for c in name)):
+            raise SafetyError('Probes require plain filenames, not paths.')
+        if not isinstance(expected, str) or not expected or len(expected) > 150 or type(size) is not int or not 0 <= size <= 2**40:
+            raise SafetyError('Invalid probe expectation or size.')
+        key = (name.casefold(), size)
+        if key in seen:
+            raise SafetyError('Duplicate examples are ambiguous. Keep one expectation per filename and size.')
+        seen.add(key)
+    return json.loads(json.dumps(cases))
+
+
+def evaluate(recipe, cases):
+    results = []
+    for case in validate_cases(cases):
+        actual = classify(recipe, case['name'], case.get('bytes', 1024))
+        results.append({**case, 'actual': actual, 'passed': case['expected'] == actual})
+    # A positive for every destination and a negative make empty/vacuous contracts unusable.
+    missing = sorted({r['folder'] for r in recipe['rules']} - {c['expected'] for c in cases})
+    has_hold = any(c['expected'] == 'HOLD' for c in cases)
+    return {'cases': results, 'passed': all(c['passed'] for c in results), 'model_calls': 0,
+            'missing_destinations': missing, 'has_hold': has_hold,
+            'certified': all(c['passed'] for c in results) and not missing and has_hold,
+            'recipe_sha256': fingerprint(recipe), 'examples_sha256': fingerprint(cases)}
+
+
 def stamp():
     return datetime.now(timezone.utc).isoformat()
 
@@ -120,6 +167,7 @@ class Engine:
             con.executescript('''
                 CREATE TABLE IF NOT EXISTS recipes(id TEXT PRIMARY KEY, payload TEXT NOT NULL, created TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY, value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS contracts(recipe_id TEXT PRIMARY KEY, cases TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS plans(id TEXT PRIMARY KEY, payload TEXT NOT NULL, used INTEGER DEFAULT 0);
                 CREATE TABLE IF NOT EXISTS runs(id TEXT PRIMARY KEY, plan_id TEXT UNIQUE NOT NULL,
                     payload TEXT NOT NULL, status TEXT NOT NULL, created TEXT NOT NULL);
@@ -174,17 +222,29 @@ class Engine:
                 raise SafetyError('Limit is 1,000 top-level entries. Use a smaller folder.')
         return result
 
-    def save_recipe(self, recipe):
+    def save_recipe(self, recipe, cases=None):
         recipe = validate_recipe(recipe)
+        if cases is not None:
+            cases = validate_cases(cases)
         ident = uuid4().hex
         with self.db() as con:
             con.execute('INSERT INTO recipes VALUES(?,?,?)', (ident, json.dumps(recipe), stamp()))
-        return {'id': ident, 'recipe': recipe}
+            if cases is not None:
+                con.execute('INSERT INTO contracts VALUES(?,?)', (ident, json.dumps(cases)))
+        return self.package(ident)
+
+    def package(self, ident):
+        recipe = self.recipe(ident)
+        with self.db() as con:
+            row = con.execute('SELECT cases FROM contracts WHERE recipe_id=?', (ident,)).fetchone()
+        cases = json.loads(row[0]) if row else []
+        return {'id': ident, 'recipe': recipe, 'examples': cases,
+                'certificate': evaluate(recipe, cases) if cases else None}
 
     def recipes(self):
         with self.db() as con:
-            return [{'id': row['id'], 'recipe': json.loads(row['payload'])}
-                    for row in con.execute('SELECT * FROM recipes ORDER BY created DESC')]
+            ids = [row[0] for row in con.execute('SELECT id FROM recipes ORDER BY created DESC')]
+        return [self.package(ident) for ident in ids]
 
     def recipe(self, ident):
         with self.db() as con:
@@ -220,28 +280,14 @@ class Engine:
                 except (SafetyError, OSError) as error:
                     held.append({'name': name, 'reason': str(error)})
             plan = {'id': uuid4().hex, 'recipe_id': ident, 'name': recipe['name'], 'created': stamp(),
-                    'moves': moves, 'held': held, 'model_calls': 0}
+                     'moves': moves, 'held': held, 'model_calls': 0,
+                     'certificate': self.package(ident)['certificate']}
             with self.db() as con:
                 con.execute('INSERT INTO plans(id,payload) VALUES(?,?)', (plan['id'], json.dumps(plan)))
             return plan
 
     def probe(self, ident, cases):
-        if not isinstance(cases, list) or not 1 <= len(cases) <= 100:
-            raise SafetyError('Provide 1 to 100 hypothetical files.')
-        recipe = self.recipe(ident)
-        results = []
-        for case in cases:
-            name, expected = case.get('name'), case.get('expected')
-            size = case.get('bytes', 1024)
-            if not isinstance(name, str) or not 1 <= len(name) <= 255 or '/' in name or '\\' in name:
-                raise SafetyError('Probes require plain filenames, not paths.')
-            if not isinstance(expected, str) or type(size) is not int or size < 0:
-                raise SafetyError('Invalid probe expectation or size.')
-            protected = name.startswith('.') or Path(name).suffix.lower() in PROTECTED or size > 128 * 1024 * 1024
-            rule = None if protected else next((r for r in recipe['rules'] if matches(r['when'], name, size)), None)
-            actual = rule['folder'] if rule else 'HOLD'
-            results.append({'name': name, 'expected': expected, 'actual': actual, 'passed': expected == actual})
-        return {'cases': results, 'passed': all(r['passed'] for r in results), 'model_calls': 0}
+        return evaluate(self.recipe(ident), cases)
 
     def _check_move(self, action):
         src, dst = self.path(action['source']), self.path(action['destination'])
@@ -264,6 +310,11 @@ class Engine:
                 plan = json.loads(row['payload'])
                 if not plan['moves']:
                     raise SafetyError('There are no approved moves to run.')
+                certificate = self.package(plan['recipe_id'])['certificate']
+                if not certificate or not certificate['certified']:
+                    raise SafetyError('Teaching contract blocked execution. Save passing examples for every destination and at least one HOLD.')
+                if plan.get('certificate') != certificate:
+                    raise SafetyError('Teaching contract changed. Rehearse again.')
                 for action in plan['moves']:
                     self._check_move(action)
                 run_id = uuid4().hex

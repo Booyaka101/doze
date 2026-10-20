@@ -1,0 +1,194 @@
+{
+  "passed": true,
+  "days": 30,
+  "files": 360,
+  "moves": 150,
+  "held": 210,
+  "model_calls": 0,
+  "all_hashes_verified": true,
+  "last_batch_undo_verified": true,
+  "batches": [
+    {
+      "day": 1,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 2,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 3,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 4,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 5,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 6,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 7,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 8,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 9,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 10,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 11,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 12,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 13,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 14,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 15,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 16,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 17,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 18,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 19,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 20,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 21,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 22,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 23,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 24,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 25,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 26,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 27,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 28,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 29,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    },
+    {
+      "day": 30,
+      "new_files": 12,
+      "moved": 5,
+      "model_calls": 0
+    }
+  ],
+  "elapsed_seconds": 7.231,
+  "scope": "Synthetic Friday-reset workload, not real usage or measured human time saved. Isolated temporary workspace. No inference."
+}
