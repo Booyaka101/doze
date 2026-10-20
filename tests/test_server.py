@@ -107,6 +107,30 @@ class ServerTests(unittest.TestCase):
             finally:
                 self.request('/api/inference', {'enabled': True}, self.token)
 
+    def test_close_workflow_api_rechecks_proof_and_honors_replay_gate(self):
+        contract = profile(MAPPING, PAYMENT_HEADERS, BANK_HEADERS)
+        code, raw, _ = self.request('/api/close/workflow', {'profile': contract}, self.token)
+        self.assertEqual(code, 200)
+        bundle = json.loads(raw)
+        self.assertEqual(bundle['proof']['passed'], 8)
+        bundle['proof'] = {'passed': 9999}
+        code, raw, _ = self.request('/api/close/profile', {'profile': bundle}, self.token)
+        self.assertEqual(code, 200)
+        self.assertEqual(json.loads(raw)['proof']['passed'], 8)
+        roles = bundle['profile']['mapping']['payments']
+        roles['gross'], roles['fee'] = roles['fee'], roles['gross']
+        code, raw, _ = self.request('/api/close/reconcile', {**demo('clean'), 'profile': bundle, 'mapping_approved': True}, self.token)
+        self.assertEqual(code, 400)
+        self.assertIn('Workflow blocked', json.loads(raw)['error'])
+        self.assertEqual(self.request('/api/close/year', {'profile': contract}, self.token)[0], 400)
+        try:
+            self.request('/api/inference', {'enabled': False}, self.token)
+            code, raw, _ = self.request('/api/close/year', {'profile': contract}, self.token)
+            self.assertEqual(code, 200)
+            self.assertEqual(json.loads(raw)['held_weeks'], 11)
+        finally:
+            self.request('/api/inference', {'enabled': True}, self.token)
+
     def test_execute_requires_explicit_approval(self):
         self.assertEqual(self.request('/api/execute', {'plan_id': 'anything'}, self.token)[0], 400)
 

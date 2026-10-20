@@ -1,0 +1,430 @@
+{
+  "synthetic": true,
+  "weeks": [
+    {
+      "week": 1,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "83fb139b7b28619a6a1df845cf4d1dfb28fd7e175e6bdb2faf741f02df9e95dd"
+    },
+    {
+      "week": 2,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "7f76e2c7999a6a445ea05badf8145d31d029856bb18ae5d910e68fb9faabae94"
+    },
+    {
+      "week": 3,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "36b7b6a29605ced31821aa6f550c294431d0074fe1c7c78e3ed63098c16c1d91"
+    },
+    {
+      "week": 4,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "99d72574c1dd653ce05f49e4470dc9498f0361926b3d22a7f3702522f7771a4d"
+    },
+    {
+      "week": 5,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "3c71180a984418943d5a405358a8bab204c59721326681817f4fbf88b499bd4d"
+    },
+    {
+      "week": 6,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "4852badbc55a08899d22adb2d84ecbeeecd326868013e7c4273af3ecca0eec27"
+    },
+    {
+      "week": 7,
+      "scenario": "penny",
+      "ready": false,
+      "matched": 3,
+      "exceptions": 1,
+      "report_sha256": "e30d41c4067fd38821e3d8689b65cc83016364d13bc8f894ab715e67b9d707ed"
+    },
+    {
+      "week": 8,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "f76d05506a9f854bb4ff8c549f6f800092384c6ff670c7d8ae4ec8894a11a4b7"
+    },
+    {
+      "week": 9,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "9d73551438ef03122b2fe054bc70717cc447f92a20b134415af0b8fc6241071f"
+    },
+    {
+      "week": 10,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "4f6bf7f88bc7daf79b51426ffdfb9c9c93bfeeb34b230b94e091e545747dc6a9"
+    },
+    {
+      "week": 11,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "526ac5008b6a7f8c2dea3c50f853cd3be547a1eb4fcfa26b5b85888781f231fb"
+    },
+    {
+      "week": 12,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "a60c05a8b3cb22c3580d5833dd84f43ef24a9aa1c5caed52ffde5b63dd963fde"
+    },
+    {
+      "week": 13,
+      "scenario": "messy",
+      "ready": false,
+      "matched": 2,
+      "exceptions": 3,
+      "report_sha256": "346d13825625dcce947810cf91447cfbe9e0b0531403fd7de513445108ecbd1e"
+    },
+    {
+      "week": 14,
+      "scenario": "penny",
+      "ready": false,
+      "matched": 3,
+      "exceptions": 1,
+      "report_sha256": "c5ae14c9de099e7b3d43ad56358b737e538e2eb130b3a309ec75f0d8b4e93229"
+    },
+    {
+      "week": 15,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "06f1e1ab3175f7f85230b7355b673b87fad01b8d8f788560634675c2a8bcd825"
+    },
+    {
+      "week": 16,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "07293259f4f324ae9ce4f7b0d5b9bbe80849011d1bd60f0b428809c9190f6030"
+    },
+    {
+      "week": 17,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "1a47b4543d1de4dca23688eee3db9e60d672577fdcf448983d59b41f2e124863"
+    },
+    {
+      "week": 18,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "953e04cfebe1f864deaffe3a94b59a2ec11b81122375d49757ab05afa849a81f"
+    },
+    {
+      "week": 19,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "a003281a51d49565d0bfe6535a09f171d0e0f7b821ebd0e8a6a0876c6bad3614"
+    },
+    {
+      "week": 20,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "49ec4a4e8b4e9de47d0364ec77470423a18ad24d9efbfac5d7a6cd63119c8198"
+    },
+    {
+      "week": 21,
+      "scenario": "penny",
+      "ready": false,
+      "matched": 3,
+      "exceptions": 1,
+      "report_sha256": "65c5ed72b756ff04e4e36335beeb6d0be3a39d7ae863b0dcc9d0699f8037dd99"
+    },
+    {
+      "week": 22,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "93dc89c19891392e518a3d7b25e2da8af72468c3d2bab9f6fa91712f84714abe"
+    },
+    {
+      "week": 23,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "2050d2ce646a8bbe4be0a3a9e9e857f125686d40c2f6980ec27c61b1796736ae"
+    },
+    {
+      "week": 24,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "1cb77f0c395582e900fa84274e51d95637b7cb052252b70fa068b941c4daeaae"
+    },
+    {
+      "week": 25,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "f8e4d1f5f438e198e25d8ce54fb7bc6b7d64c34294fe29bdbd6c94b2acb76a5f"
+    },
+    {
+      "week": 26,
+      "scenario": "messy",
+      "ready": false,
+      "matched": 2,
+      "exceptions": 3,
+      "report_sha256": "6f848fb04bf9910053e7403861d45555a786e54677c968780472e31939892223"
+    },
+    {
+      "week": 27,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "3828f3ecf34ee28957fb6751811f357858348766afe6532cb70fdece924e43e0"
+    },
+    {
+      "week": 28,
+      "scenario": "penny",
+      "ready": false,
+      "matched": 3,
+      "exceptions": 1,
+      "report_sha256": "edb7c403c0763b51b23f4c54bfeb769b6eb0d3c414495058cd4e85266353e4eb"
+    },
+    {
+      "week": 29,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "0a3524fe7617ab635d73d9d81e2c7da0e73a552a40c3251fb5b078877a1b9e3d"
+    },
+    {
+      "week": 30,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "532cb85457dd422821120e44a3ef5dbdf8bf4f53e39c6a2efaf2402a52659fb9"
+    },
+    {
+      "week": 31,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "5e41259a9686299467d729e5215e61d8499fd12739e4689400f21502ad2f31cf"
+    },
+    {
+      "week": 32,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "a74bb2401f060e6b1f87b9c49903ef5bb51725c92822106462c2d99f177b10e5"
+    },
+    {
+      "week": 33,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "678f711b6e97dbe246511fe603ae15e9bb1b297702249333f2a51448898db3e8"
+    },
+    {
+      "week": 34,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "b04b5c7f7f15f8f8b30d79b8a48251472aefad417841c5c584074de96e65f1a1"
+    },
+    {
+      "week": 35,
+      "scenario": "penny",
+      "ready": false,
+      "matched": 3,
+      "exceptions": 1,
+      "report_sha256": "94c81b003a2a35d099fbcd9a9b4af681ec025649c8ee016af7bc0cff88024bdd"
+    },
+    {
+      "week": 36,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "718862c005741afe63b95bfb3d25680f93f8a415093cb142f27bd5f9b554b2b3"
+    },
+    {
+      "week": 37,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "daea762e0d8c7485c38d6d5ded1a9b861e056b648ff45af600ffa622043aa436"
+    },
+    {
+      "week": 38,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "a6af49ee9652bef98d3c476640adbc598abb1694dee3b20b72ec6f16ec19b74d"
+    },
+    {
+      "week": 39,
+      "scenario": "messy",
+      "ready": false,
+      "matched": 2,
+      "exceptions": 3,
+      "report_sha256": "576bf45766013f8fceff56874aa8d2dca42a3e3f039fc0f3173b0c762ba61d45"
+    },
+    {
+      "week": 40,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "a12e2c4353662ccc76426b34ce716e67c0a82047e32d3a1f6691af603c569817"
+    },
+    {
+      "week": 41,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "0661af3287e6142676081cce5b1f406c1cd8794fb032119df5ab698d8156917b"
+    },
+    {
+      "week": 42,
+      "scenario": "penny",
+      "ready": false,
+      "matched": 3,
+      "exceptions": 1,
+      "report_sha256": "befc9d9699c28065fa9c2263dfca55193b28aff3bf1f82b00b8c2e63f7de5fba"
+    },
+    {
+      "week": 43,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "9fcb4078d5b8e9ac8db9fdcbd53255fcb7933d69e4fd8049968c7148c7508108"
+    },
+    {
+      "week": 44,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "1f46cb39db17d0614e08bdf04c653bc4fca84d1efe23bcea91bd85a9eac50989"
+    },
+    {
+      "week": 45,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "08ba7b8cab197893bfa6a57919b4e5bd7b6354ad9f85120d8c3dfa25bbfa7f33"
+    },
+    {
+      "week": 46,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "b633bf9fca652a1f8e43aa6a4ac1281e0c5b699f6d84df10d31e4404fdd14860"
+    },
+    {
+      "week": 47,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "9ec6a7874d83038475a5b8143dc8955c0fbb8073c03100f9ef4e58a4409bbe31"
+    },
+    {
+      "week": 48,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "ae1449d5bd194a3228d659bbe186c32e37f09fb5182a5698fed465d9d54569b1"
+    },
+    {
+      "week": 49,
+      "scenario": "penny",
+      "ready": false,
+      "matched": 3,
+      "exceptions": 1,
+      "report_sha256": "3b70b4a1608b130b9e6fdbbac892fff500e4b3e369e5cabf213e05bc5fb6f36c"
+    },
+    {
+      "week": 50,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "d05ba36441cdc9feda3920204b2f738f1fde589923e5c1e96a84123882004c2e"
+    },
+    {
+      "week": 51,
+      "scenario": "clean",
+      "ready": true,
+      "matched": 4,
+      "exceptions": 0,
+      "report_sha256": "cc6646a338db5ced85e5a95a9fb23789e3032e294b64e97686fc253dc2c4147b"
+    },
+    {
+      "week": 52,
+      "scenario": "messy",
+      "ready": false,
+      "matched": 2,
+      "exceptions": 3,
+      "report_sha256": "be57de8cbd1f2ca5a7149636747fcaca92f28254437712a054ee6d10ca44eb2f"
+    }
+  ],
+  "clean_weeks": 41,
+  "held_weeks": 11,
+  "payments": 1248,
+  "matched": 193,
+  "exceptions": 19,
+  "model_calls": 0,
+  "seconds": 0.0109,
+  "profile_sha256": "a572c0305523fc6146e5fa0ce7083271355a6c1599462824c1a4fcffe14ba63d",
+  "scope": "52 generated weeks, not customer history, a scheduler, or measured human time saved."
+}

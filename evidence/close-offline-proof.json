@@ -1,0 +1,24 @@
+{
+  "synthetic": true,
+  "mapping_source": "hand-written sample, not AI output",
+  "execution": "fresh Python CLI subprocesses with socket creation blocked",
+  "network_calls": 0,
+  "model_calls": 0,
+  "checks": [
+    "clean exit status",
+    "clean verdict",
+    "penny exit status",
+    "penny verdict",
+    "messy exit status",
+    "messy verdict",
+    "reviewed offline ZIP created",
+    "packet carries executable synthetic witnesses",
+    "packet audit matches approved report",
+    "existing packet preserved",
+    "changed input rejects old approval",
+    "mapping and payment input bytes unchanged"
+  ],
+  "workflow_sha256": "22828904d481e1c12720a01de87eb66ee55607d07b2dc44492347b0be9bf6322",
+  "approved_report_sha256": "ce514a099041aea38bfbdf977f0c97e254d3b1e53adc7f8bce7a84c277a06617",
+  "packet_bytes": 4342
+}

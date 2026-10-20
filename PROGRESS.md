@@ -146,3 +146,61 @@ No real records, account access, purchases, posting or publication.
 - No more model calls or research in this bounded pass. Before calling this
   contest-ready, demonstrate reliable AI teaching and conduct a real user trial.
 - No public code, submission, deployment or upload. Owner approval still needed.
+
+## Test-bearing workflows and offline runner, October 20
+
+User asked for another substantial improvement. Same `feat/friday-close` branch;
+clean starting tree at `43d5b2e`. Budget: one implementation, one bounded live
+Gemma call, two verification passes. No delegates, real records or publication.
+
+### Implemented
+- Explicit, consent-bound column explanation input. Refusals remain visible.
+  No automatic retry. Explanations are user-supplied data, not CSV row extraction.
+- Manual arbitrary-header mapping starts with blank roles. Duplicate roles and
+  incomplete mapping block reconciliation. Edited CSVs lose the synthetic badge.
+- Eight independent, fixed studio witness cases. Gross/fee swap fails 7/8 cases.
+- Portable workflows contain profile, actual synthetic CSV witnesses, expected
+  results, versioned suite and hashes. Imported pass badges are not trusted.
+  Changed profiles and rewritten expectations cannot bypass bundle checks.
+- Reconciliation report binds workflow suite identity; packet includes workflow.
+  Plain mappings remain a separate human-reviewed, non-fixture-certified path.
+- 52-week synthetic replay: 1,248 payments, 193 exact settlements, 41 clean weeks,
+  11 held weeks and 19 exceptions. Server requires inference asleep. No scheduler,
+  account access, input changes or measured-human-savings claims.
+- Standalone `python -m doze.close_cli`: no browser/server/Ollama dependency.
+  Explicit mapping approval, exit 2 for exceptions, exact reviewed report hash for
+  packet, bounded inputs, exclusive file creation so existing work is preserved.
+
+### Completed verification, do not reopen settled checks
+- Final suite: 115 tests run, 114 passed, one Windows symlink-permission skip.
+- Browser workflow check: 8/8 correct; 1/8 swapped mapping; forged proof rejected
+  through API; actual JSON import recomputed proof; changed mapping invalidated
+  tests/report/approval; approved workflow ZIP; sleep gate rejected inference.
+- Synthetic year and per-week evidence saved, not a real-user benchmark.
+- Cold CLI subprocess proof blocks socket creation. Twelve checks passed:
+  clean/penny/messy verdicts and exit codes, approved ZIP, bundled witnesses,
+  exact audit hash, existing output preservation, changed-input approval rejection
+  and source/profile byte preservation. `evidence/close-offline-proof.json`.
+- Targeted manual browser check: new header vocabulary, four exact settlements,
+  blank and duplicate roles blocked, edited-origin label correct, 390px no overflow.
+- Browser harness needed two corrections in the custom-schema extension: preserve
+  escaped newlines in an evaluated template, and open the CSV details before
+  clicking its otherwise hidden Inspect button. Targeted check then passed.
+- Evidence: close-workflow-smoke.json, close-manual-smoke.json,
+  close-synthetic-year.json, close-tested-workflow.json, screenshots 16-19.
+
+### Remaining blocker, explicit rejection of a stronger claim
+- The one new Gemma call also refused, returning the literal error `explanation`
+  despite explicit shared-ID semantics. Exact approved input/error saved in
+  `evidence/close-explained-teaching.json`. No model retry was made.
+- Reliable Friday Close AI teaching is still NOT demonstrated. All new workflow,
+  year and offline proofs use a hand-written mapping, labelled accordingly.
+- The next effort should diagnose this structured-output/refusal route, not add
+  more synthetic success claims. A real user trial is still missing. This bounded
+  pass is finished; no extra probes or model loops are authorized by this ledger.
+
+### Runtime
+- Restarted only our precisely identified 8743 process. Current PID 16780 in
+  `.doze/close-server.pid`; original 8741/8742 processes preserved.
+- http://127.0.0.1:8743, inference asleep, verified sample workflow and saved year
+  shown. Historical replay is visibly synthetic. No public actions taken.

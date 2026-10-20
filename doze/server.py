@@ -13,7 +13,7 @@ from . import compiler
 from .demo import PROMPT, RECIPE, CASES, seed
 from .engine import Engine, SafetyError, validate_cases
 from .replay import replay
-from . import close, close_demo, close_inference
+from . import close, close_demo, close_inference, close_workflow
 
 STATIC = Path(__file__).parent / 'static'
 
@@ -91,7 +91,17 @@ def make_server(engine, port=8741, demo=True):
                     return self.reply(200, {'profile': close.profile(close_demo.MAPPING, close_demo.PAYMENT_HEADERS, close_demo.BANK_HEADERS),
                                             'provenance': {'source': 'hand-written sample, not AI output', 'model_calls': 0}})
                 if route == '/api/close/profile':
+                    if isinstance(body['profile'], dict) and body['profile'].get('format') == close_workflow.FORMAT:
+                        return self.reply(200, close_workflow.validate_workflow(body['profile']))
                     return self.reply(200, close.validate_profile(body['profile']))
+                if route == '/api/close/bench':
+                    return self.reply(200, close_workflow.bench(body['profile']))
+                if route == '/api/close/workflow':
+                    return self.reply(200, close_workflow.workflow(body['profile']))
+                if route == '/api/close/year':
+                    if inference_enabled.is_set():
+                        raise SafetyError('Put AI to sleep before the no-inference year replay.')
+                    return self.reply(200, close_workflow.replay_year(body['profile']))
                 if route == '/api/close/teach':
                     if body.get('headers_approved') is not True:
                         raise SafetyError('Explicit approval to send these column names to local Ollama is required.')

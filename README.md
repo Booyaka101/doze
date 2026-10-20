@@ -5,7 +5,8 @@
 ## New primary workspace: The Friday Close
 
 Doze now pairs payment exports with bank exports. A local model may propose a
-column mapping from **headers only**. Humans review the mapping. Deterministic
+column mapping from **headers plus an explicitly approved column explanation**.
+CSV rows are not sent automatically. Humans review the mapping. Deterministic
 Python matches exact settlement references, checks gross minus fees using
 `Decimal`, and produces a hash-bound evidence ZIP only after explicit review.
 No model calculates money. No bank connection, account access or payments.
@@ -35,9 +36,10 @@ at `/files`. Previously started processes retain their earlier routing.
   exceptions, a blocking one-cent discrepancy, four exact next-week settlements,
   approved ZIP response, server-side inference rejection, schema drift rejection
   and no horizontal overflow at 390px. See `evidence/close-smoke.json`.
-- The one live Gemma teaching attempt **refused to infer the shared reference
-  mapping**. No automatic retry was made. Successful AI teaching for Friday
-  Close has **not** been demonstrated. See `evidence/close-live-teaching.json`.
+- Both live Gemma teaching attempts **refused the mapping**, including the newer
+  attempt with an explicit column explanation. There are no automatic retries.
+  Successful AI teaching for Friday Close has **not** been demonstrated. See
+  `evidence/close-live-teaching.json` and `evidence/close-explained-teaching.json`.
   The separate file-studio Gemma teaching and repair remain verified below.
 - Automated tests exercise 52 synthetic weeks without network access. This is
   repeatability evidence, not a real customer trial or measured time savings.
@@ -52,6 +54,77 @@ at `/files`. Previously started processes retain their earlier routing.
 - Profiles bind exact header sets and role mappings. Header reordering is allowed;
   missing or additional headers stop reconciliation. CSV formula-like IDs are
   neutralized in exported spreadsheet cells. All source values render as text.
+
+## New: test the mapping, then take Doze out of the loop
+
+![Eight independent witnesses and a synthetic year](evidence/16-close-witnesses-year.png)
+
+### A mapping that travels with its tests
+
+Choose **Test this mapping / 8 witnesses**. Fixed, human-authored expected
+outcomes check a clean close, a one-cent discrepancy, duplicate and orphan
+transfers, schema drift, duplicate sale IDs, mixed currencies, a missing transfer
+and a negative-gross refund. These are tests of the known synthetic studio schema,
+not an accounting certificate or a universal payment-provider integration.
+
+The demo mapping passes **8/8**. Deliberately swapping gross and fees produces a
+structurally valid mapping that passes only **1/8**. Failure cards show the exact
+expected and observed results. A passing workflow can be exported with its
+mapping, synthetic CSV witnesses, expected answers, versioned suite and hashes.
+
+On import and before execution, Doze reruns the installed suite. Changing the
+mapping, rewriting a bundled expected answer, or forging the exported pass badge
+cannot make a failing **workflow bundle** run. The report binds the suite identity
+as well as the mapping and inputs. The ZIP also carries `workflow.json` when used.
+Plain mappings remain a separate, explicitly reviewed path without fixture
+certification. Deliberately exporting a plain mapping removes the fixture gate;
+this is a correctness aid, not an authorization or cryptographic-signature system.
+
+### 52 Fridays, with inconvenient outcomes left intact
+
+Put AI to sleep, then choose **Run 52 Fridays with AI asleep**. The server enforces
+the sleep prerequisite. It reconciles **1,248 synthetic payments** across a fixed
+year: **41 clean weeks, 11 held weeks, 19 explicit exceptions, zero model calls**.
+Select a week to inspect its verdict and report hash. Nothing is scheduled or
+written to your source exports. Runtime is measured, not claimed as human savings.
+
+### No browser. No server. No Ollama.
+
+Save a mapping or tested workflow, then run on exports you explicitly select:
+
+```sh
+python -m doze.close_cli --profile workflow.json --payments payments.csv --bank bank.csv --mapping-approved
+```
+
+Review the JSON report. Exit code is `0` for a clean close and `2` for exceptions
+or rejected input. To produce a packet, rerun with the **exact reviewed hash**:
+
+```sh
+python -m doze.close_cli --profile workflow.json --payments payments.csv --bank bank.csv --mapping-approved --packet handoff.zip --approved-sha256 THE_REVIEWED_HASH
+```
+
+The destination must be a **new file**. Existing packets and source files are
+never overwritten. Changed input, failed witnesses or unresolved exceptions block
+the packet. Explicit mapping and report review are still required.
+
+`python tools/prove_close.py` reproduces the offline proof in fresh Python CLI
+subprocesses with socket creation blocked, using the saved hand-written workflow
+and generated CSVs in an isolated temporary workspace under `.doze`.
+See `evidence/close-offline-proof.json` for the twelve passed checks.
+
+### When the model cannot teach it
+
+Explain column meanings without pasting transactions. Changing the explanation
+requires renewed consent. A refusal stays visible and does not trigger a retry.
+**Map my columns myself / no inference** starts with blank roles, not guessed
+defaults. Choose every role explicitly. Duplicate role assignments block the UI
+and server validation. This path was verified with a different header vocabulary
+and four exact settlements while inference remained blocked.
+
+Current workflow evidence: `close-workflow-smoke.json`, `close-manual-smoke.json`,
+`close-synthetic-year.json`, `close-tested-workflow.json` and screenshots 16-19.
+All use synthetic data and a clearly labelled hand-written mapping. No successful
+model-teaching result is implied by the passing deterministic tests.
 
 ## Original workspace: file chore studio
 
@@ -275,7 +348,7 @@ python tools/prove.py --compiled evidence/local-gemma-compile.json
 The last command is optional: use `python tools/prove.py` for the hand-written
 example, or supply a saved compiler result / recipe JSON to prove a compiled one.
 
-Latest full suite: **63 tests run, 62 passed, 1 skipped**. The skipped symlink
+Latest full suite: **115 tests run, 114 passed, 1 skipped**. The skipped symlink
 test needs OS permission to create symlinks on Windows. Path and reparse-point
 checks are implemented, but a skipped test is not a verified symlink scenario.
 CI is configured for Windows and Linux with Python 3.11 and 3.12; remote CI has

@@ -1,7 +1,12 @@
 'use strict';
 const byId = id => document.getElementById(id);
 const node = (tag, text, cls) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if (cls) n.className = cls; return n; };
-let session, inputs, inspected, closeProfile, closeReport, activeScenario = 'messy', week = 1, busy = false, toastTimer;
+let session, inputs, inspected, closeProfile, closeWorkflow, closeReport, benchReport, yearReport, teachingEvidence, activeScenario = 'messy', week = 1, busy = false, toastTimer;
+const profilePayload = () => closeWorkflow ? { ...closeWorkflow, profile: closeProfile } : closeProfile;
+const mappingComplete = () => closeProfile && ['payments', 'bank'].every(side => {
+  const values = Object.values(closeProfile.mapping[side]);
+  return values.every(value => closeProfile.schemas[side].includes(value)) && new Set(values).size === values.length;
+});
 
 function toast(text, error = false) {
   clearTimeout(toastTimer);
@@ -17,10 +22,14 @@ async function request(path, body) {
 }
 function gates() {
   byId('teach').disabled = busy || !session?.inference_enabled || !inspected || !byId('headers-approved').checked || !byId('close-model').options.length || !byId('close-model').value;
-  byId('reconcile').disabled = busy || !closeProfile || !inspected || !byId('mapping-approved').checked;
+  byId('reconcile').disabled = busy || !mappingComplete() || !inspected || !byId('mapping-approved').checked || (closeWorkflow && (!benchReport || benchReport.passed !== benchReport.total));
   byId('download-packet').disabled = busy || !closeReport?.ready || !byId('report-approved').checked;
   byId('sleep').textContent = session?.inference_enabled ? '◉ AI awake' : '◌ AI asleep / blocked';
   byId('sleep').classList.toggle('asleep', !session?.inference_enabled);
+  byId('test-mapping').disabled = busy || !closeProfile;
+  byId('export-workflow').disabled = busy || !benchReport || benchReport.passed !== benchReport.total;
+  byId('run-year').disabled = busy || !closeProfile || session?.inference_enabled || !benchReport || benchReport.passed !== benchReport.total;
+  if (!session?.inference_enabled && !byId('close-model').value && byId('close-model').options.length) byId('close-model').options[0].textContent = 'AI asleep / wake to choose model';
 }
 async function work(label, action) {
   if (busy) return;
@@ -58,28 +67,63 @@ async function loadScenario(scenario, next = false) {
   await inspectInputs();
 }
 function showProfile(result) {
-  closeProfile = result.profile; invalidate(); byId('mapping-panel').hidden = false; byId('mapping-approved').checked = false;
+  closeWorkflow = result.profile.format === 'doze-close-workflow-v1' ? result.profile : null;
+  closeProfile = closeWorkflow ? closeWorkflow.profile : result.profile;
+  clearProof(); invalidate(); byId('mapping-panel').hidden = false; byId('proof-panel').hidden = false; byId('mapping-approved').checked = false;
   byId('mapping-name').textContent = closeProfile.mapping.name; byId('mapping-fields').replaceChildren();
   byId('decimal-mark').value = closeProfile.mapping.decimal_mark;
   const origin = result.provenance;
   byId('mapping-origin').textContent = origin?.model ? 'LEARNED LOCALLY' : origin?.source?.includes('hand-written') ? 'HAND-WRITTEN SAMPLE' : 'IMPORTED / REVIEW REQUIRED';
   byId('learned-info').hidden = false;
   byId('learned-info').textContent = origin?.model
-    ? `Learned by ${origin.model} in ${origin.seconds}s. Only column names were sent. The model’s job is done. Review the mapping below.`
+    ? `Learned by ${origin.model} in ${origin.seconds}s. Only column names and your explicit explanation were sent. Review every role below.`
     : origin?.source || 'Imported mapping. Revalidated locally. Review every role before reuse.';
   for (const side of ['payments', 'bank']) {
     const box = node('div', undefined, 'mapping-side'); box.append(node('h3', side === 'payments' ? 'PAYMENT EXPORT → MEANING' : 'BANK EXPORT → MEANING'));
     for (const [role, column] of Object.entries(closeProfile.mapping[side])) {
       const row = node('div', undefined, 'mapping-field'); const label = node('label', role.toUpperCase());
       const select = node('select'); select.id = `map-${side}-${role}`; label.htmlFor = select.id;
+      const placeholder = node('option', 'Choose the column…'); placeholder.value = ''; select.append(placeholder);
       for (const header of closeProfile.schemas[side]) { const option = node('option', header); option.value = header; select.append(option); }
       select.value = column;
-      select.onchange = () => { closeProfile.mapping[side][role] = select.value; byId('mapping-approved').checked = false; invalidate(); };
+      select.onchange = () => { closeProfile.mapping[side][role] = select.value; mappingChanged(); };
       row.append(label, select); box.append(row);
     }
     byId('mapping-fields').append(box);
   }
+  if (closeWorkflow) showBench(closeWorkflow.proof);
   gates(); byId('mapping-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function clearProof() {
+  benchReport = null; yearReport = null; byId('witness-results').replaceChildren(); byId('year-panel').hidden = true;
+}
+function mappingChanged() {
+  byId('mapping-approved').checked = false; byId('mapping-origin').textContent = 'EDITED / REVIEW REQUIRED';
+  byId('learned-info').textContent = 'Mapping edited by you. Earlier model provenance and fixture results do not certify this version.';
+  clearProof(); invalidate();
+}
+function showBench(proof) {
+  benchReport = proof; byId('witness-results').replaceChildren();
+  for (const check of proof.checks) {
+    const card = node('div', `${check.passed ? 'PASS' : 'FAIL'} / ${check.name}`, 'witness' + (check.passed ? '' : ' failed'));
+    if (!check.passed) card.append(node('small', 'Expected: ' + JSON.stringify(check.expected)), node('small', 'Observed: ' + JSON.stringify(check.observed)));
+    byId('witness-results').append(card);
+  }
+  gates();
+}
+function showYear(report) {
+  yearReport = report; byId('year-panel').hidden = false; byId('year-stats').replaceChildren(); byId('year-grid').replaceChildren();
+  for (const [value, label] of [[report.clean_weeks, 'clean weeks'], [report.held_weeks, 'weeks held for review'], [report.exceptions, 'explicit exceptions'], [report.model_calls, 'model calls']]) {
+    const stat = node('div', undefined, 'year-stat'); stat.append(node('strong', value), node('span', label)); byId('year-stats').append(stat);
+  }
+  for (const item of report.weeks) {
+    const button = node('button', String(item.week).padStart(2, '0'), 'week-cell' + (item.ready ? '' : ' held'));
+    const description = `Week ${item.week}: ${item.scenario}, ${item.matched} matched, ${item.exceptions} exceptions. ${item.ready ? 'Clean' : 'Handoff blocked'}.`;
+    button.title = description; button.setAttribute('aria-label', description);
+    button.onclick = () => { byId('year-detail').textContent = description + ' Report SHA-256: ' + item.report_sha256; };
+    byId('year-grid').append(button);
+  }
+  byId('year-detail').textContent = `${report.payments.toLocaleString()} synthetic payments checked in ${report.seconds}s. Not real history or measured human time saved. Choose any week for its verdict.`;
 }
 function amount(value, currency = '') {
   if (value === null || value === undefined) return '—';
@@ -149,20 +193,44 @@ for (const side of ['payments', 'bank']) {
     document.querySelectorAll('[data-scenario]').forEach(b => b.classList.remove('active'));
     await inspectInputs();
   });
-  byId(side + '-csv').oninput = () => { inspected = undefined; byId('headers-approved').checked = false; byId('mapping-approved').checked = false; invalidate(); };
+  byId(side + '-csv').oninput = () => {
+    inspected = undefined; byId('headers-approved').checked = false; byId('mapping-approved').checked = false;
+    byId('source-mode').textContent = 'EDITED INPUTS / VERIFY ORIGIN';
+    document.querySelectorAll('[data-scenario]').forEach(b => b.classList.remove('active')); invalidate();
+  };
 }
 byId('headers-approved').onchange = gates;
 byId('mapping-approved').onchange = gates;
 byId('report-approved').onchange = gates;
-byId('decimal-mark').onchange = () => { if (closeProfile) closeProfile.mapping.decimal_mark = byId('decimal-mark').value; byId('mapping-approved').checked = false; invalidate(); };
-byId('teach').onclick = () => work('Learning the column names locally. No row values sent…', async () => {
-  const result = await request('close/teach', { payment_headers: inspected.payments.headers, bank_headers: inspected.bank.headers,
-    decimal_mark: byId('decimal-mark').value, model: byId('close-model').value, headers_approved: byId('headers-approved').checked });
-  showProfile(result); toast('Mapping learned. Inspect every role. No money has been calculated by the model.');
+byId('decimal-mark').onchange = () => { if (closeProfile) { closeProfile.mapping.decimal_mark = byId('decimal-mark').value; mappingChanged(); } byId('headers-approved').checked = false; gates(); };
+byId('column-explanation').oninput = () => { byId('headers-approved').checked = false; gates(); };
+byId('demo-explanation').onclick = () => {
+  byId('column-explanation').value = 'In these synthetic exports, payment column "Payout group" and bank column "Settlement reference" contain the same shared payout ID. "Sale reference" identifies each sale; "Bank entry" identifies each bank row, not a payout. "Customer paid" is gross before fees. "Processor fee" is the fee. "Money received" is the bank net. "ISO currency" contains the currency code in each export.';
+  byId('headers-approved').checked = false; gates();
+};
+byId('teach').onclick = () => work('Learning headers with your explicit column explanation. No CSV rows sent…', async () => {
+  byId('teaching-status').hidden = true;
+  const sent = { payment_headers: inspected.payments.headers, bank_headers: inspected.bank.headers,
+    decimal_mark: byId('decimal-mark').value, model: byId('close-model').value, hint: byId('column-explanation').value, headers_approved: byId('headers-approved').checked };
+  try {
+    const result = await request('close/teach', sent);
+    teachingEvidence = { sent, result }; showProfile(result); toast('Mapping learned. Now challenge it with the eight synthetic witnesses.');
+  } catch (error) {
+    teachingEvidence = { sent, error: error.message }; byId('teaching-status').hidden = false;
+    byId('teaching-status').textContent = 'No mapping learned. ' + error.message + ' Explain the column meanings or use a reviewed manual mapping. There is no automatic retry.';
+    throw error;
+  }
 });
 byId('sample-mapping').onclick = () => work('Loading a hand-written example, not an AI result…', async () => showProfile(await request('close/sample-profile', {})));
+byId('manual-mapping').onclick = () => {
+  if (!inspected || busy) return;
+  showProfile({ profile: { format: 'doze-close-v1', schemas: { payments: inspected.payments.headers, bank: inspected.bank.headers },
+    mapping: { name: 'Manually reviewed export mapping', decimal_mark: byId('decimal-mark').value,
+      payments: { id: '', batch: '', gross: '', fee: '', currency: '' }, bank: { id: '', batch: '', amount: '', currency: '' } } },
+    provenance: { source: 'Manual mapping draft. Choose every role explicitly. No model was called.' } });
+};
 byId('import-mapping').onchange = () => work('Validating imported mapping locally…', async () => {
-  const file = byId('import-mapping').files[0]; if (!file || file.size > 20000) throw new Error('Choose a mapping JSON smaller than 20 KB.');
+  const file = byId('import-mapping').files[0]; if (!file || file.size > 64000) throw new Error('Choose a mapping or workflow JSON smaller than 64 KB.');
   const validated = await request('close/profile', { profile: JSON.parse(await file.text()) });
   showProfile({ profile: validated }); byId('import-mapping').value = '';
 });
@@ -170,16 +238,28 @@ byId('export-mapping').onclick = () => work('Validating a portable mapping…', 
   closeProfile = await request('close/profile', { profile: closeProfile }); download('doze-close-profile.json', closeProfile);
 });
 byId('reconcile').onclick = () => work('Matching exact references and checking every cent. No model call…', async () => {
-  closeProfile = await request('close/profile', { profile: closeProfile });
-  const report = await request('close/reconcile', { ...inputs, profile: closeProfile, mapping_approved: byId('mapping-approved').checked });
+  const report = await request('close/reconcile', { ...inputs, profile: profilePayload(), mapping_approved: byId('mapping-approved').checked });
   showReport(report);
 });
 byId('export-review').onclick = () => download('doze-review-evidence.json', closeReport);
 byId('download-packet').onclick = () => work('Recomputing the report against the exact approved hashes…', async () => {
-  const blob = await request('close/packet', { ...inputs, profile: closeProfile, mapping_approved: byId('mapping-approved').checked,
+  const blob = await request('close/packet', { ...inputs, profile: profilePayload(), mapping_approved: byId('mapping-approved').checked,
     report_approved: byId('report-approved').checked, approved_sha256: closeReport.sha256 });
   download('doze-friday-handoff.zip', blob); toast('Handoff downloaded. Source CSV contents were not included. Your originals were not edited.');
 });
+byId('test-mapping').onclick = () => work('Checking eight fixed synthetic outcomes. No model call…', async () => {
+  showBench(await request('close/bench', { profile: closeProfile }));
+  if (benchReport.passed === benchReport.total) closeWorkflow = await request('close/workflow', { profile: closeProfile });
+  toast(`${benchReport.passed}/${benchReport.total} studio witnesses passed. ${benchReport.passed === benchReport.total ? 'This mapping can travel with its tests.' : 'Review the failed expectations. No passing workflow will be exported.'}`);
+});
+byId('export-workflow').onclick = () => work('Rechecking executable witnesses before export…', async () => {
+  closeWorkflow = await request('close/workflow', { profile: closeProfile }); download('doze-close-workflow.json', closeWorkflow);
+});
+byId('run-year').onclick = () => work('Replaying 52 synthetic Fridays. Existing sources are untouched. No inference…', async () => {
+  if (session.inference_enabled) throw new Error('Put AI to sleep first.');
+  showYear(await request('close/year', { profile: profilePayload() }));
+});
+byId('export-year').onclick = () => download('doze-synthetic-year.json', yearReport);
 byId('sleep').onclick = () => work('Changing Doze’s inference gate, not stopping shared Ollama…', async () => {
   const next = !session.inference_enabled; await request('inference', { enabled: next }); session.inference_enabled = next;
   if (next) await loadModels(); toast(next ? 'Local inference enabled. Teaching still requires explicit header approval.' : 'AI asleep. Server inference is blocked. Existing mappings still reconcile.');

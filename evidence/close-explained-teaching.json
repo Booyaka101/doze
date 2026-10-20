@@ -1,0 +1,22 @@
+{
+  "sent": {
+    "payment_headers": [
+      "Sale reference",
+      "Payout group",
+      "Customer paid",
+      "Processor fee",
+      "ISO currency"
+    ],
+    "bank_headers": [
+      "Bank entry",
+      "Settlement reference",
+      "Money received",
+      "ISO currency"
+    ],
+    "decimal_mark": ".",
+    "model": "gemma4:12b-it-qat",
+    "hint": "In these synthetic exports, payment column \"Payout group\" and bank column \"Settlement reference\" contain the same shared payout ID. \"Sale reference\" identifies each sale; \"Bank entry\" identifies each bank row, not a payout. \"Customer paid\" is gross before fees. \"Processor fee\" is the fee. \"Money received\" is the bank net. \"ISO currency\" contains the currency code in each export.",
+    "headers_approved": true
+  },
+  "error": "The local model could not express this task: explanation"
+}

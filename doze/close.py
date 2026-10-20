@@ -73,6 +73,9 @@ def profile(mapping, payment_headers, bank_headers):
 
 
 def validate_profile(raw):
+    if isinstance(raw, dict) and raw.get('format') == 'doze-close-workflow-v1':
+        from .close_workflow import validate_workflow
+        return validate_workflow(raw)['profile']
     if not isinstance(raw, dict) or raw.get('format') != 'doze-close-v1' or not isinstance(raw.get('schemas'), dict):
         raise SafetyError('Choose a Doze close profile, not a file-sorting recipe.')
     return profile(raw.get('mapping'), raw['schemas'].get('payments'), raw['schemas'].get('bank'))
@@ -181,6 +184,9 @@ def reconcile(raw_profile, payments_csv, bank_csv):
               'matched': sum(s['status'] == 'matched' for s in settlements),
               'exceptions': sum(s['status'] != 'matched' for s in settlements) + len(issues),
               'limitations': 'Exact shared settlement IDs only. Two-decimal currencies only. No date/amount fuzzy matching, tax advice, account access or payments. Human review required.'}
+    if isinstance(raw_profile, dict) and raw_profile.get('format') == 'doze-close-workflow-v1':
+        report['workflow_sha256'] = fingerprint({'profile_sha256': contract['sha256'],
+                                               'suite_sha256': raw_profile['suite_sha256']})
     report['sha256'] = fingerprint(report)
     return report
 
@@ -216,6 +222,9 @@ def packet(contract, payments_csv, bank_csv, approved_sha256):
              for s in report['settlements']]))
         archive.writestr('audit.json', json.dumps(report, indent=2))
         archive.writestr('profile.json', json.dumps(validate_profile(contract), indent=2))
+        if contract.get('format') == 'doze-close-workflow-v1':
+            from .close_workflow import validate_workflow
+            archive.writestr('workflow.json', json.dumps(validate_workflow(contract), indent=2))
         archive.writestr('source-hashes.json', json.dumps(report['source_sha256'], indent=2))
         archive.writestr('READ-ME.txt', 'Doze reconciliation evidence, not tax advice or a bank statement.\n'
                           'Data record numbers are 1-based excluding the header. Source CSV contents are not included.\n'

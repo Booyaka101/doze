@@ -1,0 +1,128 @@
+{
+  "synthetic": true,
+  "custom_schema_manually_reconciled": true,
+  "blank_roles_blocked": true,
+  "duplicate_roles_blocked": true,
+  "edited_origin_label_correct": true,
+  "model_calls": 0,
+  "mobile": {
+    "width": 390,
+    "scroll": 390
+  },
+  "report": {
+    "format": "doze-close-report-v1",
+    "ready": true,
+    "model_calls": 0,
+    "profile_sha256": "243f31605551f4a72af95fa60d0b3167eeacc368d97618c79e29f97d81c1efbd",
+    "totals": {
+      "USD": {
+        "gross": "1620.00",
+        "fees": "54.18",
+        "net": "1565.82"
+      }
+    },
+    "settlements": [
+      {
+        "batch": "PAY-W01-01",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "342.00",
+        "fees": "11.72",
+        "expected": "330.28",
+        "received": "330.28",
+        "difference": "0.00",
+        "payment_records": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "bank_records": [
+          1
+        ]
+      },
+      {
+        "batch": "PAY-W01-02",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "384.00",
+        "fees": "12.93",
+        "expected": "371.07",
+        "received": "371.07",
+        "difference": "0.00",
+        "payment_records": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "bank_records": [
+          2
+        ]
+      },
+      {
+        "batch": "PAY-W01-03",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "426.00",
+        "fees": "14.15",
+        "expected": "411.85",
+        "received": "411.85",
+        "difference": "0.00",
+        "payment_records": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "bank_records": [
+          3
+        ]
+      },
+      {
+        "batch": "PAY-W01-04",
+        "currency": "USD",
+        "status": "matched",
+        "reason": "Exact batch reference, one currency, one bank transfer, exact net amount.",
+        "gross": "468.00",
+        "fees": "15.38",
+        "expected": "452.62",
+        "received": "452.62",
+        "difference": "0.00",
+        "payment_records": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "bank_records": [
+          4
+        ]
+      }
+    ],
+    "issues": [],
+    "source_records": {
+      "payments": 24,
+      "bank": 4
+    },
+    "source_sha256": {
+      "payments": "f0dec318d2b33985c9d60c8606ceefefad86c85f2d3725aa6c698dd6c1c0ea82",
+      "bank": "d3c7e98c425c3da1d13877a9896977eb064ae92343e1cbbcf901897f8399b489"
+    },
+    "matched": 4,
+    "exceptions": 0,
+    "limitations": "Exact shared settlement IDs only. Two-decimal currencies only. No date/amount fuzzy matching, tax advice, account access or payments. Human review required.",
+    "sha256": "464b55a3efff1257e25c5ac6d0f8f14967a1558c30b99eb97924fcabeaf5fc53"
+  }
+}
