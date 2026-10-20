@@ -1,0 +1,20 @@
+{
+  "provenance": "Learned locally with gemma4:12b-it-qat in 6s. 193 output tokens. The model’s job is done. Review the rules below.",
+  "inference_gate": {
+    "status": 400,
+    "body": {
+      "error": "AI is asleep. Inference is blocked by the server. Existing recipes still run."
+    }
+  },
+  "near_misses_passed": 9,
+  "first_batch_moves": 5,
+  "repeat_batch_moves": 5,
+  "repeat_inference_enabled": false,
+  "undo_verified": true,
+  "mobile_width": 390,
+  "mobile_overflow": false,
+  "errors": [],
+  "resource_hosts": [
+    "127.0.0.1:8741"
+  ]
+}

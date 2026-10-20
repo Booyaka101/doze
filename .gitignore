@@ -1,0 +1,4 @@
+.doze/
+__pycache__/
+*.pyc
+.venv/

@@ -1,0 +1,50 @@
+{
+  "recipe": {
+    "name": "File Organizer",
+    "description": "Moves screenshots, finance documents, and archives into specific folders.",
+    "rules": [
+      {
+        "label": "Screenshots",
+        "folder": "Screenshots",
+        "when": {
+          "extensions": [
+            ".png",
+            ".jpg",
+            ".webp"
+          ],
+          "name_starts_with": "screenshot"
+        }
+      },
+      {
+        "label": "Finance",
+        "folder": "Finance",
+        "when": {
+          "extensions": [
+            ".pdf"
+          ],
+          "name_contains": [
+            "invoice",
+            "receipt"
+          ]
+        }
+      },
+      {
+        "label": "Archives",
+        "folder": "Archives",
+        "when": {
+          "extensions": [
+            ".zip"
+          ]
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "model": "gemma4:12b-it-qat",
+    "seconds": 2.48,
+    "input_tokens": 392,
+    "output_tokens": 193,
+    "endpoint": "http://127.0.0.1:11434",
+    "model_calls": 1
+  }
+}

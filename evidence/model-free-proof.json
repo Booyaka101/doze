@@ -1,0 +1,21 @@
+{
+  "recipe_source": "saved compiler result",
+  "network_forbidden": true,
+  "results": [
+    {
+      "batch": "first",
+      "moves": 5,
+      "model_calls": 0,
+      "preview_and_run_ms": 114.02,
+      "undo_restored_all_hashes": true
+    },
+    {
+      "batch": "next",
+      "moves": 5,
+      "model_calls": 0,
+      "preview_and_run_ms": 110.35,
+      "undo_restored_all_hashes": true
+    }
+  ],
+  "scope": "Synthetic files only; timings are local observations, not human time-saved claims."
+}

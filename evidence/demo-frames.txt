@@ -1,0 +1,11 @@
+file '01-studio.png'
+duration 7
+file '02-recipe-lab.png'
+duration 7
+file '03-rehearsal.png'
+duration 7
+file '04-receipt.png'
+duration 7
+file '05-undone.png'
+duration 7
+file '05-undone.png'

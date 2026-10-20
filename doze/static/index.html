@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Doze / Less doing. More living.</title><link rel="icon" href="/mark.svg"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/lab.css"><script src="/app.js" defer></script></head>
+<body>
+<div class="shell">
+  <aside class="rail">
+    <a class="brand" href="/" aria-label="Doze home"><img src="/mark.svg" alt=""><span>doze<span class="period">.</span></span></a>
+    <div class="edition">THE SLOW SOFTWARE CLUB</div>
+    <nav aria-label="Workspace"><button class="nav active" data-tab="studio"><span>◌</span> Chore studio <kbd>01</kbd></button><button class="nav" data-tab="recipes"><span>▤</span> Recipe shelf <kbd id="recipe-count">0</kbd></button><button class="nav" data-tab="receipts"><span>↶</span> Run receipts <kbd id="run-count">0</kbd></button></nav>
+    <div class="rail-note"><span class="little-orbit">z<span>z</span></span><h3>Good software<br>knows when to stop.</h3><p>One local model call to learn.<br>None to do it again.</p></div>
+    <div class="local"><span class="dot"></span> LOCAL BY DESIGN <small>No cloud. No account. No telemetry.</small></div>
+  </aside>
+  <main>
+    <header><div class="breadcrumb">YOUR TIME, RETURNED <span>/</span> WORKSPACE 001</div><div class="mode"><span class="dot"></span><span id="mode-label">SAMPLE WORKSPACE</span></div></header>
+    <section id="studio" class="page">
+      <div class="intro"><div><p class="eyebrow">A LITTLE LESS ON YOUR PLATE</p><h1>Teach it once.<br><em>Take the afternoon off.</em></h1><p class="lead">Turn a chore into a recipe. Let a local AI learn the rules,<br class="wide"> then let ordinary code handle the repetition.</p></div><div class="orbit-art" aria-hidden="true"><div class="orbit o1"></div><div class="orbit o2"></div><div class="moon">z<span>z</span></div><span class="star s1">✳</span><span class="star s2">+</span><span class="orbit-caption">LESS INFERENCE. MORE AFTERNOON.</span></div></div>
+      <div class="stats"><div><span class="stat-label">LOCAL MODEL</span><strong id="model-status">Checking Ollama…</strong><button id="sleep-ai" class="sleep-toggle">Put AI to sleep ↘</button></div><div><span class="stat-label">REPEAT-RUN MODEL CALLS</span><strong>0 <small>by architecture</small></strong></div><div><span class="stat-label">YOUR FILES</span><strong>Never leave this machine <span class="tiny-arrow">↗</span></strong></div></div>
+      <div class="studio-grid">
+        <section class="card compose"><div class="card-heading"><span class="step">01</span><h2>What would you rather not do?</h2></div><label for="prompt" class="sr-only">Describe a file sorting chore</label><textarea id="prompt" spellcheck="false" placeholder="Put screenshots in Screenshots, invoice PDFs in Finance, and ZIP files in Archives. Leave everything else alone."></textarea><div class="chips"><button id="example">↗ Try the Friday reset</button><span>Plain English → plain rules</span></div><div class="compile-bar"><label for="model" class="sr-only">Installed local model</label><select id="model"><option>Checking local models…</option></select><button id="compile" class="primary">Teach Doze <span>↗</span></button></div><p class="fine">Only your instructions go to loopback Ollama. File contents never go to the model. Review its rules before you approve anything.</p><div class="fallback"><button id="sample">No Ollama? Explore a hand-written sample recipe →</button></div><div id="compile-info" class="compile-info" hidden></div></section>
+        <section class="card inventory"><div class="card-heading"><span class="step">02</span><h2>A little everyday chaos</h2><span class="count" id="file-count">0</span></div><div class="folder-label"><span>▱</span><span id="workspace-name">sample-workspace</span><span>TOP LEVEL ONLY</span></div><div id="file-list" class="file-list"></div><div class="inventory-footer"><span>● Hidden files & scripts are protected</span><button id="next-batch">＋ Add tomorrow’s batch</button></div></section>
+      </div>
+      <section id="workbench" class="workbench" hidden><div class="section-heading"><div><p class="eyebrow">THOUGHT THROUGH, BEFORE FOLLOW-THROUGH</p><h2 id="recipe-title">Your recipe</h2></div><div class="actions"><button id="export" class="secondary">Export recipe ↓</button><button id="rehearse" class="primary">Rehearse, don’t run <span>→</span></button></div></div><p id="recipe-description" class="lead small"></p><div id="rules" class="rules"></div><details><summary>Inspect or edit the actual recipe <span>JSON, not generated code</span></summary><textarea id="recipe-json" aria-label="Recipe JSON" spellcheck="false"></textarea><button id="save-edits" class="secondary">Validate & save changes</button></details>
+      <details class="probe-lab" open><summary>Try to break your recipe <span>Hypothetical files, no filesystem changes</span></summary><p class="fine">These are checks for the Friday reset. Edit them for your own chore. One filename → expected folder per line; use HOLD to leave it alone. A passing check is evidence, not a proof.</p><textarea id="probe-cases" aria-label="Hypothetical filenames and expected folders" spellcheck="false">screenshot-dashboard.png → Screenshots
+screenshot-plan.txt → HOLD
+holiday.jpg → HOLD
+invoice-october.pdf → Finance
+invoice-notes.txt → HOLD
+readme.pdf → HOLD
+assets.zip → Archives
+.env → HOLD
+cleanup.ps1 → HOLD</textarea><button id="probe" class="secondary">Test the near-misses →</button><div id="probe-results" aria-live="polite"></div></details>
+      <div id="preview" hidden><div class="preview-heading"><h3>A dress rehearsal.</h3><span class="badge">ZERO MODEL CALLS</span></div><p class="fine">Nothing below has happened yet. Approval applies only to these exact files and their SHA-256 hashes.</p><div id="move-list"></div><div id="held-list"></div><div class="approval"><label><input id="approve" type="checkbox"> I reviewed these exact moves. No files will be overwritten.</label><button id="execute" class="primary" disabled>Approve & run <span>→</span></button></div></div></section>
+      <div class="manifesto"><span>✳</span><p>The best AI call is the one you don’t need to make again.</p><span>BUILT FOR SLOW & STEADY / HF26</span></div>
+    </section>
+    <section id="recipes" class="page" hidden><p class="eyebrow">SMALL SYSTEMS, LONG AFTERNOONS</p><h1>Your recipe shelf.</h1><p class="lead">Inspect, export and reuse. The model’s work is already done.</p><label class="import-button secondary">Import recipe JSON <input id="import" type="file" accept="application/json,.json"></label><div id="recipe-shelf" class="shelf"></div></section>
+    <section id="receipts" class="page" hidden><p class="eyebrow">NOTHING UP OUR SLEEVES</p><h1>Show your work.<br><em>Or undo it.</em></h1><p class="lead">Every move gets a local receipt. Undo checks for edits and conflicts before touching a file.</p><div id="receipts-list" class="receipts-list"></div></section>
+    <footer><span>DOZE / INTENTIONALLY UNHURRIED</span><span>Local reasoning. Deterministic doing. Human approval.</span></footer>
+  </main>
+</div><div id="toast" role="status" aria-live="polite" hidden></div><div id="busy" role="status" hidden><span class="spinner"></span><span id="busy-label">Working locally…</span></div>
+</body></html>

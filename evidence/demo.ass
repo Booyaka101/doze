@@ -1,0 +1,18 @@
+[Script Info]
+Title: Doze - Edited walkthrough of the verified browser run
+ScriptType: v4.00+
+PlayResX: 1280
+PlayResY: 1080
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,25,&H002D3A30,&H002D3A30,&H00EFF5F6,&H00EFF5F6,0,0,0,0,100,100,0,0,3,10,0,2,30,30,18,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:07.00,Default,,0,0,0,,DOZE: teach a chore once. Let the model sleep.\NEdited walkthrough from an actual local browser test, not a live recording.
+Dialogue: 0,0:00:07.00,0:00:14.00,Default,,0,0,0,,Local Gemma compiled the recipe. 9 of 9 near-miss checks passed.\NA screenshot-plan.txt is not a screenshot image. Test before trusting.
+Dialogue: 0,0:00:14.00,0:00:21.00,Default,,0,0,0,,AI asleep: the server rejected a new inference request.\NRehearse the exact moves. Approve their hashes. No model needed.
+Dialogue: 0,0:00:21.00,0:00:28.00,Default,,0,0,0,,Five files moved. Durable receipts. No overwrites.\NA fresh five-file batch then ran with the inference gate still closed.
+Dialogue: 0,0:00:28.00,0:00:35.00,Default,,0,0,0,,Undo restored the second batch. Edited files would block undo.\NLocal open-weight reasoning. Deterministic doing. Human approval.
