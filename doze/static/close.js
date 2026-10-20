@@ -73,9 +73,11 @@ function showProfile(result) {
   byId('mapping-name').textContent = closeProfile.mapping.name; byId('mapping-fields').replaceChildren();
   byId('decimal-mark').value = closeProfile.mapping.decimal_mark;
   const origin = result.provenance;
-  byId('mapping-origin').textContent = origin?.model ? 'LEARNED LOCALLY' : origin?.source?.includes('hand-written') ? 'HAND-WRITTEN SAMPLE' : 'IMPORTED / REVIEW REQUIRED';
+  byId('mapping-origin').textContent = origin?.recorded ? 'RECORDED GEMMA RESULT' : origin?.model ? 'LEARNED LOCALLY' : origin?.source?.includes('hand-written') ? 'HAND-WRITTEN SAMPLE' : 'IMPORTED / REVIEW REQUIRED';
   byId('learned-info').hidden = false;
-  byId('learned-info').textContent = origin?.model
+  byId('learned-info').textContent = origin?.recorded
+    ? `Recorded ${origin.model} result. The original synthetic teaching call took ${origin.seconds}s. No model call was made for this replay. Review and retest the mapping below.`
+    : origin?.model
     ? `Learned by ${origin.model} in ${origin.seconds}s. Only column names and your explicit explanation were sent. Review every role below.`
     : origin?.source || 'Imported mapping. Revalidated locally. Review every role before reuse.';
   for (const side of ['payments', 'bank']) {
@@ -222,6 +224,7 @@ byId('teach').onclick = () => work('Learning headers with your explicit column e
   }
 });
 byId('sample-mapping').onclick = () => work('Loading a hand-written example, not an AI result…', async () => showProfile(await request('close/sample-profile', {})));
+byId('recorded-mapping').onclick = () => work('Replaying a recorded Gemma result. No inference call…', async () => showProfile(await request('close/recorded-profile', {})));
 byId('manual-mapping').onclick = () => {
   if (!inspected || busy) return;
   showProfile({ profile: { format: 'doze-close-v1', schemas: { payments: inspected.payments.headers, bank: inspected.bank.headers },

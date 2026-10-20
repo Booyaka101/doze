@@ -36,11 +36,16 @@ at `/files`. Previously started processes retain their earlier routing.
   exceptions, a blocking one-cent discrepancy, four exact next-week settlements,
   approved ZIP response, server-side inference rejection, schema drift rejection
   and no horizontal overflow at 390px. See `evidence/close-smoke.json`.
-- Both live Gemma teaching attempts **refused the mapping**, including the newer
-  attempt with an explicit column explanation. There are no automatic retries.
-  Successful AI teaching for Friday Close has **not** been demonstrated. See
-  `evidence/close-live-teaching.json` and `evidence/close-explained-teaching.json`.
-  The separate file-studio Gemma teaching and repair remain verified below.
+- After two earlier refusals, grounding the successful JSON schema in the prompt
+  and restricting roles to actual header enums produced **two successful live
+  Gemma mappings** on different synthetic vocabularies. Explicitly unknown column
+  meanings still refused. All three bounded cases passed, with no retries. See
+  `evidence/close-grounded-teaching.json`. Earlier refusals remain preserved.
+- The actual studio Gemma output also passed all eight witnesses, workflow
+  import/revalidation, the browser handoff and twelve cold CLI checks with sockets
+  blocked. See `evidence/close-workflow-smoke-gemma.json` and
+  `evidence/close-offline-proof-gemma.json`. This is limited synthetic evidence,
+  not proof of universal mapping reliability.
 - Automated tests exercise 52 synthetic weeks without network access. This is
   repeatability evidence, not a real customer trial or measured time savings.
 - No fuzzy matching, date-window logic, split transfers, FX conversion,
@@ -123,8 +128,30 @@ and four exact settlements while inference remained blocked.
 
 Current workflow evidence: `close-workflow-smoke.json`, `close-manual-smoke.json`,
 `close-synthetic-year.json`, `close-tested-workflow.json` and screenshots 16-19.
-All use synthetic data and a clearly labelled hand-written mapping. No successful
-model-teaching result is implied by the passing deterministic tests.
+Those original files use synthetic data and a clearly labelled hand-written
+mapping. New `*-gemma.json` evidence separately follows the actual live-model
+output, without overwriting the manual baseline.
+
+### Replay the verified lesson without pretending it is live
+
+Choose **Replay the verified Gemma lesson / recorded result** to load the exact
+saved model mapping. The badge says **RECORDED GEMMA RESULT**, and its caption
+distinguishes the original 4.85-second teaching call from the zero-inference
+replay. This works while AI is asleep. Review the roles, test all eight witnesses,
+then run the synthetic year or close a week. It does not claim the current inputs
+were taught by that historical call.
+
+The bundled recording is checked against the full live evidence in the test suite.
+To reproduce its offline CLI proof after generating the saved workflow, run:
+
+```sh
+python tools/prove_close.py --recorded-gemma
+```
+
+The prompt fix follows Ollama's recommendation to include the JSON schema in the
+prompt as well as its `format` constraint. The error branch and deterministic
+validation remain intact. Two successful cases and one safe refusal do not measure
+general reliability; a real user trial and measured human effort remain missing.
 
 ## Original workspace: file chore studio
 
@@ -348,7 +375,7 @@ python tools/prove.py --compiled evidence/local-gemma-compile.json
 The last command is optional: use `python tools/prove.py` for the hand-written
 example, or supply a saved compiler result / recipe JSON to prove a compiled one.
 
-Latest full suite: **115 tests run, 114 passed, 1 skipped**. The skipped symlink
+Latest full suite: **120 tests run, 119 passed, 1 skipped**. The skipped symlink
 test needs OS permission to create symlinks on Windows. Path and reparse-point
 checks are implemented, but a skipped test is not a verified symlink scenario.
 CI is configured for Windows and Linux with Python 3.11 and 3.12; remote CI has

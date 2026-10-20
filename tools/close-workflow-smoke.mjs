@@ -10,7 +10,9 @@ const until = async (expr, attempts = 100) => {
   throw new Error('Timeout: ' + expr);
 };
 const idle = () => until('!busy');
-const capture = async name => writeFile('evidence/' + name, Buffer.from(await c.screenshot(), 'base64'));
+const recorded = process.env.DOZE_MAPPING_SOURCE === 'recorded';
+const outputPath = name => 'evidence/' + (recorded ? name.replace(/(\.[^.]+)$/, '-gemma$1') : name);
+const capture = async name => writeFile(outputPath(name), Buffer.from(await c.screenshot(), 'base64'));
 let live, source;
 try {
   await c.send('Page.bringToFront'); await c.navigate(base, 600);
@@ -30,6 +32,10 @@ try {
     check(live.result?.profile, 'Teaching refused or failed. Evidence saved. No automatic retry.');
     await writeFile('evidence/close-learned-profile.json', JSON.stringify(live.result.profile, null, 2));
     source = 'live Gemma mapping';
+  } else if (recorded) {
+    await c.clickSelector('#recorded-mapping'); await until('!!closeProfile && !busy');
+    check(await c.evaluate('byId("mapping-origin").textContent === "RECORDED GEMMA RESULT" && byId("learned-info").textContent.includes("No model call")'), 'Recorded lesson must not imply a fresh teaching call');
+    source = 'recorded Gemma output from close-grounded-teaching.json, no new inference';
   } else if (process.env.DOZE_MAPPING_SOURCE === 'sample') {
     await c.clickSelector('#sample-mapping'); await until('!!closeProfile && !busy');
     source = 'hand-written sample, not AI output';
@@ -41,14 +47,14 @@ try {
   await c.clickSelector('#test-mapping'); await idle();
   check(await c.evaluate('benchReport?.passed===8 && !!closeWorkflow'), 'Learned mapping must pass all eight witnesses');
   const learnedWorkflow = await c.evaluate('closeWorkflow');
-  await writeFile('evidence/close-tested-workflow.json', JSON.stringify(learnedWorkflow, null, 2));
+  await writeFile(outputPath('close-tested-workflow.json'), JSON.stringify(learnedWorkflow, null, 2));
   if (await c.evaluate('session.inference_enabled')) { await c.clickSelector('#sleep'); await idle(); }
   const blocked = await c.evaluate('(async()=>{try{await request("close/teach",{headers_approved:true,payment_headers:inspected.payments.headers,bank_headers:inspected.bank.headers,model:"gemma4:12b-it-qat"});return false}catch(e){return e.message.includes("asleep")}})()');
   check(blocked, 'Server must reject teaching while asleep');
   await c.clickSelector('#run-year'); await until('!!yearReport && !busy');
   const year = await c.evaluate('yearReport');
   check(year.clean_weeks===41 && year.held_weeks===11 && year.exceptions===19 && year.model_calls===0, 'Year replay outcomes must match fixed truth');
-  await writeFile('evidence/close-synthetic-year.json', JSON.stringify(year, null, 2));
+  await writeFile(outputPath('close-synthetic-year.json'), JSON.stringify(year, null, 2));
   await c.evaluate('byId("proof-panel").scrollIntoView()'); await capture('16-close-witnesses-year.png');
   await c.clickSelector('.week-cell.held');
   check(await c.evaluate('byId("year-detail").textContent.includes("Handoff blocked")'), 'Held week must explain its verdict');
@@ -89,12 +95,13 @@ try {
   await c.clickSelector('[data-scenario="clean"]'); await idle();
   // Leave the demo showing the verified mapping and its honest source label.
   const checked = await c.evaluate(`request('close/profile',{profile:${JSON.stringify(learnedWorkflow)}})`);
-  await c.evaluate(`showProfile({profile:${JSON.stringify(checked)},provenance:${JSON.stringify(live?.result?.provenance || {source})}});showYear(${JSON.stringify(year)});window.scrollTo(0,0)`);
+  const provenance = recorded ? JSON.parse(await readFile('doze/close_recorded.json', 'utf8')).provenance : live?.result?.provenance || {source};
+  await c.evaluate(`showProfile({profile:${JSON.stringify(checked)},provenance:${JSON.stringify(provenance)}});showYear(${JSON.stringify(year)});window.scrollTo(0,0)`);
   await capture('19-close-workflow-studio.png');
   const evidence = {synthetic:true,mapping_source:source,live_model_call_this_run:!!live,profile_sha256:learnedWorkflow.profile.sha256,
     witnesses_passed:8,wrong_mapping_passed:failed.passed,wrong_mapping_total:failed.total,forged_proof_blocked:forgedBlocked,
     edits_invalidate_approval:true,actual_import_rechecked:true,custom_schema_manually_reconciled:true,inference_blocked:blocked,year,packet,mobile,recurring_model_calls:0};
-  await writeFile('evidence/close-workflow-smoke.json',JSON.stringify(evidence,null,2));
+  await writeFile(outputPath('close-workflow-smoke.json'),JSON.stringify(evidence,null,2));
   console.log(JSON.stringify({witnesses:8,wrong_mapping_passed:failed.passed,forged_proof_blocked:forgedBlocked,year:{clean:year.clean_weeks,held:year.held_weeks,exceptions:year.exceptions,seconds:year.seconds},packet,mobile},null,2));
 } finally { await c.close(); }
 process.exit(0);

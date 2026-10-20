@@ -1,0 +1,38 @@
+{
+  "profile": {
+    "format": "doze-close-v1",
+    "mapping": {
+      "name": "Reconciliation Mapping",
+      "decimal_mark": ".",
+      "payments": {
+        "id": "Sale reference",
+        "batch": "Payout group",
+        "gross": "Customer paid",
+        "fee": "Processor fee",
+        "currency": "ISO currency"
+      },
+      "bank": {
+        "id": "Bank entry",
+        "batch": "Settlement reference",
+        "amount": "Money received",
+        "currency": "ISO currency"
+      }
+    },
+    "schemas": {
+      "payments": ["Sale reference", "Payout group", "Customer paid", "Processor fee", "ISO currency"],
+      "bank": ["Bank entry", "Settlement reference", "Money received", "ISO currency"]
+    },
+    "sha256": "c1740e00c690b7c5d3fcb45a692a86c0ac1e279a35287325ab6b749a218588a0"
+  },
+  "provenance": {
+    "model": "gemma4:12b-it-qat",
+    "seconds": 4.85,
+    "input_tokens": 829,
+    "output_tokens": 85,
+    "endpoint": "http://127.0.0.1:11434",
+    "model_calls": 1,
+    "recorded": true,
+    "source": "Recorded local model output on synthetic headers and an explicit column explanation. No inference call is made when replaying this lesson.",
+    "evidence": "evidence/close-grounded-teaching.json"
+  }
+}

@@ -2,14 +2,22 @@
 import csv
 from decimal import Decimal
 import io
+import json
+from pathlib import Path
 
 from .engine import SafetyError
+from .close import validate_profile
 
 PAYMENT_HEADERS = ['Sale reference', 'Payout group', 'Customer paid', 'Processor fee', 'ISO currency']
 BANK_HEADERS = ['Bank entry', 'Settlement reference', 'Money received', 'ISO currency']
 MAPPING = {'name': 'Studio Friday close', 'decimal_mark': '.',
            'payments': dict(zip(('id', 'batch', 'gross', 'fee', 'currency'), PAYMENT_HEADERS)),
-           'bank': dict(zip(('id', 'batch', 'amount', 'currency'), BANK_HEADERS))}
+            'bank': dict(zip(('id', 'batch', 'amount', 'currency'), BANK_HEADERS))}
+
+
+def recorded_profile():
+    saved = json.loads(Path(__file__).with_name('close_recorded.json').read_text(encoding='utf-8'))
+    return {'profile': validate_profile(saved['profile']), 'provenance': saved['provenance']}
 
 
 def csv_text(headers, rows):

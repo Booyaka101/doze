@@ -1,5 +1,6 @@
 """Cold CLI subprocess proof with all socket creation blocked. Synthetic data only."""
 import hashlib
+import argparse
 import json
 from pathlib import Path
 import subprocess
@@ -22,7 +23,11 @@ runpy.run_module("doze.close_cli", run_name="__main__")
 
 
 def main():
-    workflow = json.loads((ROOT / 'evidence/close-tested-workflow.json').read_text(encoding='utf-8'))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--recorded-gemma', action='store_true', help='Prove the saved live-model workflow instead of the manual sample')
+    args = parser.parse_args()
+    suffix = '-gemma' if args.recorded_gemma else ''
+    workflow = json.loads((ROOT / f'evidence/close-tested-workflow{suffix}.json').read_text(encoding='utf-8'))
     checks = []
     (ROOT / '.doze').mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='cli-proof-', dir=ROOT / '.doze') as temp:
@@ -71,11 +76,11 @@ def main():
         require(changed.returncode == 2 and not (root / 'stale.zip').exists(), 'changed input rejects old approval')
         require(hashlib.sha256(profile.read_bytes()).hexdigest() == hashes[profile.name]
                 and hashlib.sha256(payments.read_bytes()).hexdigest() == hashes[payments.name], 'mapping and payment input bytes unchanged')
-        evidence = {'synthetic': True, 'mapping_source': 'hand-written sample, not AI output',
+        evidence = {'synthetic': True, 'mapping_source': 'recorded Gemma output from close-grounded-teaching.json' if args.recorded_gemma else 'hand-written sample, not AI output',
                     'execution': 'fresh Python CLI subprocesses with socket creation blocked', 'network_calls': 0,
                     'model_calls': 0, 'checks': checks, 'workflow_sha256': workflow['sha256'],
                     'approved_report_sha256': clean_report['sha256'], 'packet_bytes': len(before)}
-    (ROOT / 'evidence/close-offline-proof.json').write_text(json.dumps(evidence, indent=2) + '\n', encoding='utf-8')
+    (ROOT / f'evidence/close-offline-proof{suffix}.json').write_text(json.dumps(evidence, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(evidence, indent=2))
 
 

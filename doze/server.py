@@ -90,6 +90,8 @@ def make_server(engine, port=8741, demo=True):
                 if route == '/api/close/sample-profile':
                     return self.reply(200, {'profile': close.profile(close_demo.MAPPING, close_demo.PAYMENT_HEADERS, close_demo.BANK_HEADERS),
                                             'provenance': {'source': 'hand-written sample, not AI output', 'model_calls': 0}})
+                if route == '/api/close/recorded-profile':
+                    return self.reply(200, close_demo.recorded_profile())
                 if route == '/api/close/profile':
                     if isinstance(body['profile'], dict) and body['profile'].get('format') == close_workflow.FORMAT:
                         return self.reply(200, close_workflow.validate_workflow(body['profile']))

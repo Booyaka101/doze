@@ -11,7 +11,7 @@ import zipfile
 from doze.close import packet, profile, reconcile, validate_profile
 from doze.close_cli import main
 from doze.close_demo import MAPPING, PAYMENT_HEADERS, BANK_HEADERS, demo
-from doze.close_inference import compile_mapping
+from doze.close_inference import compile_mapping, mapping_schema
 from doze.close_workflow import bench, replay_year, validate_workflow, workflow
 from doze.engine import SafetyError
 
@@ -129,6 +129,45 @@ class WorkflowTests(unittest.TestCase):
         with patch('doze.compiler.generate', side_effect=AssertionError('Must reject before inference')):
             with self.assertRaises(SafetyError):
                 compile_mapping(PAYMENT_HEADERS, BANK_HEADERS, 'local', hint='x' * 1001)
+
+    def test_schema_is_grounded_in_prompt_and_restricts_each_role_to_headers(self):
+        with patch('doze.compiler.models', return_value=['local']), patch('doze.compiler.request_json', return_value={
+                'message': {'content': json.dumps(MAPPING)}}) as call:
+            compile_mapping(PAYMENT_HEADERS, BANK_HEADERS, 'local')
+        sent = call.call_args.args[1]
+        schema = sent['format']['anyOf'][0]
+        self.assertIn(json.dumps(schema), sent['messages'][0]['content'])
+        for side, headers in (('payments', PAYMENT_HEADERS), ('bank', BANK_HEADERS)):
+            for role in schema['properties'][side]['properties'].values():
+                self.assertEqual(role['enum'], headers)
+        self.assertEqual(schema['properties']['decimal_mark']['enum'], ['.'])
+        self.assertEqual(sent['format']['anyOf'][1]['required'], ['error'])
+
+    def test_dynamic_schema_does_not_mutate_global_or_other_requests(self):
+        schema = mapping_schema(PAYMENT_HEADERS, BANK_HEADERS, '.')
+        schema['properties']['payments']['properties']['id']['enum'] = ['changed']
+        other = mapping_schema(['a', 'b', 'c', 'd', 'e'], ['w', 'x', 'y', 'z'], ',')
+        self.assertEqual(other['properties']['payments']['properties']['id']['enum'], ['a', 'b', 'c', 'd', 'e'])
+        self.assertEqual(other['properties']['decimal_mark']['enum'], [','])
+        from doze.close import MAPPING_SCHEMA
+        self.assertNotIn('enum', MAPPING_SCHEMA['properties']['payments']['properties']['id'])
+
+    def test_grounding_keeps_refusals_supported(self):
+        with patch('doze.compiler.models', return_value=['local']), patch('doze.compiler.request_json', return_value={
+                'message': {'content': json.dumps({'error': 'Shared payout reference is unknown'})}}):
+            with self.assertRaisesRegex(SafetyError, 'Shared payout reference is unknown'):
+                compile_mapping(PAYMENT_HEADERS, BANK_HEADERS, 'local')
+
+    def test_recorded_lesson_matches_actual_live_evidence(self):
+        from doze.close_demo import recorded_profile
+        root = Path(__file__).resolve().parents[1]
+        evidence = json.loads((root / 'evidence/close-grounded-teaching.json').read_text(encoding='utf-8'))
+        saved = recorded_profile()
+        live = evidence['cases'][0]['result']
+        self.assertEqual(saved['profile'], live['profile'])
+        for key, value in live['provenance'].items():
+            self.assertEqual(saved['provenance'][key], value)
+        self.assertTrue(saved['provenance']['recorded'])
 
 
 class CLITests(unittest.TestCase):

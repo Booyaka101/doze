@@ -2,6 +2,40 @@
 
 Started 2026-10-20 for DEV HF26 Week 3, October 19-25.
 
+## Latest completed pass: grounded Gemma teaching, October 21
+
+Supersedes the earlier unresolved-teaching notes below. User authorized continuing.
+Bounded scope: at most three distinct synthetic local calls and two verification
+passes. Completed; no more model calls or verification loops needed this pass.
+
+- Found successful mapping schema absent from model-visible prompt although passed
+  as Ollama format grammar. Added schema grounding and per-role actual-header enums,
+  decimal-mark constraint and bounded name. Shared compiler and refusal branch
+  unchanged. Official reference: docs.ollama.com/capabilities/structured-outputs.
+- Three live Gemma cases, no retries: explained studio mapping succeeded (4.85s,
+  exact roles, 8/8 witnesses); different vocabulary succeeded; explicitly unknown
+  meanings refused. This supports the combined fix, not a proven individual cause
+  or universal reliability claim. Raw results: close-grounded-teaching.json.
+- Bundled exact recorded output and provenance in doze/close_recorded.json, tested
+  against actual live evidence. UI replay explicitly labels RECORDED GEMMA RESULT,
+  distinguishes historical call from current zero-call replay and works asleep.
+- Actual recorded model output passed browser witness suite, 52 synthetic weeks
+  (41 clean, 11 held, 19 exceptions), wrong mapping 1/8, forged proof rejection,
+  actual workflow import revalidation, reviewed 4,344-byte ZIP, manual alternate
+  schema and 390px no-overflow check. No new inference during these checks.
+- Twelve fresh CLI subprocess checks passed with socket creation blocked using
+  that model's workflow. Input changes reject old review hash; outputs preserved.
+- Evidence names end in -gemma to preserve prior manual baselines: workflow smoke,
+  tested workflow, synthetic year, offline proof and screenshots 16-19.
+- Final suite: 120 tests run, 119 passed, one Windows symlink-permission skip.
+  JavaScript syntax passed. Earlier refusal records are retained honestly.
+- Runtime: restarted only our identified 8743 process, current PID 37992 in
+  .doze/close-server.pid. Original 8741/8742 processes preserved. Inference asleep;
+  demo shows recorded Gemma workflow and synthetic year at http://127.0.0.1:8743.
+- Remaining: explicitly approved real user trial and measured human effort;
+  competition writing, public code/demo and submission need owner approval.
+  Nothing published, pushed, purchased or connected to real financial records.
+
 ## Decision
 Compile natural-language file chores into constrained, reusable local recipes.
 The local model proposes rules, never shell commands. Deterministic preview,

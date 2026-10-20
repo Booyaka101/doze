@@ -1,0 +1,24 @@
+{
+  "synthetic": true,
+  "mapping_source": "recorded Gemma output from close-grounded-teaching.json",
+  "execution": "fresh Python CLI subprocesses with socket creation blocked",
+  "network_calls": 0,
+  "model_calls": 0,
+  "checks": [
+    "clean exit status",
+    "clean verdict",
+    "penny exit status",
+    "penny verdict",
+    "messy exit status",
+    "messy verdict",
+    "reviewed offline ZIP created",
+    "packet carries executable synthetic witnesses",
+    "packet audit matches approved report",
+    "existing packet preserved",
+    "changed input rejects old approval",
+    "mapping and payment input bytes unchanged"
+  ],
+  "workflow_sha256": "8d6b2b07834260ce37065397613240c4f50a7fb40a1d9f9b2c0fe4e5bd5fdb74",
+  "approved_report_sha256": "aa288f7009e13212a7d4adddd9f9c95146b79a5b2259d8acdf3ee663b486148b",
+  "packet_bytes": 4344
+}

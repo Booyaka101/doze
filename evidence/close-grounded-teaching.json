@@ -1,0 +1,349 @@
+{
+  "synthetic": true,
+  "model": "gemma4:12b-it-qat",
+  "maximum_model_calls": 3,
+  "change": "Mapping schema grounded in system prompt; role values restricted to actual column enums. Refusal branch retained.",
+  "official_reference": "https://docs.ollama.com/capabilities/structured-outputs",
+  "cases": [
+    {
+      "name": "Explained studio schema",
+      "payments": [
+        "Sale reference",
+        "Payout group",
+        "Customer paid",
+        "Processor fee",
+        "ISO currency"
+      ],
+      "bank": [
+        "Bank entry",
+        "Settlement reference",
+        "Money received",
+        "ISO currency"
+      ],
+      "hint": "In these synthetic exports, payment column \"Payout group\" and bank column \"Settlement reference\" contain the same shared payout ID. \"Sale reference\" identifies each sale; \"Bank entry\" identifies each bank row, not a payout. \"Customer paid\" is gross before fees. \"Processor fee\" is the fee. \"Money received\" is the bank net. \"ISO currency\" contains the currency code in each export.",
+      "result": {
+        "profile": {
+          "format": "doze-close-v1",
+          "mapping": {
+            "name": "Reconciliation Mapping",
+            "decimal_mark": ".",
+            "payments": {
+              "id": "Sale reference",
+              "batch": "Payout group",
+              "gross": "Customer paid",
+              "fee": "Processor fee",
+              "currency": "ISO currency"
+            },
+            "bank": {
+              "id": "Bank entry",
+              "batch": "Settlement reference",
+              "amount": "Money received",
+              "currency": "ISO currency"
+            }
+          },
+          "schemas": {
+            "payments": [
+              "Sale reference",
+              "Payout group",
+              "Customer paid",
+              "Processor fee",
+              "ISO currency"
+            ],
+            "bank": [
+              "Bank entry",
+              "Settlement reference",
+              "Money received",
+              "ISO currency"
+            ]
+          },
+          "sha256": "c1740e00c690b7c5d3fcb45a692a86c0ac1e279a35287325ab6b749a218588a0"
+        },
+        "provenance": {
+          "model": "gemma4:12b-it-qat",
+          "seconds": 4.85,
+          "input_tokens": 829,
+          "output_tokens": 85,
+          "endpoint": "http://127.0.0.1:11434",
+          "model_calls": 1
+        }
+      },
+      "passed": true,
+      "witnesses": {
+        "suite": "studio-witnesses-v1",
+        "suite_sha256": "ffe7ab69cf9a8838e37f412fa4688e1782e6df25199326cd302bdfcaf9d56da9",
+        "profile_sha256": "c1740e00c690b7c5d3fcb45a692a86c0ac1e279a35287325ab6b749a218588a0",
+        "passed": 8,
+        "total": 8,
+        "checks": [
+          {
+            "name": "Clean close",
+            "passed": true,
+            "expected": {
+              "ready": true,
+              "matched": 4,
+              "statuses": {
+                "matched": 4
+              },
+              "first_expected": "330.28",
+              "gross_usd": "1620.00"
+            },
+            "observed": {
+              "ready": true,
+              "matched": 4,
+              "issues": 0,
+              "statuses": {
+                "matched": 4
+              },
+              "first_expected": "330.28",
+              "gross_usd": "1620.00"
+            }
+          },
+          {
+            "name": "One cent is not close enough",
+            "passed": true,
+            "expected": {
+              "ready": false,
+              "matched": 3,
+              "statuses": {
+                "matched": 3,
+                "mismatch": 1
+              },
+              "difference": "-0.01"
+            },
+            "observed": {
+              "ready": false,
+              "matched": 3,
+              "issues": 0,
+              "statuses": {
+                "matched": 3,
+                "mismatch": 1
+              },
+              "first_expected": "330.28",
+              "gross_usd": "1620.00",
+              "difference": "-0.01"
+            }
+          },
+          {
+            "name": "Duplicate and orphan transfers",
+            "passed": true,
+            "expected": {
+              "ready": false,
+              "matched": 2,
+              "statuses": {
+                "matched": 2,
+                "mismatch": 1,
+                "ambiguous": 1,
+                "orphan": 1
+              }
+            },
+            "observed": {
+              "ready": false,
+              "matched": 2,
+              "issues": 0,
+              "statuses": {
+                "matched": 2,
+                "mismatch": 1,
+                "ambiguous": 1,
+                "orphan": 1
+              },
+              "first_expected": "330.28",
+              "gross_usd": "1620.00"
+            }
+          },
+          {
+            "name": "Schema change stops the close",
+            "passed": true,
+            "expected": {
+              "error": "Schema drift"
+            },
+            "observed": {
+              "error": "Schema drift in payments: missing ['Customer paid']; new ['Customer paid (new format)']. Re-teach or explicitly review a new mapping. No partial reconciliation."
+            }
+          },
+          {
+            "name": "Duplicate sale IDs quarantine both batches",
+            "passed": true,
+            "expected": {
+              "ready": false,
+              "matched": 2,
+              "issues": 2,
+              "statuses": {
+                "matched": 2,
+                "invalid": 2
+              }
+            },
+            "observed": {
+              "ready": false,
+              "matched": 2,
+              "issues": 2,
+              "statuses": {
+                "invalid": 2,
+                "matched": 2
+              },
+              "first_expected": "280.09",
+              "gross_usd": "1509.00"
+            }
+          },
+          {
+            "name": "Currencies are not interchangeable",
+            "passed": true,
+            "expected": {
+              "ready": false,
+              "matched": 3,
+              "statuses": {
+                "matched": 3,
+                "currency_conflict": 1
+              }
+            },
+            "observed": {
+              "ready": false,
+              "matched": 3,
+              "issues": 0,
+              "statuses": {
+                "currency_conflict": 1,
+                "matched": 3
+              },
+              "first_expected": null,
+              "gross_usd": "1568.00"
+            }
+          },
+          {
+            "name": "Missing transfer is not guessed",
+            "passed": true,
+            "expected": {
+              "ready": false,
+              "matched": 3,
+              "statuses": {
+                "matched": 3,
+                "missing": 1
+              }
+            },
+            "observed": {
+              "ready": false,
+              "matched": 3,
+              "issues": 0,
+              "statuses": {
+                "missing": 1,
+                "matched": 3
+              },
+              "first_expected": "330.28",
+              "gross_usd": "1620.00"
+            }
+          },
+          {
+            "name": "Refund stays an exact negative amount",
+            "passed": true,
+            "expected": {
+              "ready": true,
+              "matched": 4,
+              "statuses": {
+                "matched": 4
+              },
+              "first_expected": "226.28",
+              "gross_usd": "1516.00"
+            },
+            "observed": {
+              "ready": true,
+              "matched": 4,
+              "issues": 0,
+              "statuses": {
+                "matched": 4
+              },
+              "first_expected": "226.28",
+              "gross_usd": "1516.00"
+            }
+          }
+        ],
+        "model_calls": 0,
+        "synthetic": true,
+        "scope": "Known studio schema only. Fixture agreement is not proof of source completeness or real-world suitability.",
+        "sha256": "6d496af81204497d3ed93f2f625f97aeee3f523471229eb43ecb5b44d9a13918"
+      }
+    },
+    {
+      "name": "Different explicit vocabulary",
+      "payments": [
+        "charge_id",
+        "payout_ref",
+        "gross_amount",
+        "fee_amount",
+        "currency"
+      ],
+      "bank": [
+        "entry_id",
+        "payout_ref",
+        "net_amount",
+        "currency"
+      ],
+      "hint": "Both payout_ref columns contain the same shared payout ID. charge_id identifies each sale. entry_id identifies a bank row, not a payout. gross_amount is customer gross before fee_amount; net_amount is what the bank received. currency is the ISO code.",
+      "result": {
+        "profile": {
+          "format": "doze-close-v1",
+          "mapping": {
+            "name": "reconciliation_mapping",
+            "decimal_mark": ".",
+            "payments": {
+              "id": "charge_id",
+              "batch": "payout_ref",
+              "gross": "gross_amount",
+              "fee": "fee_amount",
+              "currency": "currency"
+            },
+            "bank": {
+              "id": "entry_id",
+              "batch": "payout_ref",
+              "amount": "net_amount",
+              "currency": "currency"
+            }
+          },
+          "schemas": {
+            "payments": [
+              "charge_id",
+              "payout_ref",
+              "gross_amount",
+              "fee_amount",
+              "currency"
+            ],
+            "bank": [
+              "entry_id",
+              "payout_ref",
+              "net_amount",
+              "currency"
+            ]
+          },
+          "sha256": "c2e79e475d4471e5af0cee9b5a136f3cb0f305a09dc14d80c48c4b7b5c1b7042"
+        },
+        "provenance": {
+          "model": "gemma4:12b-it-qat",
+          "seconds": 1.24,
+          "input_tokens": 835,
+          "output_tokens": 92,
+          "endpoint": "http://127.0.0.1:11434",
+          "model_calls": 1
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "Unknown meanings must not be guessed",
+      "payments": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "bank": [
+        "W",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "hint": "These are arbitrary column labels. Their meanings are unknown. There is no known shared payout reference and no role mapping. Ask for an explanation instead of choosing arbitrary columns.",
+      "error": "The local model could not express this task: explanation",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "observed_model_calls": 3
+}

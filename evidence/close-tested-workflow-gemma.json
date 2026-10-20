@@ -1,0 +1,388 @@
+{
+  "format": "doze-close-workflow-v1",
+  "profile": {
+    "format": "doze-close-v1",
+    "mapping": {
+      "name": "Reconciliation Mapping",
+      "decimal_mark": ".",
+      "payments": {
+        "id": "Sale reference",
+        "batch": "Payout group",
+        "gross": "Customer paid",
+        "fee": "Processor fee",
+        "currency": "ISO currency"
+      },
+      "bank": {
+        "id": "Bank entry",
+        "batch": "Settlement reference",
+        "amount": "Money received",
+        "currency": "ISO currency"
+      }
+    },
+    "schemas": {
+      "payments": [
+        "Sale reference",
+        "Payout group",
+        "Customer paid",
+        "Processor fee",
+        "ISO currency"
+      ],
+      "bank": [
+        "Bank entry",
+        "Settlement reference",
+        "Money received",
+        "ISO currency"
+      ]
+    },
+    "sha256": "c1740e00c690b7c5d3fcb45a692a86c0ac1e279a35287325ab6b749a218588a0"
+  },
+  "suite": "studio-witnesses-v1",
+  "suite_sha256": "ffe7ab69cf9a8838e37f412fa4688e1782e6df25199326cd302bdfcaf9d56da9",
+  "witnesses": [
+    {
+      "name": "Clean close",
+      "data": {
+        "scenario": "clean",
+        "week": 1,
+        "synthetic": true,
+        "payments_csv": "Sale reference,Payout group,Customer paid,Processor fee,ISO currency\nSALE-01-1-1,PAY-W01-01,52.00,1.81,USD\nSALE-01-1-2,PAY-W01-01,54.00,1.87,USD\nSALE-01-1-3,PAY-W01-01,56.00,1.92,USD\nSALE-01-1-4,PAY-W01-01,58.00,1.98,USD\nSALE-01-1-5,PAY-W01-01,60.00,2.04,USD\nSALE-01-1-6,PAY-W01-01,62.00,2.10,USD\nSALE-01-2-1,PAY-W01-02,59.00,2.01,USD\nSALE-01-2-2,PAY-W01-02,61.00,2.07,USD\nSALE-01-2-3,PAY-W01-02,63.00,2.13,USD\nSALE-01-2-4,PAY-W01-02,65.00,2.18,USD\nSALE-01-2-5,PAY-W01-02,67.00,2.24,USD\nSALE-01-2-6,PAY-W01-02,69.00,2.30,USD\nSALE-01-3-1,PAY-W01-03,66.00,2.21,USD\nSALE-01-3-2,PAY-W01-03,68.00,2.27,USD\nSALE-01-3-3,PAY-W01-03,70.00,2.33,USD\nSALE-01-3-4,PAY-W01-03,72.00,2.39,USD\nSALE-01-3-5,PAY-W01-03,74.00,2.45,USD\nSALE-01-3-6,PAY-W01-03,76.00,2.50,USD\nSALE-01-4-1,PAY-W01-04,73.00,2.42,USD\nSALE-01-4-2,PAY-W01-04,75.00,2.48,USD\nSALE-01-4-3,PAY-W01-04,77.00,2.53,USD\nSALE-01-4-4,PAY-W01-04,79.00,2.59,USD\nSALE-01-4-5,PAY-W01-04,81.00,2.65,USD\nSALE-01-4-6,PAY-W01-04,83.00,2.71,USD\n",
+        "bank_csv": "Bank entry,Settlement reference,Money received,ISO currency\nBANK-01-1,PAY-W01-01,330.28,USD\nBANK-01-2,PAY-W01-02,371.07,USD\nBANK-01-3,PAY-W01-03,411.85,USD\nBANK-01-4,PAY-W01-04,452.62,USD\n",
+        "description": "Original synthetic fixtures. Not Stripe exports, customer records or bank statements."
+      },
+      "expect": {
+        "ready": true,
+        "matched": 4,
+        "statuses": {
+          "matched": 4
+        },
+        "first_expected": "330.28",
+        "gross_usd": "1620.00"
+      }
+    },
+    {
+      "name": "One cent is not close enough",
+      "data": {
+        "scenario": "penny",
+        "week": 1,
+        "synthetic": true,
+        "payments_csv": "Sale reference,Payout group,Customer paid,Processor fee,ISO currency\nSALE-01-1-1,PAY-W01-01,52.00,1.81,USD\nSALE-01-1-2,PAY-W01-01,54.00,1.87,USD\nSALE-01-1-3,PAY-W01-01,56.00,1.92,USD\nSALE-01-1-4,PAY-W01-01,58.00,1.98,USD\nSALE-01-1-5,PAY-W01-01,60.00,2.04,USD\nSALE-01-1-6,PAY-W01-01,62.00,2.10,USD\nSALE-01-2-1,PAY-W01-02,59.00,2.01,USD\nSALE-01-2-2,PAY-W01-02,61.00,2.07,USD\nSALE-01-2-3,PAY-W01-02,63.00,2.13,USD\nSALE-01-2-4,PAY-W01-02,65.00,2.18,USD\nSALE-01-2-5,PAY-W01-02,67.00,2.24,USD\nSALE-01-2-6,PAY-W01-02,69.00,2.30,USD\nSALE-01-3-1,PAY-W01-03,66.00,2.21,USD\nSALE-01-3-2,PAY-W01-03,68.00,2.27,USD\nSALE-01-3-3,PAY-W01-03,70.00,2.33,USD\nSALE-01-3-4,PAY-W01-03,72.00,2.39,USD\nSALE-01-3-5,PAY-W01-03,74.00,2.45,USD\nSALE-01-3-6,PAY-W01-03,76.00,2.50,USD\nSALE-01-4-1,PAY-W01-04,73.00,2.42,USD\nSALE-01-4-2,PAY-W01-04,75.00,2.48,USD\nSALE-01-4-3,PAY-W01-04,77.00,2.53,USD\nSALE-01-4-4,PAY-W01-04,79.00,2.59,USD\nSALE-01-4-5,PAY-W01-04,81.00,2.65,USD\nSALE-01-4-6,PAY-W01-04,83.00,2.71,USD\n",
+        "bank_csv": "Bank entry,Settlement reference,Money received,ISO currency\nBANK-01-1,PAY-W01-01,330.28,USD\nBANK-01-2,PAY-W01-02,371.06,USD\nBANK-01-3,PAY-W01-03,411.85,USD\nBANK-01-4,PAY-W01-04,452.62,USD\n",
+        "description": "Original synthetic fixtures. Not Stripe exports, customer records or bank statements."
+      },
+      "expect": {
+        "ready": false,
+        "matched": 3,
+        "statuses": {
+          "matched": 3,
+          "mismatch": 1
+        },
+        "difference": "-0.01"
+      }
+    },
+    {
+      "name": "Duplicate and orphan transfers",
+      "data": {
+        "scenario": "messy",
+        "week": 1,
+        "synthetic": true,
+        "payments_csv": "Sale reference,Payout group,Customer paid,Processor fee,ISO currency\nSALE-01-1-1,PAY-W01-01,52.00,1.81,USD\nSALE-01-1-2,PAY-W01-01,54.00,1.87,USD\nSALE-01-1-3,PAY-W01-01,56.00,1.92,USD\nSALE-01-1-4,PAY-W01-01,58.00,1.98,USD\nSALE-01-1-5,PAY-W01-01,60.00,2.04,USD\nSALE-01-1-6,PAY-W01-01,62.00,2.10,USD\nSALE-01-2-1,PAY-W01-02,59.00,2.01,USD\nSALE-01-2-2,PAY-W01-02,61.00,2.07,USD\nSALE-01-2-3,PAY-W01-02,63.00,2.13,USD\nSALE-01-2-4,PAY-W01-02,65.00,2.18,USD\nSALE-01-2-5,PAY-W01-02,67.00,2.24,USD\nSALE-01-2-6,PAY-W01-02,69.00,2.30,USD\nSALE-01-3-1,PAY-W01-03,66.00,2.21,USD\nSALE-01-3-2,PAY-W01-03,68.00,2.27,USD\nSALE-01-3-3,PAY-W01-03,70.00,2.33,USD\nSALE-01-3-4,PAY-W01-03,72.00,2.39,USD\nSALE-01-3-5,PAY-W01-03,74.00,2.45,USD\nSALE-01-3-6,PAY-W01-03,76.00,2.50,USD\nSALE-01-4-1,PAY-W01-04,73.00,2.42,USD\nSALE-01-4-2,PAY-W01-04,75.00,2.48,USD\nSALE-01-4-3,PAY-W01-04,77.00,2.53,USD\nSALE-01-4-4,PAY-W01-04,79.00,2.59,USD\nSALE-01-4-5,PAY-W01-04,81.00,2.65,USD\nSALE-01-4-6,PAY-W01-04,83.00,2.71,USD\n",
+        "bank_csv": "Bank entry,Settlement reference,Money received,ISO currency\nBANK-01-1,PAY-W01-01,330.28,USD\nBANK-01-2,PAY-W01-02,371.06,USD\nBANK-01-3,PAY-W01-03,411.85,USD\nBANK-01-4,PAY-W01-04,452.62,USD\nBANK-01-duplicate,PAY-W01-03,411.85,USD\nBANK-01-unknown,UNEXPLAINED-W01,75.00,USD\n",
+        "description": "Original synthetic fixtures. Not Stripe exports, customer records or bank statements."
+      },
+      "expect": {
+        "ready": false,
+        "matched": 2,
+        "statuses": {
+          "matched": 2,
+          "mismatch": 1,
+          "ambiguous": 1,
+          "orphan": 1
+        }
+      }
+    },
+    {
+      "name": "Schema change stops the close",
+      "data": {
+        "scenario": "drift",
+        "week": 1,
+        "synthetic": true,
+        "payments_csv": "Sale reference,Payout group,Customer paid (new format),Processor fee,ISO currency\nSALE-01-1-1,PAY-W01-01,52.00,1.81,USD\nSALE-01-1-2,PAY-W01-01,54.00,1.87,USD\nSALE-01-1-3,PAY-W01-01,56.00,1.92,USD\nSALE-01-1-4,PAY-W01-01,58.00,1.98,USD\nSALE-01-1-5,PAY-W01-01,60.00,2.04,USD\nSALE-01-1-6,PAY-W01-01,62.00,2.10,USD\nSALE-01-2-1,PAY-W01-02,59.00,2.01,USD\nSALE-01-2-2,PAY-W01-02,61.00,2.07,USD\nSALE-01-2-3,PAY-W01-02,63.00,2.13,USD\nSALE-01-2-4,PAY-W01-02,65.00,2.18,USD\nSALE-01-2-5,PAY-W01-02,67.00,2.24,USD\nSALE-01-2-6,PAY-W01-02,69.00,2.30,USD\nSALE-01-3-1,PAY-W01-03,66.00,2.21,USD\nSALE-01-3-2,PAY-W01-03,68.00,2.27,USD\nSALE-01-3-3,PAY-W01-03,70.00,2.33,USD\nSALE-01-3-4,PAY-W01-03,72.00,2.39,USD\nSALE-01-3-5,PAY-W01-03,74.00,2.45,USD\nSALE-01-3-6,PAY-W01-03,76.00,2.50,USD\nSALE-01-4-1,PAY-W01-04,73.00,2.42,USD\nSALE-01-4-2,PAY-W01-04,75.00,2.48,USD\nSALE-01-4-3,PAY-W01-04,77.00,2.53,USD\nSALE-01-4-4,PAY-W01-04,79.00,2.59,USD\nSALE-01-4-5,PAY-W01-04,81.00,2.65,USD\nSALE-01-4-6,PAY-W01-04,83.00,2.71,USD\n",
+        "bank_csv": "Bank entry,Settlement reference,Money received,ISO currency\nBANK-01-1,PAY-W01-01,330.28,USD\nBANK-01-2,PAY-W01-02,371.07,USD\nBANK-01-3,PAY-W01-03,411.85,USD\nBANK-01-4,PAY-W01-04,452.62,USD\n",
+        "description": "Original synthetic fixtures. Not Stripe exports, customer records or bank statements."
+      },
+      "expect": {
+        "error": "Schema drift"
+      }
+    },
+    {
+      "name": "Duplicate sale IDs quarantine both batches",
+      "data": {
+        "scenario": "clean",
+        "week": 1,
+        "synthetic": true,
+        "payments_csv": "Sale reference,Payout group,Customer paid,Processor fee,ISO currency\nSALE-01-1-1,PAY-W01-01,52.00,1.81,USD\nSALE-01-1-2,PAY-W01-01,54.00,1.87,USD\nSALE-01-1-3,PAY-W01-01,56.00,1.92,USD\nSALE-01-1-4,PAY-W01-01,58.00,1.98,USD\nSALE-01-1-5,PAY-W01-01,60.00,2.04,USD\nSALE-01-1-6,PAY-W01-01,62.00,2.10,USD\nSALE-01-1-1,PAY-W01-02,59.00,2.01,USD\nSALE-01-2-2,PAY-W01-02,61.00,2.07,USD\nSALE-01-2-3,PAY-W01-02,63.00,2.13,USD\nSALE-01-2-4,PAY-W01-02,65.00,2.18,USD\nSALE-01-2-5,PAY-W01-02,67.00,2.24,USD\nSALE-01-2-6,PAY-W01-02,69.00,2.30,USD\nSALE-01-3-1,PAY-W01-03,66.00,2.21,USD\nSALE-01-3-2,PAY-W01-03,68.00,2.27,USD\nSALE-01-3-3,PAY-W01-03,70.00,2.33,USD\nSALE-01-3-4,PAY-W01-03,72.00,2.39,USD\nSALE-01-3-5,PAY-W01-03,74.00,2.45,USD\nSALE-01-3-6,PAY-W01-03,76.00,2.50,USD\nSALE-01-4-1,PAY-W01-04,73.00,2.42,USD\nSALE-01-4-2,PAY-W01-04,75.00,2.48,USD\nSALE-01-4-3,PAY-W01-04,77.00,2.53,USD\nSALE-01-4-4,PAY-W01-04,79.00,2.59,USD\nSALE-01-4-5,PAY-W01-04,81.00,2.65,USD\nSALE-01-4-6,PAY-W01-04,83.00,2.71,USD\n",
+        "bank_csv": "Bank entry,Settlement reference,Money received,ISO currency\nBANK-01-1,PAY-W01-01,330.28,USD\nBANK-01-2,PAY-W01-02,371.07,USD\nBANK-01-3,PAY-W01-03,411.85,USD\nBANK-01-4,PAY-W01-04,452.62,USD\n",
+        "description": "Original synthetic fixtures. Not Stripe exports, customer records or bank statements."
+      },
+      "expect": {
+        "ready": false,
+        "matched": 2,
+        "issues": 2,
+        "statuses": {
+          "matched": 2,
+          "invalid": 2
+        }
+      }
+    },
+    {
+      "name": "Currencies are not interchangeable",
+      "data": {
+        "scenario": "clean",
+        "week": 1,
+        "synthetic": true,
+        "payments_csv": "Sale reference,Payout group,Customer paid,Processor fee,ISO currency\nSALE-01-1-1,PAY-W01-01,52.00,1.81,EUR\nSALE-01-1-2,PAY-W01-01,54.00,1.87,USD\nSALE-01-1-3,PAY-W01-01,56.00,1.92,USD\nSALE-01-1-4,PAY-W01-01,58.00,1.98,USD\nSALE-01-1-5,PAY-W01-01,60.00,2.04,USD\nSALE-01-1-6,PAY-W01-01,62.00,2.10,USD\nSALE-01-2-1,PAY-W01-02,59.00,2.01,USD\nSALE-01-2-2,PAY-W01-02,61.00,2.07,USD\nSALE-01-2-3,PAY-W01-02,63.00,2.13,USD\nSALE-01-2-4,PAY-W01-02,65.00,2.18,USD\nSALE-01-2-5,PAY-W01-02,67.00,2.24,USD\nSALE-01-2-6,PAY-W01-02,69.00,2.30,USD\nSALE-01-3-1,PAY-W01-03,66.00,2.21,USD\nSALE-01-3-2,PAY-W01-03,68.00,2.27,USD\nSALE-01-3-3,PAY-W01-03,70.00,2.33,USD\nSALE-01-3-4,PAY-W01-03,72.00,2.39,USD\nSALE-01-3-5,PAY-W01-03,74.00,2.45,USD\nSALE-01-3-6,PAY-W01-03,76.00,2.50,USD\nSALE-01-4-1,PAY-W01-04,73.00,2.42,USD\nSALE-01-4-2,PAY-W01-04,75.00,2.48,USD\nSALE-01-4-3,PAY-W01-04,77.00,2.53,USD\nSALE-01-4-4,PAY-W01-04,79.00,2.59,USD\nSALE-01-4-5,PAY-W01-04,81.00,2.65,USD\nSALE-01-4-6,PAY-W01-04,83.00,2.71,USD\n",
+        "bank_csv": "Bank entry,Settlement reference,Money received,ISO currency\nBANK-01-1,PAY-W01-01,330.28,USD\nBANK-01-2,PAY-W01-02,371.07,USD\nBANK-01-3,PAY-W01-03,411.85,USD\nBANK-01-4,PAY-W01-04,452.62,USD\n",
+        "description": "Original synthetic fixtures. Not Stripe exports, customer records or bank statements."
+      },
+      "expect": {
+        "ready": false,
+        "matched": 3,
+        "statuses": {
+          "matched": 3,
+          "currency_conflict": 1
+        }
+      }
+    },
+    {
+      "name": "Missing transfer is not guessed",
+      "data": {
+        "scenario": "clean",
+        "week": 1,
+        "synthetic": true,
+        "payments_csv": "Sale reference,Payout group,Customer paid,Processor fee,ISO currency\nSALE-01-1-1,PAY-W01-01,52.00,1.81,USD\nSALE-01-1-2,PAY-W01-01,54.00,1.87,USD\nSALE-01-1-3,PAY-W01-01,56.00,1.92,USD\nSALE-01-1-4,PAY-W01-01,58.00,1.98,USD\nSALE-01-1-5,PAY-W01-01,60.00,2.04,USD\nSALE-01-1-6,PAY-W01-01,62.00,2.10,USD\nSALE-01-2-1,PAY-W01-02,59.00,2.01,USD\nSALE-01-2-2,PAY-W01-02,61.00,2.07,USD\nSALE-01-2-3,PAY-W01-02,63.00,2.13,USD\nSALE-01-2-4,PAY-W01-02,65.00,2.18,USD\nSALE-01-2-5,PAY-W01-02,67.00,2.24,USD\nSALE-01-2-6,PAY-W01-02,69.00,2.30,USD\nSALE-01-3-1,PAY-W01-03,66.00,2.21,USD\nSALE-01-3-2,PAY-W01-03,68.00,2.27,USD\nSALE-01-3-3,PAY-W01-03,70.00,2.33,USD\nSALE-01-3-4,PAY-W01-03,72.00,2.39,USD\nSALE-01-3-5,PAY-W01-03,74.00,2.45,USD\nSALE-01-3-6,PAY-W01-03,76.00,2.50,USD\nSALE-01-4-1,PAY-W01-04,73.00,2.42,USD\nSALE-01-4-2,PAY-W01-04,75.00,2.48,USD\nSALE-01-4-3,PAY-W01-04,77.00,2.53,USD\nSALE-01-4-4,PAY-W01-04,79.00,2.59,USD\nSALE-01-4-5,PAY-W01-04,81.00,2.65,USD\nSALE-01-4-6,PAY-W01-04,83.00,2.71,USD\n",
+        "bank_csv": "Bank entry,Settlement reference,Money received,ISO currency\nBANK-01-2,PAY-W01-02,371.07,USD\nBANK-01-3,PAY-W01-03,411.85,USD\nBANK-01-4,PAY-W01-04,452.62,USD\n",
+        "description": "Original synthetic fixtures. Not Stripe exports, customer records or bank statements."
+      },
+      "expect": {
+        "ready": false,
+        "matched": 3,
+        "statuses": {
+          "matched": 3,
+          "missing": 1
+        }
+      }
+    },
+    {
+      "name": "Refund stays an exact negative amount",
+      "data": {
+        "scenario": "clean",
+        "week": 1,
+        "synthetic": true,
+        "payments_csv": "Sale reference,Payout group,Customer paid,Processor fee,ISO currency\nSALE-01-1-1,PAY-W01-01,-52.00,1.81,USD\nSALE-01-1-2,PAY-W01-01,54.00,1.87,USD\nSALE-01-1-3,PAY-W01-01,56.00,1.92,USD\nSALE-01-1-4,PAY-W01-01,58.00,1.98,USD\nSALE-01-1-5,PAY-W01-01,60.00,2.04,USD\nSALE-01-1-6,PAY-W01-01,62.00,2.10,USD\nSALE-01-2-1,PAY-W01-02,59.00,2.01,USD\nSALE-01-2-2,PAY-W01-02,61.00,2.07,USD\nSALE-01-2-3,PAY-W01-02,63.00,2.13,USD\nSALE-01-2-4,PAY-W01-02,65.00,2.18,USD\nSALE-01-2-5,PAY-W01-02,67.00,2.24,USD\nSALE-01-2-6,PAY-W01-02,69.00,2.30,USD\nSALE-01-3-1,PAY-W01-03,66.00,2.21,USD\nSALE-01-3-2,PAY-W01-03,68.00,2.27,USD\nSALE-01-3-3,PAY-W01-03,70.00,2.33,USD\nSALE-01-3-4,PAY-W01-03,72.00,2.39,USD\nSALE-01-3-5,PAY-W01-03,74.00,2.45,USD\nSALE-01-3-6,PAY-W01-03,76.00,2.50,USD\nSALE-01-4-1,PAY-W01-04,73.00,2.42,USD\nSALE-01-4-2,PAY-W01-04,75.00,2.48,USD\nSALE-01-4-3,PAY-W01-04,77.00,2.53,USD\nSALE-01-4-4,PAY-W01-04,79.00,2.59,USD\nSALE-01-4-5,PAY-W01-04,81.00,2.65,USD\nSALE-01-4-6,PAY-W01-04,83.00,2.71,USD\n",
+        "bank_csv": "Bank entry,Settlement reference,Money received,ISO currency\nBANK-01-1,PAY-W01-01,226.28,USD\nBANK-01-2,PAY-W01-02,371.07,USD\nBANK-01-3,PAY-W01-03,411.85,USD\nBANK-01-4,PAY-W01-04,452.62,USD\n",
+        "description": "Original synthetic fixtures. Not Stripe exports, customer records or bank statements."
+      },
+      "expect": {
+        "ready": true,
+        "matched": 4,
+        "statuses": {
+          "matched": 4
+        },
+        "first_expected": "226.28",
+        "gross_usd": "1516.00"
+      }
+    }
+  ],
+  "proof": {
+    "suite": "studio-witnesses-v1",
+    "suite_sha256": "ffe7ab69cf9a8838e37f412fa4688e1782e6df25199326cd302bdfcaf9d56da9",
+    "profile_sha256": "c1740e00c690b7c5d3fcb45a692a86c0ac1e279a35287325ab6b749a218588a0",
+    "passed": 8,
+    "total": 8,
+    "checks": [
+      {
+        "name": "Clean close",
+        "passed": true,
+        "expected": {
+          "ready": true,
+          "matched": 4,
+          "statuses": {
+            "matched": 4
+          },
+          "first_expected": "330.28",
+          "gross_usd": "1620.00"
+        },
+        "observed": {
+          "ready": true,
+          "matched": 4,
+          "issues": 0,
+          "statuses": {
+            "matched": 4
+          },
+          "first_expected": "330.28",
+          "gross_usd": "1620.00"
+        }
+      },
+      {
+        "name": "One cent is not close enough",
+        "passed": true,
+        "expected": {
+          "ready": false,
+          "matched": 3,
+          "statuses": {
+            "matched": 3,
+            "mismatch": 1
+          },
+          "difference": "-0.01"
+        },
+        "observed": {
+          "ready": false,
+          "matched": 3,
+          "issues": 0,
+          "statuses": {
+            "matched": 3,
+            "mismatch": 1
+          },
+          "first_expected": "330.28",
+          "gross_usd": "1620.00",
+          "difference": "-0.01"
+        }
+      },
+      {
+        "name": "Duplicate and orphan transfers",
+        "passed": true,
+        "expected": {
+          "ready": false,
+          "matched": 2,
+          "statuses": {
+            "matched": 2,
+            "mismatch": 1,
+            "ambiguous": 1,
+            "orphan": 1
+          }
+        },
+        "observed": {
+          "ready": false,
+          "matched": 2,
+          "issues": 0,
+          "statuses": {
+            "matched": 2,
+            "mismatch": 1,
+            "ambiguous": 1,
+            "orphan": 1
+          },
+          "first_expected": "330.28",
+          "gross_usd": "1620.00"
+        }
+      },
+      {
+        "name": "Schema change stops the close",
+        "passed": true,
+        "expected": {
+          "error": "Schema drift"
+        },
+        "observed": {
+          "error": "Schema drift in payments: missing ['Customer paid']; new ['Customer paid (new format)']. Re-teach or explicitly review a new mapping. No partial reconciliation."
+        }
+      },
+      {
+        "name": "Duplicate sale IDs quarantine both batches",
+        "passed": true,
+        "expected": {
+          "ready": false,
+          "matched": 2,
+          "issues": 2,
+          "statuses": {
+            "matched": 2,
+            "invalid": 2
+          }
+        },
+        "observed": {
+          "ready": false,
+          "matched": 2,
+          "issues": 2,
+          "statuses": {
+            "invalid": 2,
+            "matched": 2
+          },
+          "first_expected": "280.09",
+          "gross_usd": "1509.00"
+        }
+      },
+      {
+        "name": "Currencies are not interchangeable",
+        "passed": true,
+        "expected": {
+          "ready": false,
+          "matched": 3,
+          "statuses": {
+            "matched": 3,
+            "currency_conflict": 1
+          }
+        },
+        "observed": {
+          "ready": false,
+          "matched": 3,
+          "issues": 0,
+          "statuses": {
+            "currency_conflict": 1,
+            "matched": 3
+          },
+          "first_expected": null,
+          "gross_usd": "1568.00"
+        }
+      },
+      {
+        "name": "Missing transfer is not guessed",
+        "passed": true,
+        "expected": {
+          "ready": false,
+          "matched": 3,
+          "statuses": {
+            "matched": 3,
+            "missing": 1
+          }
+        },
+        "observed": {
+          "ready": false,
+          "matched": 3,
+          "issues": 0,
+          "statuses": {
+            "missing": 1,
+            "matched": 3
+          },
+          "first_expected": "330.28",
+          "gross_usd": "1620.00"
+        }
+      },
+      {
+        "name": "Refund stays an exact negative amount",
+        "passed": true,
+        "expected": {
+          "ready": true,
+          "matched": 4,
+          "statuses": {
+            "matched": 4
+          },
+          "first_expected": "226.28",
+          "gross_usd": "1516.00"
+        },
+        "observed": {
+          "ready": true,
+          "matched": 4,
+          "issues": 0,
+          "statuses": {
+            "matched": 4
+          },
+          "first_expected": "226.28",
+          "gross_usd": "1516.00"
+        }
+      }
+    ],
+    "model_calls": 0,
+    "synthetic": true,
+    "scope": "Known studio schema only. Fixture agreement is not proof of source completeness or real-world suitability.",
+    "sha256": "6d496af81204497d3ed93f2f625f97aeee3f523471229eb43ecb5b44d9a13918"
+  },
+  "sha256": "8d6b2b07834260ce37065397613240c4f50a7fb40a1d9f9b2c0fe4e5bd5fdb74"
+}

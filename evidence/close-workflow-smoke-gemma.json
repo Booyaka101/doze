@@ -1,0 +1,456 @@
+{
+  "synthetic": true,
+  "mapping_source": "recorded Gemma output from close-grounded-teaching.json, no new inference",
+  "live_model_call_this_run": false,
+  "profile_sha256": "c1740e00c690b7c5d3fcb45a692a86c0ac1e279a35287325ab6b749a218588a0",
+  "witnesses_passed": 8,
+  "wrong_mapping_passed": 1,
+  "wrong_mapping_total": 8,
+  "forged_proof_blocked": true,
+  "edits_invalidate_approval": true,
+  "actual_import_rechecked": true,
+  "custom_schema_manually_reconciled": true,
+  "inference_blocked": true,
+  "year": {
+    "synthetic": true,
+    "weeks": [
+      {
+        "week": 1,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "b385f6c9eef627804da0dcc15e02dc2bb9b2f472f471566872648fc2dcb951a0"
+      },
+      {
+        "week": 2,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "bb1f56046ecd2404d00d87002fcd56220afad9c3c2d298fc553dee50593f1853"
+      },
+      {
+        "week": 3,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "c56cac38493206e6711f37be0673d09e0aea2fe308c67a11b64cbc6700625449"
+      },
+      {
+        "week": 4,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "de555ca1a868a2f694d8541302cabe12623988563d6d649eafae415515b0b6dd"
+      },
+      {
+        "week": 5,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "37f088cc7a26305749ca0009ebee47a261a6b5aed24394905c69c2c61e9bea91"
+      },
+      {
+        "week": 6,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "b02636765b47010aaf003e2824032562bfee44c95d2d40d1f3a74d50046101f5"
+      },
+      {
+        "week": 7,
+        "scenario": "penny",
+        "ready": false,
+        "matched": 3,
+        "exceptions": 1,
+        "report_sha256": "9d2a64a0d58181808e279f939c045af6b10098244904b180f43279de85fecc93"
+      },
+      {
+        "week": 8,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "d8f11b6cbb264ef16ff51980a2bf26aebcf42fcb3c19f35393bd563a69e97a19"
+      },
+      {
+        "week": 9,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "8a4681570a949a1dfd5a508e9744d28e780f8db0cc8b432429d2c034634f4091"
+      },
+      {
+        "week": 10,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "9b038ce99d9e46b1ee05174d1f7abbc1d2c2aef0a3d61f2f8807bac281c545c3"
+      },
+      {
+        "week": 11,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "df558916c055a86fa027580b2f369f323c797475dff683ae448cab1ddbb15367"
+      },
+      {
+        "week": 12,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "7aa5d903b84a6439847a0f11b8a35ced035d6d6bdf7f0d7012befbb3be8a6361"
+      },
+      {
+        "week": 13,
+        "scenario": "messy",
+        "ready": false,
+        "matched": 2,
+        "exceptions": 3,
+        "report_sha256": "764ee6ee53a8b0ccc3fd834910e5c3e4841efad21437a89f70d8dc2384cd69d8"
+      },
+      {
+        "week": 14,
+        "scenario": "penny",
+        "ready": false,
+        "matched": 3,
+        "exceptions": 1,
+        "report_sha256": "f17befd9479e4535facd1a25b04a429145d6a797a721935de743daf9e05b3d15"
+      },
+      {
+        "week": 15,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "24b70accbed266d2a4eb3670772ce234fecbd8b32d1b395de4439767f57ef3fc"
+      },
+      {
+        "week": 16,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "7991480d59da32e20d6ddd26f32f77c062fcd86f363b6d02f4fc642c51985276"
+      },
+      {
+        "week": 17,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "c72de67ef18548b7a7b6eb6ae00196ef376687de879906752d66c92be7b405e0"
+      },
+      {
+        "week": 18,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "cedcc4fb6c8b174f33644cc525765b5a0604617c8654be389588ecc89ecb5f15"
+      },
+      {
+        "week": 19,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "10cef4fb2c580468b074927360e2813093d3a623ee26f64b55f8bf627f0ca232"
+      },
+      {
+        "week": 20,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "de123541d0ca9387547091d496ee5258d434f654590ec3d0906a3d837a77140e"
+      },
+      {
+        "week": 21,
+        "scenario": "penny",
+        "ready": false,
+        "matched": 3,
+        "exceptions": 1,
+        "report_sha256": "4655b73e989a548b618c399d3832255b34859e4f3c4d30c909c5dd6933270092"
+      },
+      {
+        "week": 22,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "1644d1547d16b26c70a1a7ce8fff64371b32f35e56d056c3feb55bf1e889907e"
+      },
+      {
+        "week": 23,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "f62fe0e6b52f024c78008d7191109d0f7476d824f04a33cd8cb1084ec4c5dcbb"
+      },
+      {
+        "week": 24,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "9b921ef28aa58b8f33b7b72cf0d2e75d145e2941d2c991200cccaa92d6768e6e"
+      },
+      {
+        "week": 25,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "31c6f3ac4c83cc367564507743eebe8911374b6c942cbcf91182396d0a3b95db"
+      },
+      {
+        "week": 26,
+        "scenario": "messy",
+        "ready": false,
+        "matched": 2,
+        "exceptions": 3,
+        "report_sha256": "605983fbcd26e9c22a8218b289ae202e45ff9493e96d594be5bb3fbf0c05214c"
+      },
+      {
+        "week": 27,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "bdfa80575b6a980173fec68caeef206776cde8faeb8d0efcb5bb7baf0b092851"
+      },
+      {
+        "week": 28,
+        "scenario": "penny",
+        "ready": false,
+        "matched": 3,
+        "exceptions": 1,
+        "report_sha256": "2e74401661e8a27184f59511a095ef6761cef8841137a2e703954b18c5194d7f"
+      },
+      {
+        "week": 29,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "845df51e5a55bc649c980a461b4fbb5dc4020f4031e49f61c157145e8f0706a0"
+      },
+      {
+        "week": 30,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "8c4fb472549453fef4eb0eb8c8aacd2707703f3e3b94989119a19d54b0a92ff4"
+      },
+      {
+        "week": 31,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "ba4e1bcd9bc87cf03b01d83b955ce6656db32edc1c2725a80e7dd200996359e8"
+      },
+      {
+        "week": 32,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "5a65d35d6ddf46f74cc547d25ded607fbf9c376e5cfc82e7606f4dc151accf65"
+      },
+      {
+        "week": 33,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "eac6c400d6d71df05ab5b7b34c86be3697a673cf52ebaf5efcdf8c2a4a1af0ac"
+      },
+      {
+        "week": 34,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "4e78df4d84c429191303b29f48fe73b138df294271638d87271cc0b471bb0eb9"
+      },
+      {
+        "week": 35,
+        "scenario": "penny",
+        "ready": false,
+        "matched": 3,
+        "exceptions": 1,
+        "report_sha256": "c3d8b8a949ef4dbbbef664b85731ed39f94089037d6868d5d4033f8f13930dea"
+      },
+      {
+        "week": 36,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "c1a5691ef64aef5bf23e3babfef4a7aa7894bf2441e7110bb713b6d2cab80a36"
+      },
+      {
+        "week": 37,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "7f9f3bb0b4b53c6b9414fa1ccc2120f536eeada6317ba9044ba8755a4ce881cf"
+      },
+      {
+        "week": 38,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "b8e395bc4d19d37d421d7aa58531790c72fffab30c13f048b66e8c4ebc4cc9c5"
+      },
+      {
+        "week": 39,
+        "scenario": "messy",
+        "ready": false,
+        "matched": 2,
+        "exceptions": 3,
+        "report_sha256": "64d4cf84244ce4deed373ea8ada9c3fc843eeb6ac4dea277d3aff9a2f35a3c9b"
+      },
+      {
+        "week": 40,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "a10552151e838f5c9a6a6cee506817f7b8a898f41fcaa005473d632f244a67d2"
+      },
+      {
+        "week": 41,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "071f286b108013b49265f2d5901427edf4a7c0d0b98f287d5376c2a2742d5eab"
+      },
+      {
+        "week": 42,
+        "scenario": "penny",
+        "ready": false,
+        "matched": 3,
+        "exceptions": 1,
+        "report_sha256": "514a653500bbdf14bfea2fd3f78c458d277346c7fc01a0693085e2a5caa0fd03"
+      },
+      {
+        "week": 43,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "e422ac9197d46a80e97b094dbed4fc5cd8062d056131d2a412a792cb63134f27"
+      },
+      {
+        "week": 44,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "70b6f7b180ab9d5a02e39a6aee5e986e5932275f0fc48664a400168f8875f2e1"
+      },
+      {
+        "week": 45,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "6a3a4590eb9f0dec5fb2b696225231dc0cdcd6af50fe06bd0e9605ec2067c0cd"
+      },
+      {
+        "week": 46,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "daff0b932990229ff61cb6f4b6a14ce6d96c98649af023a0435b1421344b25a4"
+      },
+      {
+        "week": 47,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "27b3f1ee15eb944c8dde594df61ba33bbe56395bdc94d13f70b1dd374cc5d4ac"
+      },
+      {
+        "week": 48,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "34880ba634337d83b683268a37a5abdff19ec0b07d2d620343da9ba7b269e1e6"
+      },
+      {
+        "week": 49,
+        "scenario": "penny",
+        "ready": false,
+        "matched": 3,
+        "exceptions": 1,
+        "report_sha256": "cfee73bab29c6116e2ea1c1075530970f069f1dede90405302f194364304019a"
+      },
+      {
+        "week": 50,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "2d6f7fc87bfdc46ff0da3cf6c4b7c6181f9f4fb66a430dfa75d1beb65e09b8f0"
+      },
+      {
+        "week": 51,
+        "scenario": "clean",
+        "ready": true,
+        "matched": 4,
+        "exceptions": 0,
+        "report_sha256": "9031d64a8561fd1cf94891130174eadd8aaccc2e0fbfb55805f5f5ff120a1fc0"
+      },
+      {
+        "week": 52,
+        "scenario": "messy",
+        "ready": false,
+        "matched": 2,
+        "exceptions": 3,
+        "report_sha256": "9251e2b03b0bc7c5bea201001cec4d7a6f66afb66ed1f0c8b3f9d8aefea3c547"
+      }
+    ],
+    "clean_weeks": 41,
+    "held_weeks": 11,
+    "payments": 1248,
+    "matched": 193,
+    "exceptions": 19,
+    "model_calls": 0,
+    "seconds": 0.0115,
+    "profile_sha256": "c1740e00c690b7c5d3fcb45a692a86c0ac1e279a35287325ab6b749a218588a0",
+    "scope": "52 generated weeks, not customer history, a scheduler, or measured human time saved."
+  },
+  "packet": {
+    "bytes": 4344,
+    "signature": [
+      80,
+      75
+    ]
+  },
+  "mobile": {
+    "width": 390,
+    "scroll": 390
+  },
+  "recurring_model_calls": 0
+}

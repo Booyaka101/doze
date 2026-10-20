@@ -107,6 +107,18 @@ class ServerTests(unittest.TestCase):
             finally:
                 self.request('/api/inference', {'enabled': True}, self.token)
 
+    def test_recorded_close_lesson_needs_no_inference_and_is_labelled(self):
+        with patch('doze.server.close_inference.compile_mapping', side_effect=AssertionError('No inference')):
+            try:
+                self.request('/api/inference', {'enabled': False}, self.token)
+                code, raw, _ = self.request('/api/close/recorded-profile', {}, self.token)
+                self.assertEqual(code, 200)
+                saved = json.loads(raw)
+                self.assertTrue(saved['provenance']['recorded'])
+                self.assertEqual(saved['profile']['mapping']['payments']['gross'], 'Customer paid')
+            finally:
+                self.request('/api/inference', {'enabled': True}, self.token)
+
     def test_close_workflow_api_rechecks_proof_and_honors_replay_gate(self):
         contract = profile(MAPPING, PAYMENT_HEADERS, BANK_HEADERS)
         code, raw, _ = self.request('/api/close/workflow', {'profile': contract}, self.token)
