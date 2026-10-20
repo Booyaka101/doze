@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" role="img" aria-labelledby="title desc">
+  <title id="title">Doze: teach it once. Let the AI sleep.</title>
+  <desc id="desc">A reusable mapping connects a sleeping AI to an exact reconciliation ledger. Synthetic replay: 52 weeks, zero model calls.</desc>
+  <rect width="1000" height="420" fill="#f6f3ed"/>
+  <circle cx="916" cy="55" r="190" fill="#eee7f4"/>
+  <text x="58" y="66" fill="#645078" font-family="Consolas, monospace" font-size="13" letter-spacing="3">DOZE / THE FRIDAY CLOSE</text>
+  <g fill="#302d31" font-family="Georgia, serif" font-size="57">
+    <text x="55" y="148">Teach it once.</text>
+    <text x="55" y="213">Let the AI sleep.</text>
+  </g>
+  <text x="58" y="264" fill="#635d67" font-family="Segoe UI, sans-serif" font-size="18">A local model learns the columns.</text>
+  <text x="58" y="291" fill="#635d67" font-family="Segoe UI, sans-serif" font-size="18">Exact code keeps doing the work.</text>
+  <rect x="58" y="333" width="436" height="37" rx="18" fill="#e5eddc"/>
+  <text x="77" y="357" fill="#435c35" font-family="Consolas, monospace" font-size="12">SYNTHETIC REPLAY / 52 WEEKS / 0 MODEL CALLS</text>
+  <rect x="625" y="89" width="306" height="264" rx="15" fill="#fffdf8" stroke="#d9d1df"/>
+  <rect x="645" y="108" width="267" height="43" rx="7" fill="#eee8f4"/>
+  <text x="663" y="135" fill="#655279" font-family="Consolas, monospace" font-size="13">MAPPING + EXECUTABLE TESTS</text>
+  <g fill="#65616a" font-family="Consolas, monospace" font-size="13">
+    <text x="648" y="187">gross - fees = expected</text>
+    <text x="648" y="222">reference = exact match</text>
+    <text x="648" y="257">difference = 0.01</text>
+  </g>
+  <rect x="645" y="284" width="267" height="44" rx="6" fill="#f3e2d5"/>
+  <text x="661" y="311" fill="#834a33" font-family="Consolas, monospace" font-size="14">ONE CENT OFF? HANDOFF HELD.</text>
+</svg>

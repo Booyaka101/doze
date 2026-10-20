@@ -1,0 +1,66 @@
+{
+  "synthetic": true,
+  "capture": "Actual running local browser tab, sampled frames encoded at 15 fps with real elapsed timing. No speed-up; sampling rate depends on capture latency.",
+  "source_profile": "doze/close_recorded.json",
+  "model_calls": 0,
+  "recording_seconds": 68.05,
+  "captured_frames": 62,
+  "viewport": {
+    "width": 1440,
+    "height": 1080
+  },
+  "captions": [
+    {
+      "seconds": 0,
+      "title": "Doze: teach the job once. Then let the AI sleep."
+    },
+    {
+      "seconds": 5.2,
+      "title": "Saved output from a real local Gemma call. No new inference in this walkthrough."
+    },
+    {
+      "seconds": 12.3,
+      "title": "Eight fixed studio tests, including refunds, duplicates and the one-cent discrepancy."
+    },
+    {
+      "seconds": 19.5,
+      "title": "A messy week stays messy: three exceptions. A clean handoff is blocked."
+    },
+    {
+      "seconds": 26.5,
+      "title": "Follow a discrepancy to the exact source record. The model does not decide the sums."
+    },
+    {
+      "seconds": 33.9,
+      "title": "Next synthetic week. Same mapping. Four exact settlements. Inference still disabled."
+    },
+    {
+      "seconds": 40.9,
+      "title": "Review before handoff. Approval binds the exact report; source exports stay unchanged."
+    },
+    {
+      "seconds": 48,
+      "title": "52 generated weeks: 41 clean, 11 held for review. Zero model calls during replay."
+    },
+    {
+      "seconds": 56,
+      "title": "Synthetic evidence, not customer history or measured hours saved."
+    },
+    {
+      "seconds": 62,
+      "title": "A reusable mapping with tests, not another conversation every Friday."
+    }
+  ],
+  "checks": [
+    "recorded origin label",
+    "eight witnesses",
+    "messy week blocked with three exceptions",
+    "source record visible",
+    "next week four exact settlements with inference disabled",
+    "reviewed clean packet available",
+    "synthetic year 41 clean and 11 held with zero model calls"
+  ],
+  "output": "evidence/doze-friday-close.mp4",
+  "audio": false,
+  "public_upload": false
+}

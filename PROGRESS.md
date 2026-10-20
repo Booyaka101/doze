@@ -2,6 +2,45 @@
 
 Started 2026-10-20 for DEV HF26 Week 3, October 19-25.
 
+## Latest completed pass: competition review package, October 21
+
+User asked to proceed toward the competition. Scope was editorial/media, not new
+app features or publication. Rules checked in the saved official challenge page;
+read two current DEV entries for venue context. User testing is optional, not an
+eligibility gate. Supersedes earlier wording that put a user trial ahead of entry
+preparation. Writing quality is the most heavily weighted criterion.
+
+- Drafted submission/ENTRY.md using official headings, required tags and
+  published:false. Approximately 1,405 words including metadata and review note.
+  Lead: model produces a reusable mapping; deterministic work outlives inference.
+  Includes actual failures, successful fix, fixed witnesses, one-cent hold,
+  network-blocked CLI proof, open innovation, limitations and AI-use disclosure.
+- Created original cover.svg and rendered cover.png (1000x420). No external art.
+- Recorded actual app interactions: evidence/doze-friday-close.mp4, 68.53 seconds,
+  H.264, 2160x1620 encoded pixels, 1,936,680 bytes, no audio. Synthetic exports and
+  recorded Gemma mapping disclosed throughout. 62 sampled frames with actual
+  elapsed timing; encoded at 15 fps, not claimed as 15-fps source recording.
+- Seven assertions passed during capture: origin, witnesses, blocked messy close,
+  source records, exact next-week reuse asleep, reviewed clean packet available,
+  and year outcomes. No downloads to user folders or model calls during capture.
+- First capture completed the app flow but stopped before encoding at an overly
+  strict frame-count threshold. One bounded corrected capture delivered the MP4.
+  Frames isolated in ignored .doze/close-capture-* folders. No further takes needed.
+- Inspected original cover and six MP4 frames via submission/demo-contact-sheet.jpg.
+  FFprobe verified codec, duration, dimensions and bytes. No unrelated desktop
+  windows captured. Demo captions are an explicitly editorial overlay, not fake UI.
+- Added DEMO.md and REVIEW.md with asset manifest, claim sources and approval gates.
+- tools/check_entry.py: 14 local evidence comparisons passed; publication_ready
+  deliberately false. tools/record_close_demo.mjs reproduces the local capture.
+  No app code changed, so the settled 120-test backend pass was not rerun.
+
+Remaining: owner reviews article/video, approves public repository and media
+destination; read-only publication review, exact-commit CI, replace two PUBLIC_*
+URL placeholders, DEV preview and explicit final post approval. No repository
+created, push, release, deployment, upload or public submission. Do not claim this
+review package has been submitted or guarantees a win. No more verification loops
+needed on this completed pass. Keep model inference asleep on the existing demo.
+
 ## Latest completed pass: grounded Gemma teaching, October 21
 
 Supersedes the earlier unresolved-teaching notes below. User authorized continuing.

@@ -438,6 +438,19 @@ of the app.
 
 ## Competition readiness
 
+- Local review package: [article draft](submission/ENTRY.md),
+  [publication checklist](submission/REVIEW.md), [demo notes](submission/DEMO.md)
+  and [original cover](submission/cover.png).
+- New Friday Close walkthrough: `evidence/doze-friday-close.mp4`, 68.53 seconds.
+  It shows actual app interactions using synthetic exports and a recorded Gemma
+  mapping. The source capture has 62 sampled frames, encoded at 15 fps with elapsed
+  timing preserved; it is not live teaching or a 15-fps source recording. Captions
+  disclose this throughout. Seven recording assertions passed, no inference calls.
+- `python tools/check_entry.py` compares article claims with saved evidence.
+  All fourteen local checks passed. It explicitly reports publication NOT ready:
+  owner approval, public repository/demo URLs, publication review, exact-commit CI
+  and approved media uploads are still pending. User testing is optional, not an
+  entry requirement. No measured human savings are claimed.
 - Target: HF26 Week 3 overall and **Best Use of Gemma**.
 - New project started October 20 within the October 19-25 window.
 - Entry deadline: October 25, 2026, 11:59 PM PDT, per the official rules.
