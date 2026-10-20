@@ -13,9 +13,25 @@ No model calculates money. No bank connection, account access or payments.
 
 ![Friday Close exception investigation](evidence/12-close-exceptions.png)
 
-Open **http://127.0.0.1:8743** for the current synthetic demo. On a fresh launch,
-`python -m doze.server` serves Friday Close at `/` and the original file studio
-at `/files`. Previously started processes retain their earlier routing.
+### Start from a clean checkout
+
+Python **3.11+** is sufficient for the application and recorded-result demo. No
+Python or JavaScript packages, account credentials or model downloads are needed.
+From the repository directory:
+
+```sh
+python -m doze.server
+```
+
+Open **http://127.0.0.1:8741** for Friday Close, or `/files` for the original file
+studio. Choose **Replay the verified Gemma lesson / recorded result** to explore
+without Ollama. The label distinguishes the historical model call from replay.
+Human mapping and report review still apply. Optional fresh teaching requires
+separately installed Ollama and an already-installed local model.
+
+The development machine also has an existing demo at `http://127.0.0.1:8743`.
+That is not a public demo URL or the default fresh-install port. Previously started
+processes retain their earlier routing.
 
 ### Try the close without inference
 

@@ -2,6 +2,32 @@
 
 Started 2026-10-20 for DEV HF26 Week 3, October 19-25.
 
+## Latest completed pass: local publication preflight, October 21
+
+Bounded continuation of entry preparation. No public actions or model calls.
+Inspected branch/clean state, six-commit history, tracked inventory, CI, quick-start
+instructions and publication gates. No configured remote. Added read-only
+tools/audit_publication.py with finite history/text budgets and redacted findings.
+Initial index/history scan covered 115 unique text blobs, 896,240 bytes: no selected
+credential-pattern matches, home-directory path matches or tracked runtime state.
+This is not a comprehensive secret scan or clearance of historical media. One
+author/committer identity remains owner-review material; history was not rewritten.
+
+README now explains clean-checkout launch on default port 8741 and distinguishes
+the local development demo on port 8743. Extended existing CI matrix with close.js
+syntax, recorded-Gemma offline proof and article checks. No application changes.
+
+Verification complete: 120 tests, 119 passed and one symlink-permission skip;
+close.js syntax and fourteen article checks passed. An isolated tracked-file copy
+also passed original offline proof, recorded-Gemma close proof and article checks.
+Generated evidence stayed in the disposable copy, preserving original evidence.
+No remote CI or Linux checks claimed. Further repeated backend checks unnecessary.
+
+Next: owner review of article/video, identity and historical media; approve public
+repository/media destinations. Then exact-commit remote CI and DEV preview before
+explicit publication approval. No pushes, repository creation, uploads, release,
+deployment or submission performed. See submission/REVIEW.md for the gate list.
+
 ## Latest completed pass: competition review package, October 21
 
 User asked to proceed toward the competition. Scope was editorial/media, not new

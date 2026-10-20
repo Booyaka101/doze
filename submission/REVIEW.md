@@ -60,6 +60,28 @@ footage. Do not use them to imply a live Friday Close teaching demonstration.
 
 ## Before any public action
 
+### Local publication preflight, October 21
+
+- Six reachable commits and 115 unique text blobs checked before this pass's
+  changes: no matches for the selected credential patterns, no home-directory
+  paths and no tracked runtime-state paths. `tools/audit_publication.py` makes the
+  bounded scan repeatable without printing matched secrets or identity values.
+  Pattern checks are not a comprehensive security or privacy clearance.
+- One distinct author/committer identity is visible in history. Owner must review
+  that identity locally before publishing history; it has not been rewritten.
+- Historical images/video still need full visual and metadata review before
+  public-code approval. The scanner lists binary assets but does not inspect them.
+- README now leads with a clean-checkout command and the default port 8741,
+  distinguishing this machine's existing port 8743 demo from a public URL.
+- CI now includes Friday Close JavaScript syntax, recorded-Gemma offline proof
+  and article evidence checks alongside the existing matrix. No guards removed.
+- Local suite: 120 tests, 119 passed, one Windows symlink-permission skip.
+  Friday Close JavaScript syntax passed. Both offline proofs and all fourteen
+  article checks passed in an isolated tracked-file copy without replacing the
+  original evidence. This was not a remote CI run or a Linux validation.
+- No remote is configured. Public destinations, uploads and the final post remain
+  unapproved; this preflight does not authorize any of those actions.
+
 - [ ] Owner approves exact article text and AI-use disclosure.
 - [ ] Owner approves the demo asset and public upload destination.
 - [ ] Owner approves publishing code and chooses public repository/name.
