@@ -2,6 +2,29 @@
 
 Started 2026-10-20 for DEV HF26 Week 3, October 19-25.
 
+## Publication authorization and final candidate, October 22
+
+Owner asked to improve and submit. Final article candidate shown through preview;
+owner selected "Approve and submit" for exact article, existing history/identity,
+public Booyaka101/doze repository and synthetic demo, conditional on remote CI and
+public-link checks. Signed-in DEV editor available in existing Chrome session.
+No final submission success claimed yet.
+
+Added concise architecture diagram, local try-it path, actual synthetic-evidence
+screenshot and planned public code/video links to submission/ENTRY.md. No new app
+features or model calls. Rechecked official live challenge page October 22.
+
+Reviewed contact sheets for all 23 evidence PNGs and six sampled frames from each
+of the three MP4s; only synthetic application content visible. All 23 PNGs have no
+Pillow-reported metadata fields; ffprobe reported generic container/encoder tags
+and silent H.264 video only. This sampled review is not exhaustive frame OCR or a
+security guarantee. Review artifacts stay under ignored .doze/publication-review.
+
+Next bounded actions: commit final candidate, publish approved repository, require
+CI success on that exact commit, verify links, fill DEV editor and compare exact
+body/title/tags, publish once, verify resulting public article and permalink.
+Do not retry publication blindly if the editor does not navigate.
+
 ## Latest completed pass: local publication preflight, October 21
 
 Bounded continuation of entry preparation. No public actions or model calls.

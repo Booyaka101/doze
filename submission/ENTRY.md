@@ -4,14 +4,16 @@ published: false
 tags: devchallenge, hf26challenge, ai, opensource
 ---
 
-<!-- OWNER REVIEW: replace the two publication placeholders before submitting.
-     Nothing in this file authorizes publication or asset uploads. -->
+<!-- Final candidate for owner approval. Public destinations below are planned
+     until publication and link verification have completed. -->
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 3: Slow and Steady](https://dev.to/challenges/hacktoberfest-week3-2026-10-19).*
 
 ## What I Built
 
 Doze refuses to close a week that is one cent short. It can do that with inference disabled.
+
+Most recurring AI workflows keep calling the model. I wanted to see how much of the job could outlive it.
 
 The chore is reconciling payment exports against bank exports. A payment processor calls a column “Payout group.” The bank calls the same reference “Settlement reference.” Customers paid a gross amount, the processor deducted fees, and a net amount reached the bank. Someone has to connect those meanings, check the sums and investigate what does not match.
 
@@ -23,7 +25,7 @@ That is my interpretation of **Slow and Steady**: do the uncertain translation o
 
 ## Demo
 
-**[PUBLIC_DEMO_OR_VIDEO_URL]**
+**[Watch the 68-second walkthrough](https://github.com/Booyaka101/doze/blob/feat/friday-close/evidence/doze-friday-close.mp4)**
 
 The walkthrough uses synthetic exports and a clearly labelled **recorded Gemma result**, not a fresh teaching call. The saved result comes from an actual local inference run; replaying it requires no model.
 
@@ -35,17 +37,47 @@ Watch for three things:
 
 These are synthetic outcomes, not a year of customer history or a claim of hours saved.
 
+![Eight mapping tests and a synthetic year: 41 clean weeks, 11 held, 19 exceptions and zero model calls](https://raw.githubusercontent.com/Booyaka101/doze/feat/friday-close/evidence/16-close-witnesses-year-gemma.png)
+
+*The application replay uses recorded model output. This screenshot is synthetic evidence, not customer history.*
+
 ## Code
 
-**[PUBLIC_REPOSITORY_URL]**
+**[Source, tests and saved model evidence](https://github.com/Booyaka101/doze)**
 
 MIT-licensed application code. Python standard library backend, plain JavaScript UI and local Ollama inference. Gemma weights are not distributed with the project and retain their own license terms.
 
-The repository includes the model outputs, failed attempts, synthetic fixtures and verification scripts. The latest local test suite ran 120 tests: 119 passed and one Windows symlink-permission test was skipped. Remote CI has not run yet.
+The repository includes the model outputs, failed attempts, synthetic fixtures and verification scripts. The latest local test suite ran 120 tests: 119 passed and one Windows symlink-permission test was skipped. The [CI workflow](https://github.com/Booyaka101/doze/actions) covers Python 3.11 and 3.12 on Windows and Linux, including the offline proof.
+
+To try the recorded-result demo, clone the repository, enter its directory and run:
+
+```sh
+python -m doze.server
+```
+
+Open `http://127.0.0.1:8741`, choose **Replay the verified Gemma lesson / recorded result**, review the mapping and run its tests. Reconcile the messy week, inspect an exception, then try the next clean week and the 52-Friday replay. Python 3.11+ is enough. No account, packages or model download is needed for this route.
 
 ## How I Built It
 
 ### Teach the vocabulary, not the calculation
+
+```text
+TEACH ONCE, LOCALLY
+Headers + approved explanations
+             |
+           Gemma
+             |
+      Reviewable mapping + fixed tests
+             |
+      Test and human approval
+-------------|-------------------------
+REUSE WITHOUT INFERENCE
+New exports + approved mapping
+             |
+      Exact Python reconciliation
+             |
+      Exceptions or reviewed handoff
+```
 
 Gemma's job is deliberately small. It sees the two header lists, the chosen decimal separator and an explicitly approved explanation of ambiguous columns. It returns either a mapping or a refusal. Each mapped role must use an actual header from the appropriate export.
 
@@ -114,7 +146,7 @@ There are limits. Matching exports prove agreement between those exports, not co
 
 The practical reduction is specific: stop re-explaining an unchanged export format and stop asking a model to do the same sums. Keep the human review where it matters, on the mapping and the exceptions.
 
-*Built with AI assistance through OpenCode, including implementation, verification tooling and drafting this write-up. Ollama provides the local inference runtime; Gemma provides the open-weight model. The separately installed Chrome automation driver was used for development verification, not shipped as application code.*
+*Built with AI assistance through OpenCode, including implementation, verification tooling and drafting this write-up. Ollama provides the local inference runtime; Gemma provides the open-weight model. Chrome automation was used for development verification, not shipped as application code.*
 
 ## Prize Categories
 

@@ -1,7 +1,10 @@
 # Doze entry review and publication gate
 
-Status: local preparation only. No post, upload, remote repository or deployment
-has been created by this pass. Winning is not guaranteed.
+Status: owner explicitly approved publication on October 22: public repository
+Booyaka101/doze with existing history/identity and synthetic demo, then the exact
+reviewed article on the signed-in DEV account after remote CI and link checks.
+Publication is being prepared; approval alone does not establish submission.
+Winning is not guaranteed.
 
 ## Assets ready for owner review
 
@@ -12,9 +15,9 @@ has been created by this pass. Winning is not guaranteed.
 - demo-contact-sheet.jpg: six actual frames extracted for quick visual review.
 - DEMO.md: storyboard, production notes and limitations.
 
-The article intentionally retains PUBLIC_REPOSITORY_URL and
-PUBLIC_DEMO_OR_VIDEO_URL. Localhost is not a public demo. Do not submit this draft
-until approved public destinations replace both placeholders.
+The final candidate uses the approved GitHub repository and its hosted MP4 as
+public destinations. Localhost is only a local try-it instruction. Verify those
+public links after code publication and before posting the article.
 
 ## Editorial decision
 
@@ -82,21 +85,22 @@ footage. Do not use them to imply a live Friday Close teaching demonstration.
 - No remote is configured. Public destinations, uploads and the final post remain
   unapproved; this preflight does not authorize any of those actions.
 
-- [ ] Owner approves exact article text and AI-use disclosure.
-- [ ] Owner approves the demo asset and public upload destination.
-- [ ] Owner approves publishing code and chooses public repository/name.
+- [x] Owner approves exact article text and AI-use disclosure.
+- [x] Owner approves the demo asset and public upload destination.
+- [x] Owner approves publishing code and chooses public repository/name.
 - [ ] Read-only publication review checks tracked files, history, secrets,
       licensing, evidence contents and reproducible setup. Local state stays out.
 - [ ] CI passes on the exact intended publication/release commit. A local test
       pass is not remote CI. Resolve any publication/CI ordering explicitly.
-- [ ] Replace PUBLIC_REPOSITORY_URL and PUBLIC_DEMO_OR_VIDEO_URL in ENTRY.md.
+- [x] Replace PUBLIC_REPOSITORY_URL and PUBLIC_DEMO_OR_VIDEO_URL in ENTRY.md.
 - [ ] Upload approved cover/screenshots only to the approved destination.
 - [ ] Preview article on DEV; verify links, code blocks, media and disclosure.
 - [ ] Required tags: devchallenge, hf26challenge. Category: Best Use of Gemma;
       overall consideration is automatic under the official rules.
 - [ ] Confirm project/window requirements and deadline: October 25, 2026,
       11:59 PM PDT, from the official rules.
-- [ ] Obtain explicit approval for the final DEV Publish/Submit action.
+- [x] Obtain explicit approval for the final DEV Publish/Submit action, conditional
+      on passing remote CI and public link verification without article changes.
 
 No full agent session export is needed. That optional feature should not expose
 private conversation history, local paths, credentials or unrelated work.
